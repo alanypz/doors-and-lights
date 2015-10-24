@@ -2,8 +2,6 @@
 
 This README would normally document whatever steps are necessary to get your application up and running.
 
-APIDeveloper has the code i will be working on, the code on master will be replaced after i fix some stuff on APIDeveloper
-
 ### What is this repository for? ###
 
 * Quick summary

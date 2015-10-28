@@ -1,30 +1,21 @@
 # README #
 
+This is an Node.js based API with Express and Johnny-five modules installed to integrate Mobile and desktop application and the raspberry pi controller.
+With the application, the client will be able to controll all doors and lights. The main reason for this project is for the safety of the employees. 
+Currently the employees need to run to close the doors in the event of rain, and that can cause accidents, also if they are in a hurry, they can end
+up damaging the door mechanism. for the lights, this application simplify their work by lowering the lights closer to the workspace and they dont need to 
+manually lower or raise them.
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### What is in this repository ###
 
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Api created on Node.js with Express and Johnny-five modules
+* V# 0.0.1
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Currently under development
 
 ### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
+* Created by Marcus de moraes with support from Justin MacKenzie, Alan Yepes and Zach
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact

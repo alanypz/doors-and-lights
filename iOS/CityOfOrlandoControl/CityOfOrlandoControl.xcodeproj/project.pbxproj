@@ -1,0 +1,544 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E7353FD61C4C69AA00D50E9E /* ComponentCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */; };
+		E7353FD81C4C6B2200D50E9E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */; };
+		E76891721C4EFF9000A64A93 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */; };
+		E76891741C4EFF9C00A64A93 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */; };
+		E7F0E4181C4C37D8003D4DEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E4171C4C37D8003D4DEA /* AppDelegate.swift */; };
+		E7F0E41D1C4C37D8003D4DEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7F0E41B1C4C37D8003D4DEA /* Main.storyboard */; };
+		E7F0E4201C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E41E1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld */; };
+		E7F0E4221C4C37D8003D4DEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7F0E4211C4C37D8003D4DEA /* Assets.xcassets */; };
+		E7F0E4251C4C37D8003D4DEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7F0E4231C4C37D8003D4DEA /* LaunchScreen.storyboard */; };
+		E7F0E4301C4C37D8003D4DEA /* CityOfOrlandoControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E42F1C4C37D8003D4DEA /* CityOfOrlandoControlTests.swift */; };
+		E7F0E43B1C4C37D8003D4DEA /* CityOfOrlandoControlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E43A1C4C37D8003D4DEA /* CityOfOrlandoControlUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E7F0E42C1C4C37D8003D4DEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E7F0E40C1C4C37D8003D4DEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E7F0E4131C4C37D8003D4DEA;
+			remoteInfo = CityOfOrlandoControl;
+		};
+		E7F0E4371C4C37D8003D4DEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E7F0E40C1C4C37D8003D4DEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E7F0E4131C4C37D8003D4DEA;
+			remoteInfo = CityOfOrlandoControl;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ComponentCollectionViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
+		E7F0E4141C4C37D8003D4DEA /* CityOfOrlandoControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CityOfOrlandoControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7F0E4171C4C37D8003D4DEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E7F0E41C1C4C37D8003D4DEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E7F0E41F1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CityOfOrlandoControl.xcdatamodel; sourceTree = "<group>"; };
+		E7F0E4211C4C37D8003D4DEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E7F0E4241C4C37D8003D4DEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E7F0E4261C4C37D8003D4DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7F0E42B1C4C37D8003D4DEA /* CityOfOrlandoControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CityOfOrlandoControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7F0E42F1C4C37D8003D4DEA /* CityOfOrlandoControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityOfOrlandoControlTests.swift; sourceTree = "<group>"; };
+		E7F0E4311C4C37D8003D4DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7F0E4361C4C37D8003D4DEA /* CityOfOrlandoControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CityOfOrlandoControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7F0E43A1C4C37D8003D4DEA /* CityOfOrlandoControlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityOfOrlandoControlUITests.swift; sourceTree = "<group>"; };
+		E7F0E43C1C4C37D8003D4DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E7F0E4111C4C37D8003D4DEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E7F0E4281C4C37D8003D4DEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E7F0E4331C4C37D8003D4DEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E7F0E40B1C4C37D8003D4DEA = {
+			isa = PBXGroup;
+			children = (
+				E7F0E4161C4C37D8003D4DEA /* CityOfOrlandoControl */,
+				E7F0E42E1C4C37D8003D4DEA /* CityOfOrlandoControlTests */,
+				E7F0E4391C4C37D8003D4DEA /* CityOfOrlandoControlUITests */,
+				E7F0E4151C4C37D8003D4DEA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E7F0E4151C4C37D8003D4DEA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E7F0E4141C4C37D8003D4DEA /* CityOfOrlandoControl.app */,
+				E7F0E42B1C4C37D8003D4DEA /* CityOfOrlandoControlTests.xctest */,
+				E7F0E4361C4C37D8003D4DEA /* CityOfOrlandoControlUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E7F0E4161C4C37D8003D4DEA /* CityOfOrlandoControl */ = {
+			isa = PBXGroup;
+			children = (
+				E7F0E4171C4C37D8003D4DEA /* AppDelegate.swift */,
+				E7F0E41B1C4C37D8003D4DEA /* Main.storyboard */,
+				E7F0E4211C4C37D8003D4DEA /* Assets.xcassets */,
+				E7F0E4231C4C37D8003D4DEA /* LaunchScreen.storyboard */,
+				E7F0E4261C4C37D8003D4DEA /* Info.plist */,
+				E7F0E41E1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld */,
+				E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */,
+				E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */,
+				E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */,
+				E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */,
+			);
+			path = CityOfOrlandoControl;
+			sourceTree = "<group>";
+		};
+		E7F0E42E1C4C37D8003D4DEA /* CityOfOrlandoControlTests */ = {
+			isa = PBXGroup;
+			children = (
+				E7F0E42F1C4C37D8003D4DEA /* CityOfOrlandoControlTests.swift */,
+				E7F0E4311C4C37D8003D4DEA /* Info.plist */,
+			);
+			path = CityOfOrlandoControlTests;
+			sourceTree = "<group>";
+		};
+		E7F0E4391C4C37D8003D4DEA /* CityOfOrlandoControlUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E7F0E43A1C4C37D8003D4DEA /* CityOfOrlandoControlUITests.swift */,
+				E7F0E43C1C4C37D8003D4DEA /* Info.plist */,
+			);
+			path = CityOfOrlandoControlUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E7F0E4131C4C37D8003D4DEA /* CityOfOrlandoControl */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7F0E43F1C4C37D8003D4DEA /* Build configuration list for PBXNativeTarget "CityOfOrlandoControl" */;
+			buildPhases = (
+				E7F0E4101C4C37D8003D4DEA /* Sources */,
+				E7F0E4111C4C37D8003D4DEA /* Frameworks */,
+				E7F0E4121C4C37D8003D4DEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CityOfOrlandoControl;
+			productName = CityOfOrlandoControl;
+			productReference = E7F0E4141C4C37D8003D4DEA /* CityOfOrlandoControl.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E7F0E42A1C4C37D8003D4DEA /* CityOfOrlandoControlTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7F0E4421C4C37D8003D4DEA /* Build configuration list for PBXNativeTarget "CityOfOrlandoControlTests" */;
+			buildPhases = (
+				E7F0E4271C4C37D8003D4DEA /* Sources */,
+				E7F0E4281C4C37D8003D4DEA /* Frameworks */,
+				E7F0E4291C4C37D8003D4DEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E7F0E42D1C4C37D8003D4DEA /* PBXTargetDependency */,
+			);
+			name = CityOfOrlandoControlTests;
+			productName = CityOfOrlandoControlTests;
+			productReference = E7F0E42B1C4C37D8003D4DEA /* CityOfOrlandoControlTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E7F0E4351C4C37D8003D4DEA /* CityOfOrlandoControlUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7F0E4451C4C37D8003D4DEA /* Build configuration list for PBXNativeTarget "CityOfOrlandoControlUITests" */;
+			buildPhases = (
+				E7F0E4321C4C37D8003D4DEA /* Sources */,
+				E7F0E4331C4C37D8003D4DEA /* Frameworks */,
+				E7F0E4341C4C37D8003D4DEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E7F0E4381C4C37D8003D4DEA /* PBXTargetDependency */,
+			);
+			name = CityOfOrlandoControlUITests;
+			productName = CityOfOrlandoControlUITests;
+			productReference = E7F0E4361C4C37D8003D4DEA /* CityOfOrlandoControlUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E7F0E40C1C4C37D8003D4DEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = "cop4935-coo";
+				TargetAttributes = {
+					E7F0E4131C4C37D8003D4DEA = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = R58VHQK5ET;
+					};
+					E7F0E42A1C4C37D8003D4DEA = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = R58VHQK5ET;
+						TestTargetID = E7F0E4131C4C37D8003D4DEA;
+					};
+					E7F0E4351C4C37D8003D4DEA = {
+						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = R58VHQK5ET;
+						TestTargetID = E7F0E4131C4C37D8003D4DEA;
+					};
+				};
+			};
+			buildConfigurationList = E7F0E40F1C4C37D8003D4DEA /* Build configuration list for PBXProject "CityOfOrlandoControl" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E7F0E40B1C4C37D8003D4DEA;
+			productRefGroup = E7F0E4151C4C37D8003D4DEA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E7F0E4131C4C37D8003D4DEA /* CityOfOrlandoControl */,
+				E7F0E42A1C4C37D8003D4DEA /* CityOfOrlandoControlTests */,
+				E7F0E4351C4C37D8003D4DEA /* CityOfOrlandoControlUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E7F0E4121C4C37D8003D4DEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7F0E4251C4C37D8003D4DEA /* LaunchScreen.storyboard in Resources */,
+				E7F0E4221C4C37D8003D4DEA /* Assets.xcassets in Resources */,
+				E7F0E41D1C4C37D8003D4DEA /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E7F0E4291C4C37D8003D4DEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E7F0E4341C4C37D8003D4DEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E7F0E4101C4C37D8003D4DEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E76891741C4EFF9C00A64A93 /* FilterTableViewController.swift in Sources */,
+				E7353FD81C4C6B2200D50E9E /* LoginViewController.swift in Sources */,
+				E7353FD61C4C69AA00D50E9E /* ComponentCollectionViewController.swift in Sources */,
+				E7F0E4201C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld in Sources */,
+				E76891721C4EFF9000A64A93 /* SettingsTableViewController.swift in Sources */,
+				E7F0E4181C4C37D8003D4DEA /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E7F0E4271C4C37D8003D4DEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7F0E4301C4C37D8003D4DEA /* CityOfOrlandoControlTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E7F0E4321C4C37D8003D4DEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7F0E43B1C4C37D8003D4DEA /* CityOfOrlandoControlUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E7F0E42D1C4C37D8003D4DEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E7F0E4131C4C37D8003D4DEA /* CityOfOrlandoControl */;
+			targetProxy = E7F0E42C1C4C37D8003D4DEA /* PBXContainerItemProxy */;
+		};
+		E7F0E4381C4C37D8003D4DEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E7F0E4131C4C37D8003D4DEA /* CityOfOrlandoControl */;
+			targetProxy = E7F0E4371C4C37D8003D4DEA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E7F0E41B1C4C37D8003D4DEA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E7F0E41C1C4C37D8003D4DEA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E7F0E4231C4C37D8003D4DEA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E7F0E4241C4C37D8003D4DEA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E7F0E43D1C4C37D8003D4DEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E7F0E43E1C4C37D8003D4DEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E7F0E4401C4C37D8003D4DEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = CityOfOrlandoControl/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cop4935.coo.CityOfOrlandoControl;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		E7F0E4411C4C37D8003D4DEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = CityOfOrlandoControl/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cop4935.coo.CityOfOrlandoControl;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+		E7F0E4431C4C37D8003D4DEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = CityOfOrlandoControlTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cop4935.coo.CityOfOrlandoControlTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CityOfOrlandoControl.app/CityOfOrlandoControl";
+			};
+			name = Debug;
+		};
+		E7F0E4441C4C37D8003D4DEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = CityOfOrlandoControlTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cop4935.coo.CityOfOrlandoControlTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CityOfOrlandoControl.app/CityOfOrlandoControl";
+			};
+			name = Release;
+		};
+		E7F0E4461C4C37D8003D4DEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = CityOfOrlandoControlUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cop4935.coo.CityOfOrlandoControlUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = CityOfOrlandoControl;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		E7F0E4471C4C37D8003D4DEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = CityOfOrlandoControlUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = cop4935.coo.CityOfOrlandoControlUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = CityOfOrlandoControl;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E7F0E40F1C4C37D8003D4DEA /* Build configuration list for PBXProject "CityOfOrlandoControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7F0E43D1C4C37D8003D4DEA /* Debug */,
+				E7F0E43E1C4C37D8003D4DEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E7F0E43F1C4C37D8003D4DEA /* Build configuration list for PBXNativeTarget "CityOfOrlandoControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7F0E4401C4C37D8003D4DEA /* Debug */,
+				E7F0E4411C4C37D8003D4DEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E7F0E4421C4C37D8003D4DEA /* Build configuration list for PBXNativeTarget "CityOfOrlandoControlTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7F0E4431C4C37D8003D4DEA /* Debug */,
+				E7F0E4441C4C37D8003D4DEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E7F0E4451C4C37D8003D4DEA /* Build configuration list for PBXNativeTarget "CityOfOrlandoControlUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7F0E4461C4C37D8003D4DEA /* Debug */,
+				E7F0E4471C4C37D8003D4DEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E7F0E41E1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E7F0E41F1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodel */,
+			);
+			currentVersion = E7F0E41F1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodel */;
+			path = CityOfOrlandoControl.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = E7F0E40C1C4C37D8003D4DEA /* Project object */;
+}

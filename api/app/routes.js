@@ -68,11 +68,31 @@ module.exports = function(app, passport) {
 
 	//pass the array of doors or lights, generate code to send to microcontroller(optional create a controller file
 	//  to have the code that communicates with the microcontroller)
-	app.post('/doors', isLoggedIn, function(req, res) {
+	app.post('/doors/raise', isLoggedIn, function(req, res) {
 
 	});
 
-	app.post('/lights', isLoggedIn, function(req, res) {
+	app.post('/doors/lower', isLoggedIn, function(req, res) {
+
+	});
+
+	app.post('/doors/e-stop', isLoggedIn, function(req, res) {
+
+	});
+
+	app.post('/lights/raise', isLoggedIn, function(req, res) {
+
+	});
+
+	app.post('/lights/raise', isLoggedIn, function(req, res) {
+
+	});
+
+	app.post('/lights/lower', isLoggedIn, function(req, res) {
+
+	});
+
+	app.post('/lights/e-stop', isLoggedIn, function(req, res) {
 
 	});
 

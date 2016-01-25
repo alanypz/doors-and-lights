@@ -8,12 +8,41 @@
 
 import UIKit
 
+
+struct FilterState {
+    
+    var doors = true
+    var lights = true
+    var raised = true
+    var lowered = true
+    var errors = true
+    
+}
+
+protocol FilterTableViewControllerDelegate {
+    
+    var filter: FilterState { get }
+    
+    func doorsFilter(value value: Bool)
+    func lightsFilter(value value: Bool)
+    func raisedFilter(value value: Bool)
+    func loweredFilter(value value: Bool)
+    func errorsFilter(value value: Bool)
+
+}
+
+
 class FilterTableViewController: UITableViewController {
 
+    var delegate: FilterTableViewControllerDelegate?
+    
+    @IBOutlet var doorSwitch: UISwitch!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        //doorSwitch.on = delegate?.filter.doors ?? true
     }
 
     override func didReceiveMemoryWarning() {
@@ -28,6 +57,40 @@ class FilterTableViewController: UITableViewController {
     @IBAction func doneFilterPopup(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
     }
+
+    // MARK: - Switch Handler
+    
+    @IBAction func doorsToggle(sender: UISwitch) {
+                
+        delegate?.doorsFilter(value: sender.on)
+        
+    }
+    
+    @IBAction func lightsToggle(sender: UISwitch) {
+        
+        delegate?.lightsFilter(value: sender.on)
+        
+    }
+    
+    @IBAction func raisedToggle(sender: UISwitch) {
+        
+        delegate?.raisedFilter(value: sender.on)
+        
+    }
+    
+    @IBAction func loweredToggle(sender: UISwitch) {
+        
+        delegate?.loweredFilter(value: sender.on)
+        
+    }
+    
+    @IBAction func errorsToggle(sender: UISwitch) {
+        
+        delegate?.errorsFilter(value: sender.on)
+        
+    }
+    
+    
     /*
     // MARK: - Navigation
 

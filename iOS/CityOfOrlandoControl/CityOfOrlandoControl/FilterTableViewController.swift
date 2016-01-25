@@ -37,12 +37,20 @@ class FilterTableViewController: UITableViewController {
     var delegate: FilterTableViewControllerDelegate?
     
     @IBOutlet var doorSwitch: UISwitch!
+    @IBOutlet var lightSwitch: UISwitch!
+    @IBOutlet var raisedSwitch: UISwitch!
+    @IBOutlet var loweredSwitch: UISwitch!
+    @IBOutlet var errorSwitch: UISwitch!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //doorSwitch.on = delegate?.filter.doors ?? true
+        doorSwitch.on = delegate?.filter.doors ?? true
+        lightSwitch.on = delegate?.filter.lights ?? true
+        raisedSwitch.on = delegate?.filter.raised ?? true
+        loweredSwitch.on = delegate?.filter.lowered ?? true
+        errorSwitch.on = delegate?.filter.errors ?? true
     }
 
     override func didReceiveMemoryWarning() {

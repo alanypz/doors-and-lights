@@ -1,0 +1,18 @@
+> db.doors.findOne(
+{garage: 'int', bay: 'int' }
+{_id: 0, lastaction: 0,lastactiontime: 0}
+)
+
+
+)
+
+
+{
+  id: 'int',
+  garage: 'int',
+  bay: 'int',
+  status: 'string'
+  lastactiontime: 'date',
+  lastaction: 'string',
+  
+  }

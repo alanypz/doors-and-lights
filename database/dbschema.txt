@@ -1,18 +1,59 @@
+
+
+
+option 1
+
 > db.doors.findOne(
-{garage: 'int', bay: 'int' }
+{garage: int, bay: int }
 {_id: 0, lastaction: 0,lastactiontime: 0}
 )
 
 
+doors = {  
+  "id": int,
+  "garage": int,
+  "bay": int,
+  "status": string,
+  "lastactiontime": date,
+  "lastaction": string
+  }
+  
+  
+lights =  { 
+  "id": int,
+  "garage": int,
+  "bay": int,
+  "status": string,
+  "lastActionTime": date,
+  "lastAction": string
+  }
+  
+  
+option 2  
+
+> db.doors.findOne(
+{type: string, garage: int, bay: int }
+{_id: 0, lastaction: 0,lastactiontime: 0}
 )
 
-
-{
-  id: 'int',
-  garage: 'int',
-  bay: 'int',
-  status: 'string'
-  lastactiontime: 'date',
-  lastaction: 'string',
-  
+objects =  { 
+  "id": int,
+  "type":string,
+  "garage": int,
+  "bay": int,
+  "status": string,
+  "lastActionTime": date,
+  "lastAction": string
   }
+  
+
+
+ ------
+  
+  
+users = {
+
+
+}
+
+

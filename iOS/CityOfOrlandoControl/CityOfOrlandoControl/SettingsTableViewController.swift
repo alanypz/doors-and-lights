@@ -19,6 +19,12 @@ class SettingsTableViewController: UITableViewController {
     
     }
     
+    @IBOutlet weak var notificationSwitch: UISwitch!        
+    
+    @IBAction func notificationToggle(sender: UISwitch) {
+    
+    }
+    
     @IBAction func cancelSettingsPopup(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
     }

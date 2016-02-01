@@ -11,11 +11,10 @@ import UIKit
 private let reuseIdentifier = "Cell"
 
 class ConponentCollectionViewController: UICollectionViewController, FilterTableViewControllerDelegate {
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -29,7 +28,17 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
         
         super.viewDidAppear(animated)
 
-        performSegueWithIdentifier("Login", sender: nil)
+        performSegueWithIdentifier("LoginSegue", sender: nil)
+        
+//        var defaultItems = [UIBarButtonItem]()
+//        defaultItems.append(
+//            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
+//            
+//        )
+//        defaultItems.append(
+//            UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: nil)
+//        )
+//        setToolbarItems(defaultItems, animated: true)
         
     }
     
@@ -45,7 +54,7 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
 
     @IBAction func logout(sender: UIBarButtonItem) {
         
-        performSegueWithIdentifier("Login", sender: nil)
+        performSegueWithIdentifier("LoginSegue", sender: nil)
         
     }
     
@@ -64,6 +73,14 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
                 let viewController = navigation.topViewController as! FilterTableViewController
             
             viewController.delegate = self
+            
+//            case "SettingsSegue":
+//            
+//            let navigation = segue.destinationViewController as! UINavigationController
+//                
+//                let viewController = navigation.topViewController as! SettingsTableViewController
+//                
+//            viewController.delegate = self
             
         default:
             
@@ -114,6 +131,19 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
         filter.errors = value
         
     }
+    
+    
+    @IBAction func showActions(sender: UIBarButtonItem) {
+        
+        let actions = UIAlertController(title: "Select Action", message: "Performed on Door and Light components", preferredStyle: .ActionSheet)
+        
+        actions.addAction(UIAlertAction(title: "Raise", style: .Default, handler: nil))
+        actions.addAction(UIAlertAction(title: "Lower", style: .Default, handler: nil))
+        actions.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        presentViewController(actions, animated: true, completion: nil)
+    }
+    
     
     // MARK: UICollectionViewDataSource
 

@@ -67,4 +67,14 @@ module.exports = function Queue(){
     return (queue.length > 0 ? queue[offset] : undefined);
   }
 
+  this.contain = function(item){
+    for (var i = 0, len = queue.length; i < len; i++){
+      if (queue[i] === item){
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
 }

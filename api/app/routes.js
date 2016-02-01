@@ -1,5 +1,8 @@
 // app/routes.js
 var Queue = require('../utils/queue');
+var doorRaiseControl = require('./controllers/doorRaise');
+
+//queue initialization
 var raiseDoorQueue = new Queue();
 var lowerDoorQueue = new Queue();
 var raiseLightsQueue = new Queue();
@@ -76,12 +79,17 @@ module.exports = function(app, passport) {
 	app.post('/doors/raise', isLoggedIn, function(req, res) {
 		var raiseDoorArray = JSON.parse(req.body.door);
 		for (var i = 0, len = raiseDoorArray.length; i < len; i++) {
-			raiseDoorQueue.enqueue (raiseDoorArray[i]);
+			if (!raiseDoorQueue.contain(raiseDoorArray[i])) {
+				raiseDoorQueue.enqueue(raiseDoorArray[i]);
+			}
 		}
-		for (var i = 0, len = raiseDoorQueue.getLength(); i < len; i++) {
-			var numberRD = raiseDoorQueue.dequeue (raiseDoorArray[i]);
-			console.log("door " ,numberRD, " being raised" );
-		}
+		doorRaiseControl.doorControl(raiseDoorQueue);
+		//for (var i = 0, len = raiseDoorQueue.getLength(); i < len; i++) {
+		//	var numberRD = raiseDoorQueue.dequeue (raiseDoorArray[i]);
+		//	console.log("door " ,numberRD, " being raised" );
+		//}
+
+
 		res.send('POST request to raise the door ');
 	});
 

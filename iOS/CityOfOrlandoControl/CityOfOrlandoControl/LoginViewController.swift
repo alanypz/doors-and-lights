@@ -39,7 +39,7 @@ class LoginViewController: UIViewController {
         }
         else {
             
-            let request = NSMutableURLRequest(URL: NSURL(string: "http://localhost:8080/api/authenticate")!)
+            let request = NSMutableURLRequest(URL: NSURL(string: "http://localhost:8080/log")!)
             let session = NSURLSession.sharedSession()
             let params = [
                 "name": userEmail,

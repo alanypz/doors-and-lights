@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB162D8F1C691A8C00D43C75 /* GroupCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB162D8E1C691A8C00D43C75 /* GroupCollectionReusableView.swift */; };
+		AB162D911C691B6E00D43C75 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB162D901C691B6E00D43C75 /* Group.swift */; };
+		AB162D931C691EC200D43C75 /* ComponentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB162D921C691EC200D43C75 /* ComponentCollectionViewCell.swift */; };
+		AB162D951C69250100D43C75 /* ComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB162D941C69250100D43C75 /* ComponentViewController.swift */; };
 		E7353FD61C4C69AA00D50E9E /* ComponentCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */; };
 		E7353FD81C4C6B2200D50E9E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */; };
 		E76891721C4EFF9000A64A93 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */; };
@@ -38,6 +42,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AB162D8E1C691A8C00D43C75 /* GroupCollectionReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCollectionReusableView.swift; sourceTree = "<group>"; };
+		AB162D901C691B6E00D43C75 /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		AB162D921C691EC200D43C75 /* ComponentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentCollectionViewCell.swift; sourceTree = "<group>"; };
+		AB162D941C69250100D43C75 /* ComponentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentViewController.swift; sourceTree = "<group>"; };
 		E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ComponentCollectionViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +90,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AB162D961C6927B100D43C75 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				AB162D921C691EC200D43C75 /* ComponentCollectionViewCell.swift */,
+				AB162D8E1C691A8C00D43C75 /* GroupCollectionReusableView.swift */,
+			);
+			name = Collection;
+			sourceTree = "<group>";
+		};
+		AB162D971C69281E00D43C75 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */,
+				AB162D941C69250100D43C75 /* ComponentViewController.swift */,
+				E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */,
+				E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */,
+				E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		AB162D981C69282800D43C75 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				AB162D901C691B6E00D43C75 /* Group.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		E7F0E40B1C4C37D8003D4DEA = {
 			isa = PBXGroup;
 			children = (
@@ -106,15 +143,14 @@
 			isa = PBXGroup;
 			children = (
 				E7F0E4171C4C37D8003D4DEA /* AppDelegate.swift */,
-				E7F0E41B1C4C37D8003D4DEA /* Main.storyboard */,
 				E7F0E4211C4C37D8003D4DEA /* Assets.xcassets */,
-				E7F0E4231C4C37D8003D4DEA /* LaunchScreen.storyboard */,
-				E7F0E4261C4C37D8003D4DEA /* Info.plist */,
 				E7F0E41E1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld */,
-				E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */,
-				E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */,
-				E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */,
-				E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */,
+				E7F0E4261C4C37D8003D4DEA /* Info.plist */,
+				E7F0E4231C4C37D8003D4DEA /* LaunchScreen.storyboard */,
+				E7F0E41B1C4C37D8003D4DEA /* Main.storyboard */,
+				AB162D961C6927B100D43C75 /* Collection */,
+				AB162D971C69281E00D43C75 /* Controller */,
+				AB162D981C69282800D43C75 /* Model */,
 			);
 			path = CityOfOrlandoControl;
 			sourceTree = "<group>";
@@ -272,10 +308,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E76891741C4EFF9C00A64A93 /* FilterTableViewController.swift in Sources */,
+				AB162D8F1C691A8C00D43C75 /* GroupCollectionReusableView.swift in Sources */,
 				E7353FD81C4C6B2200D50E9E /* LoginViewController.swift in Sources */,
+				AB162D911C691B6E00D43C75 /* Group.swift in Sources */,
 				E7353FD61C4C69AA00D50E9E /* ComponentCollectionViewController.swift in Sources */,
 				E7F0E4201C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld in Sources */,
+				AB162D951C69250100D43C75 /* ComponentViewController.swift in Sources */,
 				E76891721C4EFF9000A64A93 /* SettingsTableViewController.swift in Sources */,
+				AB162D931C691EC200D43C75 /* ComponentCollectionViewCell.swift in Sources */,
 				E7F0E4181C4C37D8003D4DEA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

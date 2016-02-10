@@ -89,6 +89,38 @@
             </objects>
             <point key="canvasLocation" x="-151" y="1270"/>
         </scene>
+        <!--Root View Controller-->
+        <scene sceneID="moC-IU-vuL">
+            <objects>
+                <tableViewController storyboardIdentifier="Component" id="zGd-Z5-BHh" customClass="ComponentViewController" customModule="CityOfOrlandoControl" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="DQi-vz-ikL">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="V7y-QG-UZS">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="V7y-QG-UZS" id="i0Q-fw-zPt">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="zGd-Z5-BHh" id="Mc8-QG-g6D"/>
+                            <outlet property="delegate" destination="zGd-Z5-BHh" id="std-Do-r82"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="Tu2-AL-vtv"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SF8-qp-eFx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="651" y="1647"/>
+        </scene>
         <!--Filter-->
         <scene sceneID="uLg-SS-crE">
             <objects>
@@ -350,41 +382,95 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ouR-m3-yjE">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="15" minimumInteritemSpacing="15" id="ouR-m3-yjE">
+                            <size key="itemSize" width="148" height="118"/>
+                            <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="15" minY="15" maxX="15" maxY="15"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="bSz-t9-vEa">
-                                <rect key="frame" x="0.0" y="64" width="50" height="50"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="bSz-t9-vEa">
+                                <rect key="frame" x="15" y="129" width="148" height="118"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="148" height="118"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <animations/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </collectionViewCell>
                         </cells>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Header" id="tkY-1w-lEn" customClass="GroupCollectionReusableView" customModule="CityOfOrlandoControl" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="64" width="600" height="50"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yOP-z0-WEB">
+                                    <rect key="frame" x="476" y="8" width="44" height="34"/>
+                                    <animations/>
+                                    <state key="normal" title="Select"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2qW-EV-8sT">
+                                    <rect key="frame" x="540" y="8" width="45" height="34"/>
+                                    <animations/>
+                                    <state key="normal" title="Delete"/>
+                                </button>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OFm-p8-8bT">
+                                    <rect key="frame" x="15" y="10" width="446" height="30"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                            </subviews>
+                            <animations/>
+                            <constraints>
+                                <constraint firstItem="yOP-z0-WEB" firstAttribute="top" secondItem="tkY-1w-lEn" secondAttribute="topMargin" id="2sK-id-2gD"/>
+                                <constraint firstItem="OFm-p8-8bT" firstAttribute="leading" secondItem="tkY-1w-lEn" secondAttribute="leadingMargin" constant="7" id="9f1-sa-uSe"/>
+                                <constraint firstAttribute="bottomMargin" secondItem="2qW-EV-8sT" secondAttribute="bottom" id="UOO-yU-a58"/>
+                                <constraint firstAttribute="bottomMargin" secondItem="yOP-z0-WEB" secondAttribute="bottom" id="Zyn-ET-YQQ"/>
+                                <constraint firstItem="yOP-z0-WEB" firstAttribute="leading" secondItem="OFm-p8-8bT" secondAttribute="trailing" constant="15" id="cjQ-M8-430"/>
+                                <constraint firstItem="2qW-EV-8sT" firstAttribute="leading" secondItem="yOP-z0-WEB" secondAttribute="trailing" constant="20" id="eYl-KW-uDn"/>
+                                <constraint firstAttribute="trailingMargin" secondItem="2qW-EV-8sT" secondAttribute="trailing" constant="7" id="qIg-3f-eqG"/>
+                                <constraint firstItem="2qW-EV-8sT" firstAttribute="top" secondItem="tkY-1w-lEn" secondAttribute="topMargin" id="qPc-Ut-5bp"/>
+                                <constraint firstItem="OFm-p8-8bT" firstAttribute="centerY" secondItem="tkY-1w-lEn" secondAttribute="centerY" id="ufS-il-lqR"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="deleteButton" destination="2qW-EV-8sT" id="C8d-9W-O8d"/>
+                                <outlet property="selectButton" destination="yOP-z0-WEB" id="baf-bq-8h5"/>
+                                <outlet property="titleTextField" destination="OFm-p8-8bT" id="Qgz-ye-bZJ"/>
+                            </connections>
+                        </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="bNP-4V-7Yx" id="cTK-cI-TjJ"/>
                             <outlet property="delegate" destination="bNP-4V-7Yx" id="U3K-8j-Oic"/>
                         </connections>
                     </collectionView>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem title="Group" id="5lK-hj-U3J" userLabel="New Group">
+                            <connections>
+                                <action selector="newGroup:" destination="bNP-4V-7Yx" id="Nz8-BD-vRC"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="FVJ-M0-cuV"/>
+                        <barButtonItem title="Action" id="wfN-YD-gZ2">
+                            <connections>
+                                <action selector="performAction:" destination="bNP-4V-7Yx" id="u1k-QY-dBA"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Component View" id="YQb-wR-CgD">
-                        <leftBarButtonItems>
+                        <barButtonItem key="leftBarButtonItem" title="Select" id="nJM-ki-aoh">
+                            <connections>
+                                <action selector="toggleEditing:" destination="bNP-4V-7Yx" id="QcG-3i-Aca"/>
+                            </connections>
+                        </barButtonItem>
+                        <rightBarButtonItems>
                             <barButtonItem title="Logout" id="f7h-gn-boK">
                                 <connections>
                                     <action selector="logout:" destination="bNP-4V-7Yx" id="1rk-l5-X3N"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Toggle" id="nJM-ki-aoh"/>
-                        </leftBarButtonItems>
-                        <rightBarButtonItems>
                             <barButtonItem title="Settings" id="8Ot-Ig-iqb">
                                 <connections>
                                     <segue destination="AY6-Bt-Qwp" kind="popoverPresentation" identifier="SettingsSegue" popoverAnchorBarButtonItem="8Ot-Ig-iqb" id="5tk-XX-1nB">
@@ -402,6 +488,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="selectButtonItem" destination="nJM-ki-aoh" id="gGI-E7-a2n"/>
                         <segue destination="BYZ-38-t0r" kind="presentation" identifier="LoginSegue" modalPresentationStyle="formSheet" id="GlT-Oz-BS4"/>
                     </connections>
                 </collectionViewController>
@@ -412,7 +499,7 @@
         <!--Navigation Controller-->
         <scene sceneID="8XH-12-pQ9">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="FcT-d4-beA" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FcT-d4-beA" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ALe-yF-Gul">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

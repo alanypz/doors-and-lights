@@ -12,96 +12,252 @@ private let reuseIdentifier = "Cell"
 
 class ConponentCollectionViewController: UICollectionViewController, FilterTableViewControllerDelegate {
     
+    var groups: [Group] = []
+    
+    @IBOutlet weak var selectButtonItem: UIBarButtonItem!
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
     }
-
+    
     override func viewDidAppear(animated: Bool) {
         
         super.viewDidAppear(animated)
-
+        
         performSegueWithIdentifier("LoginSegue", sender: nil)
         
-//        var defaultItems = [UIBarButtonItem]()
-//        defaultItems.append(
-//            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
-//            
-//        )
-//        defaultItems.append(
-//            UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: nil)
-//        )
-//        setToolbarItems(defaultItems, animated: true)
+    }
+    
+    // MARK: Editing
+    
+    override func setEditing(editing: Bool, animated: Bool) {
+        
+        super.setEditing(editing, animated: animated)
+        
+        selectButtonItem.title = editing ? "Done" : "Select"
+        
+        navigationController?.setToolbarHidden(!editing, animated: animated)
         
     }
     
+    // MARK: Navigation
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        guard let identifier = segue.identifier else { return }
+        
+        switch identifier {
+            
+        case "FilterSegue":
+            
+            let navigation = segue.destinationViewController as! UINavigationController
+            
+            let viewController = navigation.topViewController as! FilterTableViewController
+            
+            viewController.delegate = self
+            
+            //            case "SettingsSegue":
+            //
+            //            let navigation = segue.destinationViewController as! UINavigationController
+            //
+            //                let viewController = navigation.topViewController as! SettingsTableViewController
+            //
+            //            viewController.delegate = self
+            
+        default:
+            
+            break
+            
+        }
+        
     }
+    
+    // MARK: Actions
+    
+    @IBAction func toggleEditing(sender: UIBarButtonItem) {
+        
+        setEditing(!editing, animated: true)
+        
+    }
+    
+    @IBAction func performAction(sender: UIBarButtonItem) {
+        
+        let actions = UIAlertController(title: "Select Action", message: "Performed on door and light components", preferredStyle: .ActionSheet)
+        
+        actions.addAction(UIAlertAction(title: "Raise", style: .Default, handler: nil))
+        
+        actions.addAction(UIAlertAction(title: "Lower", style: .Default, handler: nil))
+        
+        actions.addAction(UIAlertAction(title: "Stop", style: .Destructive, handler: nil))
 
+        actions.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        actions.popoverPresentationController?.barButtonItem = sender
+        
+        actions.popoverPresentationController?.sourceView = view
+        
+        presentViewController(actions, animated: true, completion: nil)
+        
+    }
+    
+    @IBAction func newGroup(sender: UIBarButtonItem) {
+        
+        if let collectionView = collectionView {
+            
+            setEditing(true, animated: true)
+            
+            let indexSet = NSIndexSet(index: groups.count)
+            
+            groups.append(Group(title: "New Group", components: []))
+            
+            collectionView.performBatchUpdates({
+                
+                collectionView.insertSections(indexSet)
+                
+                }, completion: nil)
+            
+        }
+        
+    }
+    
     @IBAction func logout(sender: UIBarButtonItem) {
         
         performSegueWithIdentifier("LoginSegue", sender: nil)
         
     }
     
-     // MARK: - Navigation
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-       
-        guard let identifier = segue.identifier else { return }
+    // MARK: UICollectionViewDataSource
     
-        switch identifier {
+    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         
-            case "FilterSegue":
+        return groups.count
+        
+    }
+    
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return groups[section].numberOfComponents()
+        
+    }
+    
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ComponentCollectionViewCell
+        
+        return cell
+        
+    }
+    
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        
+        switch kind {
             
-            let navigation = segue.destinationViewController as! UINavigationController
-
-                let viewController = navigation.topViewController as! FilterTableViewController
+        case UICollectionElementKindSectionHeader:
             
-            viewController.delegate = self
+            let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Header", forIndexPath: indexPath) as! GroupCollectionReusableView
             
-//            case "SettingsSegue":
-//            
-//            let navigation = segue.destinationViewController as! UINavigationController
-//                
-//                let viewController = navigation.topViewController as! SettingsTableViewController
-//                
-//            viewController.delegate = self
+            let group = groups[indexPath.section]
+            
+            header.titleTextField.text = group.title
+            
+            header.selectButton.tag = indexPath.section
+            
+            header.deleteButton.tag = indexPath.section
+            
+            header.selectButton.addTarget(self, action: "didSelectGroup:", forControlEvents: .TouchUpInside)
+            
+            header.deleteButton.addTarget(self, action: "didDeleteGroup:", forControlEvents: .TouchUpInside)
+            
+            return header
             
         default:
             
-            break
-        
+            fatalError("Invalid Collection Supplementary View")
+            
         }
         
     }
     
-    // MARK: - Filter Table View Controller Delegate
+    // MARK: UICollectionViewDelegate
+    
+    /*
+    // Uncomment this method to specify if the specified item should be highlighted during tracking
+    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+    return true
+    }
+    */
+    
+    /*
+    // Uncomment this method to specify if the specified item should be selected
+    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+    return true
+    }
+    */
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        if let storyboard = storyboard where !editing {
+            
+            let viewController = storyboard.instantiateViewControllerWithIdentifier("Component") as! ComponentViewController
+            
+            viewController.component = groups[indexPath.section].components[indexPath.item]
+            
+            let navigation = UINavigationController(rootViewController: viewController)
+            
+            presentViewController(navigation, animated:true, completion: nil)
+            
+        }
+        
+    }
+    
+    override func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        
+        return true
+        
+    }
+    
+    override func collectionView(collectionView: UICollectionView, targetIndexPathForMoveFromItemAtIndexPath originalIndexPath: NSIndexPath, toProposedIndexPath proposedIndexPath: NSIndexPath) -> NSIndexPath {
+        
+        return proposedIndexPath
+        
+    }
+    
+    override func collectionView(collectionView: UICollectionView, moveItemAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        
+    }
+    
+    //MARK: GroupActions
+    
+    func didSelectGroup(sender: UIButton) {
+        
+        setEditing(true, animated: true)
+        
+    }
+    
+    func didDeleteGroup(sender: UIButton) {
+        
+       // ask for confirmation
+        
+    }
+    
+    // MARK: FilteTableViewController Delegate
     
     var filter = FilterState() {
-    
+        
         didSet {
-        
+            
             //  Apply changes.
-        
+            
         }
-    
+        
     }
-
+    
     func doorsFilter(value value: Bool) {
-    
+        
         filter.doors = value
-    
+        
     }
     
     func lightsFilter(value value: Bool) {
@@ -128,69 +284,4 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
         
     }
     
-    
-    @IBAction func showActions(sender: UIBarButtonItem) {
-        
-        let actions = UIAlertController(title: "Select Action", message: "Performed on Door and Light components", preferredStyle: .ActionSheet)
-        
-        actions.addAction(UIAlertAction(title: "Raise", style: .Default, handler: nil))
-        actions.addAction(UIAlertAction(title: "Lower", style: .Default, handler: nil))
-        actions.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        
-        presentViewController(actions, animated: true, completion: nil)
-    }
-    
-    
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
-    }
-
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
-    
-        // Configure the cell
-    
-        return cell
-    }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-    
-    }
-    */
-
 }

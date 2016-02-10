@@ -639,7 +639,7 @@
                                                     <rect key="frame" x="318" y="6.5" width="51" height="31"/>
                                                     <animations/>
                                                     <connections>
-                                                        <action selector="notificationToggle:" destination="OpC-Sa-ELU" eventType="valueChanged" id="IT9-NS-qZg"/>
+                                                        <action selector="notificationsToggle:" destination="OpC-Sa-ELU" eventType="valueChanged" id="0J0-Zs-PSY"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
@@ -706,7 +706,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="notificationSwitch" destination="OyS-Jz-64P" id="RGU-vd-vPO"/>
+                        <outlet property="notificationsSwitch" destination="OyS-Jz-64P" id="FEx-mL-7MB"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q0r-Ra-Ii9" userLabel="First Responder" sceneMemberID="firstResponder"/>

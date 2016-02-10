@@ -10,7 +10,7 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class ConponentCollectionViewController: UICollectionViewController, FilterTableViewControllerDelegate {
+class ConponentCollectionViewController: UICollectionViewController, FilterTableViewControllerDelegate, SettingsTableViewControllerDelegate {
     
     var groups: [Group] = []
     
@@ -58,13 +58,13 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
             
             viewController.delegate = self
             
-            //            case "SettingsSegue":
-            //
-            //            let navigation = segue.destinationViewController as! UINavigationController
-            //
-            //                let viewController = navigation.topViewController as! SettingsTableViewController
-            //
-            //            viewController.delegate = self
+        case "SettingsSegue":
+            
+            let navigation = segue.destinationViewController as! UINavigationController
+            
+            let viewController = navigation.topViewController as! SettingsTableViewController
+            
+            viewController.delegate = self
             
         default:
             
@@ -242,7 +242,7 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
         
     }
     
-    // MARK: FilteTableViewController Delegate
+    // MARK: FilterTableViewController Delegate
     
     var filter = FilterState() {
         
@@ -281,6 +281,24 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
     func errorsFilter(value value: Bool) {
         
         filter.errors = value
+        
+    }
+    
+    // MARK: SettingsTableViewController Delegate
+
+    var setting = SettingsState() {
+        
+        didSet {
+            
+            //  Apply changes.
+            
+        }
+        
+    }
+    
+    func notificationsSetting(value value: Bool) {
+        
+        setting.notifications = value
         
     }
     

@@ -9,22 +9,35 @@
 import UIKit
 
 
+struct SettingsState {
+    
+    var notifications = true
+    
+}
+
+protocol SettingsTableViewControllerDelegate {
+    
+    var setting: SettingsState { get }
+    
+    func notificationsSetting(value value: Bool)
+    
+}
+
+
 class SettingsTableViewController: UITableViewController {
     
-
+    var delegate: SettingsTableViewControllerDelegate?
+    
+    @IBOutlet var notificationsSwitch: UISwitch!
+    
     override func viewDidLoad() {
+        
+        notificationsSwitch.on = delegate?.setting.notifications ?? true
 
         super.viewDidLoad()
 
-    
     }
-    
-    @IBOutlet weak var notificationSwitch: UISwitch!        
-    
-    @IBAction func notificationToggle(sender: UISwitch) {
-    
-    }
-    
+            
     @IBAction func cancelSettingsPopup(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -33,6 +46,11 @@ class SettingsTableViewController: UITableViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func notificationsToggle(sender: UISwitch) {
+        
+        delegate?.notificationsSetting(value: sender.on)
+
+    }
     
     
     /*

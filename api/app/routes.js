@@ -1,12 +1,14 @@
 // app/routes.js
 var Queue = require('../utils/queue');
 var doorRaiseControl = require('./controllers/doorRaise');
-
+var doorLowerControl = require('./controllers/doorLower');
+var lightRaiseControl = require('./controllers/lightRaise');
+var lightLowerControl = require('./controllers/lightLower');
 //queue initialization
 var raiseDoorQueue = new Queue();
 var lowerDoorQueue = new Queue();
-var raiseLightsQueue = new Queue();
-var lowerLightsQueue = new Queue();
+var raiseLightQueue = new Queue();
+var lowerLightQueue = new Queue();
 module.exports = function(app, passport) {
 
 	// =====================================
@@ -84,26 +86,20 @@ module.exports = function(app, passport) {
 			}
 		}
 		doorRaiseControl.doorControl(raiseDoorQueue);
-		//for (var i = 0, len = raiseDoorQueue.getLength(); i < len; i++) {
-		//	var numberRD = raiseDoorQueue.dequeue (raiseDoorArray[i]);
-		//	console.log("door " ,numberRD, " being raised" );
-		//}
-
-
 		res.send('POST request to raise the door ');
 	});
 
 	app.post('/doors/lower', isLoggedIn, function(req, res) {
 		var lowerDoorArray = JSON.parse(req.body.door);
 		for (var i = 0, len = lowerDoorArray.length; i < len; i++) {
-			lowerDoorQueue.enqueue (lowerDoorArray[i]);
+			if (!lowerDoorQueue.contain(lowerDoorArray[i])) {
+				lowerDoorQueue.enqueue(lowerDoorArray[i]);
+			}
 		}
-		for (var i = 0, len = lowerDoorQueue.getLength(); i < len; i++) {
-			var numberLD = lowerDoorQueue.dequeue (lowerDoorArray[i]);
-			console.log("door " ,numberLD, " being raised" );
-		}
-		res.send('POST request to lower the doors');
+		doorLowerControl.doorControl(lowerDoorQueue);
+		res.send('POST request to lower the door ');
 	});
+
 
 	app.get('/doors/e-stop', isLoggedIn, function(req, res) {
 			//send stop request to all microcontrollers
@@ -113,29 +109,29 @@ module.exports = function(app, passport) {
 	app.post('/lights/raise', isLoggedIn, function(req, res) {
 		var raiseLightsArray = JSON.parse(req.body.door);
 		for (var i = 0, len = raiseLightsArray.length; i < len; i++) {
-			raiseLightsQueue.enqueue (raiseLightsArray[i]);
+			if (!raiseLightQueue.contain(raiseLightsArray[i])) {
+				raiseLightQueue.enqueue(raiseLightsArray[i]);
+			}
 		}
-		for (var i = 0, len = raiseLightsQueue.getLength(); i < len; i++) {
-			var numberRL = raiseLightsQueue.dequeue (raiseLightsArray[i]);
-			console.log("Light " ,numberRL, " being raised" );
-		}
-		res.send('POST request to raise the lights');
+		lightRaiseControl.doorControl(raiseLightQueue);
+		res.send('POST request to raise the light ');
 	});
+
 
 
 	app.post('/lights/lower', isLoggedIn, function(req, res) {
 		var lowerLightsArray = JSON.parse(req.body.door);
 		for (var i = 0, len = lowerLightsArray.length; i < len; i++) {
-			lowerLightsQueue.enqueue (lowerLightsArray[i]);
+		if (!lowerLightQueue.contain(lowerLightArray[i])) {
+			lowerLightQueue.enqueue(lowerLightArray[i]);
 		}
-		for (var i = 0, len = lowerLightsQueue.getLength(); i < len; i++) {
-			var numberLL = lowerLightsQueue.dequeue (lowerLightsArray[i]);
-			console.log("light " ,numberLL, " being raised" );
-		}
-		res.send('POST request to lower the lights');
-	});
+	}
+	lightLowerControl.doorControl(lowerLightQueue);
+	res.send('POST request to lower the light ');
+});
 
-	app.get('/lights/e-stop', isLoggedIn, function(req, res) {
+
+app.get('/lights/e-stop', isLoggedIn, function(req, res) {
 			//send stop request to all microcontrollers
 		res.send('GET request to stop all the lights');
 	});

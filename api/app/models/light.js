@@ -1,9 +1,9 @@
 
 var mongoose = require('mongoose');
 
-var doorSchema = mongoose.Schema({
+var lightSchema = mongoose.Schema({
 
-    door                  : {
+    light                  : {
         number            : Number,
         state             : String,
         position          : String,
@@ -14,4 +14,4 @@ var doorSchema = mongoose.Schema({
 });
 
 
-module.exports = mongoose.model('Door', doorSchema);
+module.exports = mongoose.model('Light', lightSchema);

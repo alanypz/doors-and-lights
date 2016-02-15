@@ -23,7 +23,13 @@ class ComponentViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    @IBAction func dismiss(sender: UIBarButtonItem) {
+    
+        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    
+    }
+    
+    
     /*
     // MARK: - Navigation
 

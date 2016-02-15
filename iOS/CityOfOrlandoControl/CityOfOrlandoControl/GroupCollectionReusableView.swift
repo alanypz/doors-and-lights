@@ -20,8 +20,30 @@ class GroupCollectionReusableView: UICollectionReusableView {
     
         super.prepareForReuse()
 
-        
+        selectButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+
+        deleteButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
         
     }
-
+    
+    private(set) var editing = false
+    
+    // MARK: Editing
+    
+    func setEditing(editing: Bool, animated: Bool) {
+        
+        self.editing = editing
+        
+        titleTextField.enabled = editing
+        
+        titleTextField.textColor = editing ? UIColor.blackColor() : UIColor.darkGrayColor()
+        
+        titleTextField.placeholder = editing ? "title" : ""
+        
+        titleTextField.borderStyle = editing ? .RoundedRect : .None
+        
+    }
+    
+    
+    
 }

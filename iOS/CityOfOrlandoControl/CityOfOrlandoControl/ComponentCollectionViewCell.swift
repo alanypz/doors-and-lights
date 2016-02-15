@@ -10,4 +10,14 @@ import UIKit
 
 class ComponentCollectionViewCell: UICollectionViewCell {
     
+    override var selected: Bool {
+    
+        didSet {
+        
+            self.backgroundColor = selected ? UIColor.redColor() : UIColor.lightGrayColor()
+        
+        }
+    
+    }
+    
 }

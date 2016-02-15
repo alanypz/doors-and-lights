@@ -10,11 +10,13 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class ConponentCollectionViewController: UICollectionViewController, FilterTableViewControllerDelegate, SettingsTableViewControllerDelegate {
+class ConponentCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, FilterTableViewControllerDelegate {
     
     var groups: [Group] = []
     
     @IBOutlet weak var selectButtonItem: UIBarButtonItem!
+    
+    @IBOutlet weak var actionButtonItem: UIBarButtonItem!
     
     override func viewDidLoad() {
         
@@ -26,7 +28,8 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
         
         super.viewDidAppear(animated)
         
-        performSegueWithIdentifier("LoginSegue", sender: nil)
+        //  Commented out log-in segue for quick testing.
+//        performSegueWithIdentifier("LoginSegue", sender: nil)
         
     }
     
@@ -37,8 +40,24 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
         super.setEditing(editing, animated: animated)
         
         selectButtonItem.title = editing ? "Done" : "Select"
-        
+    
         navigationController?.setToolbarHidden(!editing, animated: animated)
+        
+        guard let collectionView = collectionView else { return }
+        
+        collectionView.allowsMultipleSelection = editing
+    
+        let count = collectionView.indexPathsForSelectedItems()?.count ?? 0
+        
+        actionButtonItem.enabled = count != 0
+        
+        let headerViews = collectionView.visibleSupplementaryViewsOfKind(UICollectionElementKindSectionHeader) as! [GroupCollectionReusableView]
+        
+        for header in headerViews {
+            
+            header.setEditing(editing, animated: animated)
+            
+        }
         
     }
     
@@ -58,13 +77,13 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
             
             viewController.delegate = self
             
-        case "SettingsSegue":
-            
-            let navigation = segue.destinationViewController as! UINavigationController
-            
-            let viewController = navigation.topViewController as! SettingsTableViewController
-            
-            viewController.delegate = self
+            //            case "SettingsSegue":
+            //
+            //            let navigation = segue.destinationViewController as! UINavigationController
+            //
+            //                let viewController = navigation.topViewController as! SettingsTableViewController
+            //
+            //            viewController.delegate = self
             
         default:
             
@@ -84,21 +103,25 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
     
     @IBAction func performAction(sender: UIBarButtonItem) {
         
-        let actions = UIAlertController(title: "Select Action", message: "Performed on door and light components", preferredStyle: .ActionSheet)
-        
-        actions.addAction(UIAlertAction(title: "Raise", style: .Default, handler: nil))
-        
-        actions.addAction(UIAlertAction(title: "Lower", style: .Default, handler: nil))
-        
-        actions.addAction(UIAlertAction(title: "Stop", style: .Destructive, handler: nil))
-
-        actions.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        
-        actions.popoverPresentationController?.barButtonItem = sender
-        
-        actions.popoverPresentationController?.sourceView = view
-        
-        presentViewController(actions, animated: true, completion: nil)
+        if let components = collectionView?.indexPathsForSelectedItems()?.map({ groups[$0.section].components[$0.item] }) {
+            
+            let actions = UIAlertController(title: "Select Action", message: "Performed on door and light components", preferredStyle: .ActionSheet)
+            
+            actions.addAction(UIAlertAction(title: "Raise", style: .Default, handler: nil))
+            
+            actions.addAction(UIAlertAction(title: "Lower", style: .Default, handler: nil))
+            
+            actions.addAction(UIAlertAction(title: "Stop", style: .Destructive, handler: nil))
+            
+            actions.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            
+            actions.popoverPresentationController?.barButtonItem = sender
+            
+            actions.popoverPresentationController?.sourceView = view
+            
+            presentViewController(actions, animated: true, completion: nil)
+            
+        }
         
     }
     
@@ -110,7 +133,13 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
             
             let indexSet = NSIndexSet(index: groups.count)
             
-            groups.append(Group(title: "New Group", components: []))
+            let components = [Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised)]
+            
+            groups.append(Group(title: "", components: components))
+            
+            let selectedIndexPaths = collectionView.indexPathsForSelectedItems()
+            
+            //move those items to the new section
             
             collectionView.performBatchUpdates({
                 
@@ -162,13 +191,19 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
             
             header.titleTextField.text = group.title
             
-            header.selectButton.tag = indexPath.section
+            header.titleTextField.tag = indexPath.section
             
+            header.selectButton.tag = indexPath.section
+
             header.deleteButton.tag = indexPath.section
+            
+            header.titleTextField.addTarget(self, action: "didEditGroupTitle:", forControlEvents: .EditingChanged)
             
             header.selectButton.addTarget(self, action: "didSelectGroup:", forControlEvents: .TouchUpInside)
             
             header.deleteButton.addTarget(self, action: "didDeleteGroup:", forControlEvents: .TouchUpInside)
+            
+            header.setEditing(editing, animated: false)
             
             return header
             
@@ -182,20 +217,6 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
     
     // MARK: UICollectionViewDelegate
     
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-    return true
-    }
-    */
-    
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-    return true
-    }
-    */
-    
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         if let storyboard = storyboard where !editing {
@@ -206,8 +227,26 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
             
             let navigation = UINavigationController(rootViewController: viewController)
             
+            navigation.modalPresentationStyle = .FormSheet
+            
             presentViewController(navigation, animated:true, completion: nil)
             
+        }
+            
+        else {
+            
+            actionButtonItem.enabled = true
+            
+        }
+        
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        if editing {
+        
+            actionButtonItem.enabled = false
+
         }
         
     }
@@ -226,23 +265,100 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
     
     override func collectionView(collectionView: UICollectionView, moveItemAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
+        let component = groups[sourceIndexPath.section].components.removeAtIndex(sourceIndexPath.item)
+        
+        groups[destinationIndexPath.section].components.insert(component, atIndex: destinationIndexPath.item)
+        
+    }
+    
+    // MARK: UICollectionViewDelegateFlowLayout
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        traitCollection.userInterfaceIdiom
+        
+        return CGSize(width: 100, height: 100)
+        
     }
     
     //MARK: GroupActions
     
+    func sectionForView(view: UIView) -> NSIndexPath? {
+    
+        guard let collectionView = collectionView, superview = view.superview else { return nil }
+        
+        return NSIndexPath(forItem: 0, inSection: view.tag)
+        
+        let point = collectionView.convertPoint(view.center, fromView: superview)
+    
+        return collectionView.indexPathForItemAtPoint(point)
+    
+    }
+    
+    func didEditGroupTitle(sender: UITextField) {
+        
+        if let indexPath = sectionForView(sender) {
+        
+            let group = groups[indexPath.section]
+            
+            group.title = sender.text ?? ""
+        
+        }
+    
+    }
+    
     func didSelectGroup(sender: UIButton) {
         
-        setEditing(true, animated: true)
+        if let collectionView = collectionView, indexPath = sectionForView(sender) {
+            
+            setEditing(true, animated: true)
+            
+            let group = groups[indexPath.section]
+            
+            for item in 0..<group.numberOfComponents() {
+                
+                collectionView.selectItemAtIndexPath(NSIndexPath(forItem: item, inSection: indexPath.section), animated: true, scrollPosition: .None)
+                
+            }
+            
+        }
         
     }
     
     func didDeleteGroup(sender: UIButton) {
         
-       // ask for confirmation
+        if let collectionView = collectionView, indexPath = sectionForView(sender) {
+            
+            
+            
+            let group = groups.removeAtIndex(indexPath.section)
+        
+           // groups.append(Group(title: "", components: group.components))
+
+            
+        
+            
+            
+            
+            let indexSet = NSIndexSet(index: indexPath.section)
+            
+            collectionView.performBatchUpdates({
+                
+                collectionView.deleteSections(indexSet)
+                
+              //  collectionView.insertSections(NSIndexSet(index: 1))
+                
+                }, completion: nil)
+            
+        }
+
+        
+        
+        // ask for confirmation
         
     }
     
-    // MARK: FilterTableViewController Delegate
+    // MARK: FilteTableViewController Delegate
     
     var filter = FilterState() {
         
@@ -281,24 +397,6 @@ class ConponentCollectionViewController: UICollectionViewController, FilterTable
     func errorsFilter(value value: Bool) {
         
         filter.errors = value
-        
-    }
-    
-    // MARK: SettingsTableViewController Delegate
-
-    var setting = SettingsState() {
-        
-        didSet {
-            
-            //  Apply changes.
-            
-        }
-        
-    }
-    
-    func notificationsSetting(value value: Bool) {
-        
-        setting.notifications = value
         
     }
     

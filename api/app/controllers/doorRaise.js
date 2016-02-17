@@ -3,6 +3,7 @@ var Queue = require('../../utils/queue');
 var raiseDoorExecutionQueue = new Queue();
 var raiseDoorWaitingQueue = new Queue();
 var doorDatabase = require('../models/door');
+var config = require('../../config/database'); // get db config file
 
 module.exports = {
 

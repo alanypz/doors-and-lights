@@ -8,7 +8,8 @@ var port     = process.env.PORT || 8080;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
-
+var morgan   = require('morgan');
+var logger   = require("logger");
 var jwt 	 = require('jwt-simple');
 var configDB = require('./config/database.js');
 
@@ -23,7 +24,9 @@ app.configure(function() {
 	app.use(express.logger('dev')); // log every request to the console
 	app.use(express.cookieParser()); // read cookies (needed for auth)
 	app.use(express.bodyParser()); // get information from html forms
+	//winston.add(winston.transports.File, { filename: './log/Logging.log' });
 
+	app.use(morgan('dev'));// log to console
 	app.set('view engine', 'ejs'); // set up ejs for templating
 
 	// required for passport
@@ -39,4 +42,5 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 
 // launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);
+logger.log('info', 'Server running on port ' + port);
+//console.log('The magic happens on port ' + port);

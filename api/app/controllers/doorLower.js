@@ -4,6 +4,7 @@ var lowerDoorExecutionQueue = new Queue();
 var lowerDoorWaitingQueue = new Queue();
 var doorDatabase = require('../models/door');
 
+var logger = require("logger");
 module.exports = {
 
     doorControl: function (doorQueue) {
@@ -47,24 +48,24 @@ function execute(doorNumber) {
         if (err) throw err;
 
         if (!door) {
-            winston.log('info', 'Not able to find door.');
+            logger.log('info', 'Not able to find door.');
             console.log('info', 'Not able to find door.');
         } else {
             var ip = door.ip;
             //connect to the microcontroller and execute action
             //also listen to sensor information and completion of the job
             console.log("door ", doorNumber, " being lowered");
-            winston.log("door ", doorNumber, " being lowered");
+            logger.log("door ", doorNumber, " being lowered");
 
             doorDatabase.findOneAndUpdate(
                 {number : doorNumber },
                 { state : 'executing' },
-                function(err, doorObject) {
+                function(err, door) {
                         if (err) throw err;
 
                         // we have the updated user returned to us
-                        console.log(doorObject);
-                        winston.log('info', doorObject);
+                        //console.log(door);
+                        //logger.log('info', door);
                 }
             );
 
@@ -99,13 +100,13 @@ function doorStop(doorNumber) {
             if (err) throw err;
 
             // we have the updated user returned to us
-            console.log(doorObject);
-            winston.log('info', doorObject);
+            //console.log(doorObject);
+            //logger.log('info', doorObject);
         }
     );
 
     console.log("door ", doorNumber, " being stopped");
-    winston.log('info', 'door ' + doorNumber + ' being stopped');
+    logger.log('info', 'door ' + doorNumber + ' being stopped');
     //if (lowerDoorWaitingQueue.getLength() > 0) {
     //    lowerDoorExecutionQueue.enqueue(lowerDoorWaitingQueue.dequeue());
     //}

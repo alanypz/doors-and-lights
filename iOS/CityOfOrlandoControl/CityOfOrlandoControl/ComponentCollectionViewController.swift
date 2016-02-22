@@ -10,7 +10,7 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class ConponentCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, FilterTableViewControllerDelegate {
+class ConponentCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, FilterTableViewControllerDelegate, SettingsTableViewControllerDelegate {
     
     var groups: [Group] = []
     
@@ -77,13 +77,13 @@ class ConponentCollectionViewController: UICollectionViewController, UICollectio
             
             viewController.delegate = self
             
-            //            case "SettingsSegue":
-            //
-            //            let navigation = segue.destinationViewController as! UINavigationController
-            //
-            //                let viewController = navigation.topViewController as! SettingsTableViewController
-            //
-            //            viewController.delegate = self
+        case "SettingsSegue":
+        
+            let navigation = segue.destinationViewController as! UINavigationController
+            
+            let viewController = navigation.topViewController as! SettingsTableViewController
+            
+            viewController.delegate = self
             
         default:
             
@@ -330,7 +330,7 @@ class ConponentCollectionViewController: UICollectionViewController, UICollectio
         if let collectionView = collectionView, indexPath = sectionForView(sender) {
             
             
-            
+            // CRASH
             let group = groups.removeAtIndex(indexPath.section)
         
            // groups.append(Group(title: "", components: group.components))
@@ -397,6 +397,24 @@ class ConponentCollectionViewController: UICollectionViewController, UICollectio
     func errorsFilter(value value: Bool) {
         
         filter.errors = value
+        
+    }
+    
+    // MARK: SettingsTableViewController Delegate
+    
+    var setting = SettingsState() {
+        
+        didSet {
+            
+            //  Apply changes.
+            
+        }
+        
+    }
+    
+    func notificationsSetting(value value: Bool) {
+        
+        setting.notifications = value
         
     }
     

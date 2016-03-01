@@ -8,41 +8,39 @@ var config = require('../../config/database'); // get db config file
 module.exports = {
 
     doorControl: function (doorQueue) {
-        while(doorQueue.getLength() > 0) {
-            if (raiseDoorExecutionQueue.getLength() < 5) {
-                consumeDoor(doorQueue.dequeue());
-            } else {
-                waitExecutionQueue(doorQueue.dequeue());
-            }
-        }
-        execute();
+        execute(doorQueue);
     }
 };
 
-
-function checkDatabase(doorNumber) {
-    // connect to database and check its state
-    doorDatabase.find({number : doorNumber}, function(err, doorObject) {
+function execute(doorNumber) {
+    //create execution methods for the microcontroller
+    doorDatabase.findOne({
+        number: doorNumber
+    }, function(err, door) {
         if (err) throw err;
 
-        // object of the door
-        console.log(doorObject);
+        if (!door) {
+            logger.log('info', 'Not able to find door.');
+            console.log('info', 'Not able to find door.');
+        } else {
+            var ip = door.ip;
+            //connect to the microcontroller and execute action
+            //also listen to sensor information and completion of the job
+            console.log("door ", doorNumber, " being raised");
+            logger.log("door ", doorNumber, " being raised");
+
+            doorDatabase.findOneAndUpdate(
+                {number : doorNumber },
+                { state : 'executing' },
+                function(err, door) {
+                    if (err) throw err;
+
+                }
+            );
+
+            waitExecution5Min(doorNumber);
+        }
     });
-};
-
-function execute() {
-    if(raiseDoorExecutionQueue.getLength()>0) {
-        doorDatabase.findOneAndUpdate({ number : raiseDoorExecutionQueue.peek() }, { state : 'executing' }, function(err, doorObject) {
-            if (err) throw err;
-
-            // we have the updated user returned to us
-            console.log(doorObject);
-        });
-        console.log("door ", raiseDoorExecutionQueue.peek(), " being raised");
-        waitExecution5Min();
-    }
-    //create execution methods for the microcontroller
-
 
 };
 
@@ -57,24 +55,25 @@ function waitExecutionQueue(doorNumber) {
     raiseDoorWaitingQueue.enqueue(doorNumber);
 };
 
-function waitExecution5Min() {
+function waitExecution5Min(doorNumber) {
     setTimeout(function () {
-        doorStop(raiseDoorExecutionQueue.dequeue());
+        doorStop(doorNumber);
     }, 3000);
 };
 
 function doorStop(doorNumber) {
-    doorDatabase.findOneAndUpdate({ number : raiseDoorExecutionQueue.peek() }, { state : 'stopped' }, function(err, doorObject) {
-        if (err) throw err;
+    doorDatabase.findOneAndUpdate(
+        { number : doorNumber },
+        { state : 'stopped', position : 'raised' },
+        function(err, doorObject) {
+            if (err) throw err;
+        }
+    );
 
-        // we have the updated user returned to us
-        console.log(doorObject);
-    });
     console.log("door ", doorNumber, " being stopped");
-    if (raiseDoorWaitingQueue.getLength() > 0) {
-        raiseDoorExecutionQueue.enqueue(raiseDoorWaitingQueue.dequeue());
-    }
-    execute();
+    logger.log('info', 'door ' + doorNumber + ' being stopped');
+
     //create execution methods for the microcontroller
 };
+
 

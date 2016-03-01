@@ -7,41 +7,38 @@ var lightDatabase = require('../models/light');
 module.exports = {
 
     lightControl: function (lightQueue) {
-        while(lightQueue.getLength() > 0) {
-            if (lowerLightExecutionQueue.getLength() < 5) {
-                consumeLight(lightQueue.dequeue());
-            } else {
-                waitExecutionQueue(lightQueue.dequeue());
-            }
-        }
-        execute();
+        execute(lightQueue);
     }
 };
 
-
-function checkDatabase(lightNumber) {
-    // connect to database and check its state
-    lightDatabase.find({number : lightNumber}, function(err, lightObject) {
+function execute(lightNumber) {
+    //create execution methods for the microcontroller
+    lightDatabase.findOne({
+        number: lightNumber
+    }, function(err, light) {
         if (err) throw err;
 
-        // object of the light
-        console.log(lightObject);
+        if (!light) {
+            logger.log('info', 'Not able to find light.');
+            console.log('info', 'Not able to find light.');
+        } else {
+            var ip = light.ip;
+            //connect to the microcontroller and execute action
+            //also listen to sensor information and completion of the job
+            console.log("light ", lightNumber, " being lowered");
+            logger.log("light ", lightNumber, " being lowered");
+
+            lightDatabase.findOneAndUpdate(
+                {number : lightNumber },
+                { state : 'executing' },
+                function(err, light) {
+                    if (err) throw err;
+                }
+            );
+
+            waitExecution5Min(lightNumber);
+        }
     });
-};
-
-function execute() {
-    if(lowerLightExecutionQueue.getLength()>0) {
-        lightDatabase.findOneAndUpdate({ number : lowerLightExecutionQueue.peek() }, { state : 'executing' }, function(err, lightObject) {
-            if (err) throw err;
-
-            // we have the updated user returned to us
-            console.log(lightObject);
-        });
-        console.log("light ", lowerLightExecutionQueue.peek(), " being lowered");
-        waitExecution5Min();
-    }
-    //create execution methods for the microcontroller
-
 
 };
 
@@ -56,24 +53,26 @@ function waitExecutionQueue(lightNumber) {
     lowerLightWaitingQueue.enqueue(lightNumber);
 };
 
-function waitExecution5Min() {
+function waitExecution5Min(lightNumber) {
     setTimeout(function () {
-        lightStop(lowerLightExecutionQueue.dequeue());
+        lightStop(lightNumber);
     }, 3000);
 };
 
 function lightStop(lightNumber) {
-    lightDatabase.findOneAndUpdate({ number : lowerLightExecutionQueue.peek() }, { state : 'stopped' }, function(err, lightObject) {
-        if (err) throw err;
 
-        // we have the updated user returned to us
-        console.log(lightObject);
-    });
+    lightDatabase.findOneAndUpdate(
+        { number : lightNumber },
+        { state : 'stopped', position : 'lower' },
+        function(err, lightObject) {
+            if (err) throw err;
+        }
+    );
+
     console.log("light ", lightNumber, " being stopped");
-    if (lowerLightWaitingQueue.getLength() > 0) {
-        lowerLightExecutionQueue.enqueue(lowerLightWaitingQueue.dequeue());
-    }
-    execute();
+    logger.log('info', 'light ' + lightNumber + ' being stopped');
     //create execution methods for the microcontroller
 };
+
+
 

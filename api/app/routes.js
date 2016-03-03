@@ -1,6 +1,7 @@
 // app/routes.js
 var User = require('./models/user'); // get the mongoose model
 var Door = require('./models/door');
+var Light = require('./models/light');
 var jwt = require('jwt-simple');
 var config = require('../config/database'); // get db config file
 var Queue = require('../utils/queue');
@@ -45,6 +46,36 @@ module.exports = function (app, passport) {
         if (err) { // ...
         } else {
             console.log('door 3 created');
+        }
+    });
+
+    var light1 = new Light({
+        number: 1,
+        state: 'stopped',
+        position: 'up',
+        ip: '10.10.20.1'
+    });
+    light1.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 1 created');
+        }
+
+    });
+
+    var light2 = new Light({number: 2, state: 'stopped', position: 'up', ip: '10.10.20.2'});
+    light2.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 2 created');
+        }
+    });
+
+    var light3 = new Light({number: 3, state: 'stopped', position: 'up', ip: '10.10.20.3'});
+    light3.save(function (err) {
+        if (err) { // ...
+        } else {
+            console.log('light 3 created');
         }
     });
 
@@ -271,7 +302,7 @@ module.exports = function (app, passport) {
                 if (!user) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
-                    lightRaiseControl.doorControl(JSON.parse(req.body.light));
+                    lightRaiseControl.lightControl(JSON.parse(req.body.light));
                     logger.info('Light 1 requested to be raised.');
                     return res.json({success: true, msg: 'POST request to raise the light'});
                 }
@@ -304,7 +335,7 @@ module.exports = function (app, passport) {
                 if (!user) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
-                    lightLowerControl.doorControl(JSON.parse(req.body.light));
+                    lightLowerControl.lightControl(JSON.parse(req.body.light));
                     logger.info('Light 1 requested to be lowered.');
                     return res.json({success: true, msg: 'POST request to lower the light'});
                 }
@@ -322,6 +353,49 @@ module.exports = function (app, passport) {
         //send stop request to all microcontrollers
         logger.info(' Emergency stop requested for Lights.');
         res.send('GET request to stop all the lights');
+    });
+
+    app.get('/status', function(req, res) {
+       //get data from database
+        var token = getToken(req.headers);
+        if (token) {
+            var decoded = jwt.decode(token, config.secret);
+            User.findOne({
+                email: decoded.email
+            }, function (err, user) {
+                if (err) throw err;
+
+                if (!user) {
+                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+                } else {
+                    logger.info('Get status from database.');
+                    var items = req.headers.item;
+                    var status = function(itemsToCheck) {
+                        if (itemsToCheck === "light"){
+                            Light.find({}, 'number state position', function(err, light) {
+                                var lightMap = {};
+
+                                light.forEach(function(light) {
+                                    lightMap[light._id] = light;
+                                });
+
+                                res.send(JSON.stringify(light));
+                            });
+                        } else if (itemsToCheck === "door") {
+
+                        } else {
+                            return res.status(403).send({success: false, msg: 'Error communicating with Database.'});
+                        }
+                    };
+                    status(items);
+
+                    //return res.json({success: true, msg: 'POST request to lower the light'});
+                }
+            });
+        } else {
+            return res.status(403).send({success: false, msg: 'No token provided.'});
+        }
+
     });
 
 

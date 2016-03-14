@@ -24,6 +24,11 @@ var DoorSchema = new Schema({
             unique        :true,
             required      :true
         },
+        status            : {
+            type          :String,
+            unique        :false,
+            required      :false
+        },
         lastAtcionTime    : {
             type: Date,
             default: Date.now

@@ -9,33 +9,30 @@ var doorRaiseControl = require('./controllers/doorRaise');
 var doorLowerControl = require('./controllers/doorLower');
 var lightRaiseControl = require('./controllers/lightRaise');
 var lightLowerControl = require('./controllers/lightLower');
+
 //queue initialization
 var raiseDoorQueue = new Queue();
 var lowerDoorQueue = new Queue();
 var raiseLightQueue = new Queue();
 var lowerLightQueue = new Queue();
+
+
 var logger = require("logger");
 
 module.exports = function (app, passport) {
 
 
-    var door1 = new Door({
-        number: 1,
-        state: 'stopped',
-        position: 'closed',
-        ip: '10.10.10.1'
-    });
+    var door1 = new Door({number: 1, state: 'stopped', position: 'closed', ip: '10.10.10.1' });
     door1.save(function (err) {
         if (err) {// ...
         } else {
             console.log('door 1 created');
         }
-
     });
 
     var door2 = new Door({number: 2, state: 'stopped', position: 'closed', ip: '10.10.10.2'});
     door2.save(function (err) {
-        if (err) {// ...
+        if (err) {
         } else {
             console.log('door 2 created');
         }
@@ -43,29 +40,23 @@ module.exports = function (app, passport) {
 
     var door3 = new Door({number: 3, state: 'stopped', position: 'closed', ip: '10.10.10.3'});
     door3.save(function (err) {
-        if (err) { // ...
+        if (err) {
         } else {
             console.log('door 3 created');
         }
     });
 
-    var light1 = new Light({
-        number: 1,
-        state: 'stopped',
-        position: 'up',
-        ip: '10.10.20.1'
-    });
+    var light1 = new Light({ number: 1, state: 'stopped', position: 'up', ip: '10.10.20.1' });
     light1.save(function (err) {
-        if (err) {// ...
+        if (err) {
         } else {
             console.log('light 1 created');
         }
-
     });
 
     var light2 = new Light({number: 2, state: 'stopped', position: 'up', ip: '10.10.20.2'});
     light2.save(function (err) {
-        if (err) {// ...
+        if (err) {
         } else {
             console.log('light 2 created');
         }
@@ -73,7 +64,7 @@ module.exports = function (app, passport) {
 
     var light3 = new Light({number: 3, state: 'stopped', position: 'up', ip: '10.10.20.3'});
     light3.save(function (err) {
-        if (err) { // ...
+        if (err) {
         } else {
             console.log('light 3 created');
         }
@@ -86,58 +77,7 @@ module.exports = function (app, passport) {
         res.render('forbidden'); // load the index.ejs file
     });
 
-    // =====================================
-    // LOGIN ===============================
-    // =====================================
-    //// show the login form
-    //app.get('/login', function(req, res) {
-    //
-    //	// render the page and pass in any flash data if it exists
-    //	res.render('login.ejs', { message: req.flash('loginMessage') });
-    //});
 
-    //// process the login form
-    //app.post('/login', passport.authenticate('local-login', {
-    //	successRedirect : '/profile', // redirect to the secure profile section
-    //	failureRedirect : '/login', // redirect back to the signup page if there is an error
-    //	failureFlash : true // allow flash messages
-    //}));
-
-    // =====================================
-    // SIGNUP ==============================
-    // =====================================
-    // show the signup form
-    //app.get('/signup', function(req, res) {
-    //
-    //	// render the page and pass in any flash data if it exists
-    //	res.render('signup.ejs', { message: req.flash('signupMessage') });
-    //});
-    //
-    //// process the signup form
-    //app.post('/signup', passport.authenticate('local-signup', {
-    //	successRedirect : '/profile', // redirect to the secure profile section
-    //	failureRedirect : '/signup', // redirect back to the signup page if there is an error
-    //	failureFlash : true // allow flash messages
-    //}));
-
-    // =====================================
-    // PROFILE SECTION =========================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
-    //app.get('/profile', isLoggedIn, function(req, res) {
-    //	res.render('profile.ejs', {
-    //		user : req.user // get the user out of session and pass to template
-    //	});
-    //});
-    //
-    //// =====================================
-    //// LOGOUT ==============================
-    //// =====================================
-    //app.get('/logout', function(req, res) {
-    //	req.logout();
-    //	res.redirect('/');
-    //});
     //=======================================
     //alan Login function ===================
     //=======================================
@@ -370,24 +310,45 @@ module.exports = function (app, passport) {
                 } else {
                     logger.info('Get status from database.');
                     var items = req.headers.item;
-                    var status = function(itemsToCheck) {
+                    var number = req.headers.location;
+                    var status = function(itemsToCheck, numberOfItem) {
                         if (itemsToCheck === "light"){
-                            Light.find({}, 'number state position', function(err, light) {
-                                var lightMap = {};
+                            if (!numberOfItem ) {
+                                Light.find({}, 'number state position status', function (err, light) {
+                                    var lightMap = {};
 
-                                light.forEach(function(light) {
-                                    lightMap[light._id] = light;
+                                    light.forEach(function (light) {
+                                        lightMap[light._id] = light;
+                                    });
+
+                                    res.send(JSON.stringify(light));
                                 });
-
-                                res.send(JSON.stringify(light));
-                            });
+                            } else {
+                                Light.findOne({number: numberOfItem}, 'number state position status', function (err, light) {
+                                    res.send(JSON.stringify(light));
+                                });
+                            }
                         } else if (itemsToCheck === "door") {
+                            if (!numberOfItem ) {
+                            Door.find({}, 'number state position status', function(err, door) {
+                                    var doorMap = {};
 
+                                    door.forEach(function(door) {
+                                        doorMap[door._id] = door;
+                                     });
+
+                                     res.send(JSON.stringify(door));
+                                });
+                            } else {
+                                Door.findOne({number: numberOfItem}, 'number state position status', function (err, door) {
+                                    res.send(JSON.stringify(door));
+                                });
+                            }
                         } else {
                             return res.status(403).send({success: false, msg: 'Error communicating with Database.'});
                         }
                     };
-                    status(items);
+                    status(items, number);
 
                     //return res.json({success: true, msg: 'POST request to lower the light'});
                 }
@@ -414,15 +375,3 @@ module.exports = function (app, passport) {
 
 };
 
-
-
-// route middleware to make sure
-//function isLoggedIn(req, res, next) {
-//
-//	// if user is authenticated in the session, carry on
-//	if (req.isAuthenticated())
-//		return next();
-//
-//	// if they aren't redirect them to the home page
-//	res.redirect('/');
-//}

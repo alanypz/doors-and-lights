@@ -26,7 +26,7 @@ function execute(lightNumber) {
             //connect to the microcontroller and execute action
             //also listen to sensor information and completion of the job
             console.log("light ", lightNumber, " being lowered");
-            logger.log("light ", lightNumber, " being lowered");
+            //logger.log("light ", lightNumber, " being lowered");
 
             lightDatabase.findOneAndUpdate(
                 {number : lightNumber },
@@ -70,7 +70,7 @@ function lightStop(lightNumber) {
     );
 
     console.log("light ", lightNumber, " being stopped");
-    logger.log('info', 'light ' + lightNumber + ' being stopped');
+    //logger.log('info', 'light ' + lightNumber + ' being stopped');
     //create execution methods for the microcontroller
 };
 

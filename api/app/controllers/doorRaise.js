@@ -5,6 +5,8 @@ var raiseDoorWaitingQueue = new Queue();
 var doorDatabase = require('../models/door');
 var config = require('../../config/database'); // get db config file
 
+var logger = require("logger");
+
 module.exports = {
 
     doorControl: function (doorQueue) {
@@ -20,14 +22,14 @@ function execute(doorNumber) {
         if (err) throw err;
 
         if (!door) {
-            logger.log('info', 'Not able to find door.');
+            logger.info( 'Not able to find door.');
             console.log('info', 'Not able to find door.');
         } else {
             var ip = door.ip;
             //connect to the microcontroller and execute action
             //also listen to sensor information and completion of the job
             console.log("door ", doorNumber, " being raised");
-            logger.log("door ", doorNumber, " being raised");
+            logger.info("door ", doorNumber, " being raised");
 
             doorDatabase.findOneAndUpdate(
                 {number : doorNumber },
@@ -71,7 +73,7 @@ function doorStop(doorNumber) {
     );
 
     console.log("door ", doorNumber, " being stopped");
-    logger.log('info', 'door ' + doorNumber + ' being stopped');
+    logger.info( 'door ' + doorNumber + ' being stopped');
 
     //create execution methods for the microcontroller
 };

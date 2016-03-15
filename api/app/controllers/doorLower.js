@@ -48,14 +48,14 @@ function execute(doorNumber) {
         if (err) throw err;
 
         if (!door) {
-            logger.log('info', 'Not able to find door.');
+            logger.info( 'Not able to find door.');
             console.log('info', 'Not able to find door.');
         } else {
             var ip = door.ip;
             //connect to the microcontroller and execute action
             //also listen to sensor information and completion of the job
             console.log("door ", doorNumber, " being lowered");
-            logger.log("door ", doorNumber, " being lowered");
+            logger.info("door ", doorNumber, " being lowered");
 
             doorDatabase.findOneAndUpdate(
                 {number : doorNumber },
@@ -106,7 +106,7 @@ function doorStop(doorNumber) {
     );
 
     console.log("door ", doorNumber, " being stopped");
-    logger.log('info', 'door ' + doorNumber + ' being stopped');
+    logger.info( 'door ' + doorNumber + ' being stopped');
     //if (lowerDoorWaitingQueue.getLength() > 0) {
     //    lowerDoorExecutionQueue.enqueue(lowerDoorWaitingQueue.dequeue());
     //}

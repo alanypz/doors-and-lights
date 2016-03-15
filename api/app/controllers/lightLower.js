@@ -4,6 +4,8 @@ var lowerLightExecutionQueue = new Queue();
 var lowerLightWaitingQueue = new Queue();
 var lightDatabase = require('../models/light');
 
+var logger = require("logger");
+
 module.exports = {
 
     lightControl: function (lightQueue) {
@@ -20,13 +22,13 @@ function execute(lightNumber) {
 
         if (!light) {
             logger.log('info', 'Not able to find light.');
-            console.log('info', 'Not able to find light.');
+            console.info( 'Not able to find light.');
         } else {
             var ip = light.ip;
             //connect to the microcontroller and execute action
             //also listen to sensor information and completion of the job
             console.log("light ", lightNumber, " being lowered");
-            //logger.log("light ", lightNumber, " being lowered");
+            logger.info("light ", lightNumber, " being lowered");
 
             lightDatabase.findOneAndUpdate(
                 {number : lightNumber },
@@ -70,7 +72,7 @@ function lightStop(lightNumber) {
     );
 
     console.log("light ", lightNumber, " being stopped");
-    //logger.log('info', 'light ' + lightNumber + ' being stopped');
+    logger.info( 'light ' + lightNumber + ' being stopped');
     //create execution methods for the microcontroller
 };
 

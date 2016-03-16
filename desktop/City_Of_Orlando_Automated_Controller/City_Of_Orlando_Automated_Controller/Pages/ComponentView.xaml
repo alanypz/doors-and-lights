@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="City_Of_Orlando_Automated_Controller.Pages.ComponentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="690">
+    <Grid Name="componentGrid" Style="{StaticResource ContentRoot}">
+        <ScrollViewer>
+            <StackPanel Name="sp" MinWidth="200" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Component View" Style="{StaticResource Heading2}" />
+                </StackPanel>
+
+                <WrapPanel Name="wp" Orientation="Horizontal">
+
+                </WrapPanel>
+                <!--<TextBlock Text="Content goes here" />-->
+            </StackPanel>
+        </ScrollViewer>
+        <CheckBox x:Name="SelectionMode" Content="Selection Mode" HorizontalAlignment="Left" Margin="545,4,0,0" VerticalAlignment="Top" Checked="SelectionMode_Checked" Unchecked="SelectionMode_Unchecked" />
+        <Button x:Name="CommandButton" Content="Command" Margin="248,390,286,0" VerticalAlignment="Top" IsEnabled="False" Height="30" Width="124" Click="CommandButton_Click"/>
+    </Grid>
+</UserControl>

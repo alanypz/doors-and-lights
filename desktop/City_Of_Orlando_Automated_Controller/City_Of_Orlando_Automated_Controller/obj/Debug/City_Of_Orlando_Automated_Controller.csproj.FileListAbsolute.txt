@@ -21,3 +21,5 @@ C:\Users\JustlyJustin\Documents\Visual Studio 2015\Projects\City_Of_Orlando_Auto
 C:\Users\JustlyJustin\Documents\Visual Studio 2015\Projects\City_Of_Orlando_Automated_Controller\City_Of_Orlando_Automated_Controller\obj\Debug\Pages\ComponentView.g.cs
 C:\Users\JustlyJustin\documents\visual studio 2015\Projects\City_Of_Orlando_Automated_Controller\City_Of_Orlando_Automated_Controller\obj\Debug\Pages\Login.baml
 C:\Users\JustlyJustin\documents\visual studio 2015\Projects\City_Of_Orlando_Automated_Controller\City_Of_Orlando_Automated_Controller\obj\Debug\Pages\Login.g.cs
+C:\Users\JustlyJustin\documents\visual studio 2015\Projects\City_Of_Orlando_Automated_Controller\City_Of_Orlando_Automated_Controller\obj\Debug\CommandView.baml
+C:\Users\JustlyJustin\documents\visual studio 2015\Projects\City_Of_Orlando_Automated_Controller\City_Of_Orlando_Automated_Controller\obj\Debug\CommandView.g.cs

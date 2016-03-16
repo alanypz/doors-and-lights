@@ -19,6 +19,7 @@ namespace City_Of_Orlando_Automated_Controller
 
         public string email { get; set; }
         public string password { get; set; }
+        public string token { get; set; }
 
     }
 }

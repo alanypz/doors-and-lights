@@ -82,7 +82,6 @@ namespace City_Of_Orlando_Automated_Controller
             httpWebRequest.Method = "POST";
 
             var serializer = new JavaScriptSerializer();
-            //var serializedResult = serializer.Serialize("");
             string data = "{\"door\":1}";
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))

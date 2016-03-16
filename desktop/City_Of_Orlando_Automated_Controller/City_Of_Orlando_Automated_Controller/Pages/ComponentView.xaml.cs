@@ -34,13 +34,35 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
         void initializeDoors()
         {
-            int numComponents = 5;
-            string[] json = new string[numComponents];
-            Component[] components = new Component[numComponents];
-            componentButtons = new Button[numComponents];
+            string[] json = null;
+            object[] lr = null;
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/door");
+            httpWebRequest.Method = "GET";
+            httpWebRequest.ContentType = "application/json";
+            WebHeaderCollection myWebHeaderCollection = httpWebRequest.Headers;
+            myWebHeaderCollection.Add("Authorization:" + Utility.user.token);
+            myWebHeaderCollection.Add("item:door");
+            var serializer = new JavaScriptSerializer();
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                
+                lr = serializer.Deserialize<dynamic>(result);
+                
+                for(int i=0; i<lr.Length; i++)
+                {
+                    lr[i] = serializer.Serialize(lr[i]);
+                }
+            }
+
+            Component[] components = new Component[lr.Length];
+            componentButtons = new Button[lr.Length];
 
             //Mach component data
-            json[0] = "{\"id\":\"0\"," +
+            /*json[0] = "{\"id\":\"0\"," +
                               "\"garage\":\"1\"," +
                               "\"bay\":\"2\"," +
                               "\"status\":\"lowered\"," +
@@ -73,13 +95,11 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                               "\"bay\":\"5\"," +
                               "\"status\":\"lowered\"," +
                               "\"lastactiontime\":\"now\"," +
-                              "\"lastaction\":\"nothing\"}";
-
-            var serializer = new JavaScriptSerializer();
+                              "\"lastaction\":\"nothing\"}";*/
             
-            for(int i=0; i< numComponents; i++)
+            for(int i=0; i< lr.Length; i++)
             {
-                components[i] = serializer.Deserialize<Component>(json[i]);
+                components[i] = serializer.Deserialize<Component>(lr[i].ToString());
                 Button newComponent = new Button();
                 Thickness margin = newComponent.Margin;
                 margin.Left = 5;
@@ -113,12 +133,14 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
                 string data =
 
-                    "ID: " + component.id.ToString() + "\n" +
-                    "Garage: " + component.garage.ToString() + "\n" +
-                    "Bay: " + component.bay.ToString() + "\n" +
-                    "Status: " + component.status + "\n" +
-                    "Last Action Time: " + component.lastActionTime + "\n" +
-                    "Last Action: " + component.lastAction
+                    "ID: " + component._id + "\n" +
+                    "Number:" + component.number.ToString() + "\n" +
+                    //"Garage: " + component.garage.ToString() + "\n" +
+                    //"Bay: " + component.bay.ToString() + "\n" +
+                    "Status: " + component.state + "\n" +
+                    "Position: " + component.position
+                    //"Last Action Time: " + component.lastActionTime + "\n" +
+                    //"Last Action: " + component.lastAction
                 ;
 
 
@@ -153,10 +175,9 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
             string data =
 
-                    "ID: " + component.id.ToString() + "\n" +
-                    "Garage: " + component.garage.ToString() + "\n" +
-                    "Bay: " + component.bay.ToString() + "\n" +
-                    "Status: " + component.status + "\n" 
+                    "Number: " + component.number.ToString() + "\n" +
+                    "Position: " + component.position.ToString() + "\n" +
+                    "Status: " + component.state + "\n" 
                 ;
 
             ModernDialog commandView = new CommandView(data);

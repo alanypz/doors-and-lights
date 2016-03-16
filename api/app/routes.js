@@ -352,7 +352,7 @@ module.exports = function (app, passport) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
                     logger.info('Get status from database.');
-                    var number = req.headers.light;
+                    var number = req.headers.door;
                     var status = function(numberToCheck) {
                         if (!numberToCheck) {
                             Door.find({}, 'number state position status', function (err, door) {

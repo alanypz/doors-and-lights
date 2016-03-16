@@ -290,3 +290,48 @@
 {"level":"info","message":"Get status from database.","timestamp":"2016-03-14T19:09:39.919Z"}
 {"level":"info","message":"Door 1 requested to be raised.","timestamp":"2016-03-14T19:26:05.005Z"}
 {"level":"info","message":"door 2 being stopped","timestamp":"2016-03-14T19:26:08.012Z"}
+{"level":"info","message":"Server running on port 8080","timestamp":"2016-03-16T14:56:12.771Z"}
+{"level":"info","message":"Username : { _id: 56e5cab1446c67a411330aff,\n  email: 'alan',\n  password: '$2a$10$T03953PRl5G4xhtfJkJWdeivnWmg4AcsM9fUyPXSihcVaOZuJ9P9i',\n  __v: 0 } logged in","timestamp":"2016-03-16T14:56:31.433Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T14:58:00.626Z"}
+{"level":"info","message":"Door 1 requested to be lowered.","timestamp":"2016-03-16T14:58:32.310Z"}
+{"level":"info","message":"door 2 being stopped","timestamp":"2016-03-16T14:58:35.319Z"}
+{"level":"info","message":"Door 1 requested to be lowered.","timestamp":"2016-03-16T14:58:39.803Z"}
+{"level":"info","message":"door 2 being stopped","timestamp":"2016-03-16T14:58:42.807Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T14:59:06.612Z"}
+{"level":"info","message":"Door 1 requested to be raised.","timestamp":"2016-03-16T14:59:10.128Z"}
+{"level":"info","message":"door 2 being stopped","timestamp":"2016-03-16T14:59:13.131Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T14:59:16.047Z"}
+{"level":"info","message":"Door 1 requested to be lowered.","timestamp":"2016-03-16T14:59:22.985Z"}
+{"level":"info","message":"door 2 being stopped","timestamp":"2016-03-16T14:59:25.991Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T14:59:34.413Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T14:59:42.144Z"}
+{"level":"info","message":"Door 1 requested to be lowered.","timestamp":"2016-03-16T14:59:47.315Z"}
+{"level":"info","message":"door 2 being stopped","timestamp":"2016-03-16T14:59:50.320Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:01:04.463Z"}
+{"level":"info","message":"Light 1 requested to be raised.","timestamp":"2016-03-16T15:01:11.559Z"}
+{"level":"info","message":"light 3 being stopped","timestamp":"2016-03-16T15:01:14.567Z"}
+{"level":"info","message":"Light 1 requested to be raised.","timestamp":"2016-03-16T15:01:40.406Z"}
+{"level":"info","message":"light 3 being stopped","timestamp":"2016-03-16T15:01:43.417Z"}
+{"level":"info","message":"Light 1 requested to be lowered.","timestamp":"2016-03-16T15:01:44.179Z"}
+{"level":"info","message":"light 3 being stopped","timestamp":"2016-03-16T15:01:47.185Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:03:56.976Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:03:59.419Z"}
+{"level":"info","message":"Light 1 requested to be raised.","timestamp":"2016-03-16T15:04:07.864Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:04:10.579Z"}
+{"level":"info","message":"light 3 being stopped","timestamp":"2016-03-16T15:04:10.871Z"}
+{"level":"info","message":"Light 1 requested to be raised.","timestamp":"2016-03-16T15:04:21.473Z"}
+{"level":"info","message":"light 3 being stopped","timestamp":"2016-03-16T15:04:24.481Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:04:28.985Z"}
+{"level":"info","message":"Light 1 requested to be lowered.","timestamp":"2016-03-16T15:04:40.432Z"}
+{"level":"info","message":"light 3 being stopped","timestamp":"2016-03-16T15:04:43.438Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:04:46.300Z"}
+{"level":"info","message":"Light 1 requested to be raised.","timestamp":"2016-03-16T15:04:54.563Z"}
+{"level":"info","message":"light 3 being stopped","timestamp":"2016-03-16T15:04:57.568Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:04:58.378Z"}
+{"level":"info","message":"Door 1 requested to be lowered.","timestamp":"2016-03-16T15:05:04.310Z"}
+{"level":"info","message":"door 2 being stopped","timestamp":"2016-03-16T15:05:07.314Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:05:12.240Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:05:15.775Z"}
+{"level":"info","message":"Door 1 requested to be raised.","timestamp":"2016-03-16T15:05:25.843Z"}
+{"level":"info","message":"door 2 being stopped","timestamp":"2016-03-16T15:05:28.845Z"}
+{"level":"info","message":"Get status from database.","timestamp":"2016-03-16T15:05:30.078Z"}

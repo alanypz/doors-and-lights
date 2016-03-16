@@ -65,7 +65,7 @@ function lightStop(lightNumber) {
 
     lightDatabase.findOneAndUpdate(
         { number : lightNumber },
-        { state : 'stopped', position : 'lower' },
+        { state : 'stopped', position : 'lowered' },
         function(err, lightObject) {
             if (err) throw err;
         }

@@ -95,7 +95,7 @@ function waitExecution5Min(doorNumber) {
 function doorStop(doorNumber) {
     doorDatabase.findOneAndUpdate(
         { number : doorNumber },
-        { state : 'stopped', position : 'lower' },
+        { state : 'stopped', position : 'lowered' },
         function(err, doorObject) {
             if (err) throw err;
 

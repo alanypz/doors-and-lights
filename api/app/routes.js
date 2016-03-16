@@ -22,7 +22,7 @@ var logger = require("logger");
 module.exports = function (app, passport) {
 
 
-    var door1 = new Door({number: 1, state: 'stopped', position: 'closed', ip: '10.10.10.1' });
+    var door1 = new Door({number: 1, state: 'stopped', position: 'lowered', ip: '10.10.10.1' });
     door1.save(function (err) {
         if (err) {// ...
         } else {
@@ -30,7 +30,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var door2 = new Door({number: 2, state: 'stopped', position: 'closed', ip: '10.10.10.2'});
+    var door2 = new Door({number: 2, state: 'stopped', position: 'lowered', ip: '10.10.10.2'});
     door2.save(function (err) {
         if (err) {
         } else {
@@ -38,7 +38,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var door3 = new Door({number: 3, state: 'stopped', position: 'closed', ip: '10.10.10.3'});
+    var door3 = new Door({number: 3, state: 'stopped', position: 'lowered', ip: '10.10.10.3'});
     door3.save(function (err) {
         if (err) {
         } else {
@@ -46,7 +46,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light1 = new Light({ number: 1, state: 'stopped', position: 'up', ip: '10.10.20.1' });
+    var light1 = new Light({ number: 1, state: 'stopped', position: 'raised', ip: '10.10.20.1' });
     light1.save(function (err) {
         if (err) {
         } else {
@@ -54,7 +54,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light2 = new Light({number: 2, state: 'stopped', position: 'up', ip: '10.10.20.2'});
+    var light2 = new Light({number: 2, state: 'stopped', position: 'raised', ip: '10.10.20.2'});
     light2.save(function (err) {
         if (err) {
         } else {
@@ -62,7 +62,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light3 = new Light({number: 3, state: 'stopped', position: 'up', ip: '10.10.20.3'});
+    var light3 = new Light({number: 3, state: 'stopped', position: 'raised', ip: '10.10.20.3'});
     light3.save(function (err) {
         if (err) {
         } else {
@@ -170,7 +170,7 @@ module.exports = function (app, passport) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
                     doorRaiseControl.doorControl(JSON.parse(req.body.door));
-                    logger.info('Door 1 requested to be raised.');
+                    logger.info('Door ' + req.body.door + ' requested to be raised.');
                     return res.json({success: true, msg: 'POST request to raise the door'});
                 }
             });
@@ -203,7 +203,7 @@ module.exports = function (app, passport) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
                     doorLowerControl.doorControl(JSON.parse(req.body.door));
-                    logger.info('Door 1 requested to be lowered.');
+                    logger.info('Door ' + req.body.door + ' requested to be lowered.');
                     return res.json({success: true, msg: 'POST request to lower the door'});
                 }
             });
@@ -243,7 +243,7 @@ module.exports = function (app, passport) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
                     lightRaiseControl.lightControl(JSON.parse(req.body.light));
-                    logger.info('Light 1 requested to be raised.');
+                    logger.info('Light ' + req.body.light + ' requested to be raised.');
                     return res.json({success: true, msg: 'POST request to raise the light'});
                 }
             });
@@ -276,7 +276,7 @@ module.exports = function (app, passport) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
                     lightLowerControl.lightControl(JSON.parse(req.body.light));
-                    logger.info('Light 1 requested to be lowered.');
+                    logger.info('Light ' + req.body.light + ' requested to be lowered.');
                     return res.json({success: true, msg: 'POST request to lower the light'});
                 }
             });
@@ -295,7 +295,7 @@ module.exports = function (app, passport) {
         res.send('GET request to stop all the lights');
     });
 
-    app.get('/status', function(req, res) {
+    app.get('/status/light', function(req, res) {
        //get data from database
         var token = getToken(req.headers);
         if (token) {
@@ -309,44 +309,68 @@ module.exports = function (app, passport) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
                     logger.info('Get status from database.');
-                    var items = req.headers.item;
-                    var number = req.headers.location;
-                    var status = function(itemsToCheck, numberOfItem) {
-                        if (itemsToCheck === "light"){
-                            if (!numberOfItem ) {
-                                Light.find({}, 'number state position status', function (err, light) {
-                                    var lightMap = {};
+                    var number = req.id;
+                    var status = function (numberOfItem) {
+                        if (!numberOfItem) {
+                            Light.find({}, 'number state position status', function (err, light) {
+                                var lightMap = {};
 
-                                    light.forEach(function (light) {
-                                        lightMap[light._id] = light;
-                                    });
+                                light.forEach(function (light) {
+                                    lightMap[light._id] = light;
+                                });
 
-                                    res.send(JSON.stringify(light));
-                                });
-                            } else {
-                                Light.findOne({number: numberOfItem}, 'number state position status', function (err, light) {
-                                    res.send(JSON.stringify(light));
-                                });
-                            }
-                        } else if (itemsToCheck === "door") {
+                                res.send(JSON.stringify(light));
+                            });
+                        } else {
+                            Light.findOne({number: numberOfItem}, 'number state position status', function (err, light) {
+                                res.send(JSON.stringify(light));
+                            });
+                        }
+                        ;
+                        status(items, number);
+
+                        //return res.json({success: true, msg: 'POST request to lower the light'});
+                    }
+                }
+            });
+        } else {
+            return res.status(403).send({success: false, msg: 'No token provided.'});
+        }
+
+    });
+
+    app.get('/status/door', function(req, res) {
+        //get data from database
+        var token = getToken(req.headers);
+        if (token) {
+            var decoded = jwt.decode(token, config.secret);
+            User.findOne({
+                email: decoded.email
+            }, function (err, user) {
+                if (err) throw err;
+
+                if (!user) {
+                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+                } else {
+                    logger.info('Get status from database.');
+                    var number = req.id;
+                    var status = function(numberOfItem) {
                             if (!numberOfItem ) {
-                            Door.find({}, 'number state position status', function(err, door) {
+                                Door.find({}, 'number state position status', function(err, door) {
                                     var doorMap = {};
 
                                     door.forEach(function(door) {
                                         doorMap[door._id] = door;
-                                     });
+                                    });
 
-                                     res.send(JSON.stringify(door));
+                                    res.send(JSON.stringify(door));
                                 });
                             } else {
                                 Door.findOne({number: numberOfItem}, 'number state position status', function (err, door) {
                                     res.send(JSON.stringify(door));
                                 });
                             }
-                        } else {
-                            return res.status(403).send({success: false, msg: 'Error communicating with Database.'});
-                        }
+
                     };
                     status(items, number);
 

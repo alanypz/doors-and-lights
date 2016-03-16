@@ -309,9 +309,8 @@ module.exports = function (app, passport) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
                     logger.info('Get status from database.');
-                    var number = req.id;
-                    var status = function (numberOfItem) {
-                        if (!numberOfItem) {
+                    var status = function () {
+
                             Light.find({}, 'number state position status', function (err, light) {
                                 var lightMap = {};
 
@@ -321,16 +320,41 @@ module.exports = function (app, passport) {
 
                                 res.send(JSON.stringify(light));
                             });
-                        } else {
-                            Light.findOne({number: numberOfItem}, 'number state position status', function (err, light) {
-                                res.send(JSON.stringify(light));
-                            });
-                        }
-                        ;
-                        status(items, number);
 
                         //return res.json({success: true, msg: 'POST request to lower the light'});
                     }
+                    status();
+                }
+            });
+        } else {
+            return res.status(403).send({success: false, msg: 'No token provided.'});
+        }
+
+    });
+
+    app.get('/status/light/:id', function(req, res) {
+        //get data from database
+        var token = getToken(req.headers);
+        if (token) {
+            var decoded = jwt.decode(token, config.secret);
+            User.findOne({
+                email: decoded.email
+            }, function (err, user) {
+                if (err) throw err;
+
+                if (!user) {
+                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+                } else {
+                    logger.info('Get status from database.');
+                    var status = function (numberOfItem) {
+
+                            Light.findOne({number: numberOfItem}, 'number state position status', function (err, light) {
+                                res.send(JSON.stringify(light));
+                            });
+
+                        //return res.json({success: true, msg: 'POST request to lower the light'});
+                    }
+                    status(req.params.id);
                 }
             });
         } else {
@@ -353,26 +377,51 @@ module.exports = function (app, passport) {
                     return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
                 } else {
                     logger.info('Get status from database.');
-                    var number = req.id;
-                    var status = function(numberOfItem) {
-                            if (!numberOfItem ) {
-                                Door.find({}, 'number state position status', function(err, door) {
-                                    var doorMap = {};
 
-                                    door.forEach(function(door) {
-                                        doorMap[door._id] = door;
-                                    });
+                    var status = function() {
 
-                                    res.send(JSON.stringify(door));
-                                });
-                            } else {
-                                Door.findOne({number: numberOfItem}, 'number state position status', function (err, door) {
-                                    res.send(JSON.stringify(door));
-                                });
-                            }
+                        Door.find({}, 'number state position status', function(err, door) {
+                            var doorMap = {};
+
+                            door.forEach(function(door) {
+                                doorMap[door._id] = door;
+                            });
+
+                            res.send(JSON.stringify(door));
+                        });
 
                     };
-                    status(items, number);
+                    status();
+
+                    //return res.json({success: true, msg: 'POST request to lower the light'});
+                }
+            });
+        } else {
+            return res.status(403).send({success: false, msg: 'No token provided.'});
+        }
+
+    });
+
+    app.get('/status/door/:id', function(req, res) {
+        //get data from database
+        var token = getToken(req.headers);
+        if (token) {
+            var decoded = jwt.decode(token, config.secret);
+            User.findOne({
+                email: decoded.email
+            }, function (err, user) {
+                if (err) throw err;
+
+                if (!user) {
+                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+                } else {
+                    logger.info('Get status from database.');
+                    var status = function(numberOfItem) {
+                        Door.findOne({number: numberOfItem}, 'number state position status', function (err, door) {
+                            res.send(JSON.stringify(door));
+                        });
+                    };
+                    status(req.params.id);
 
                     //return res.json({success: true, msg: 'POST request to lower the light'});
                 }

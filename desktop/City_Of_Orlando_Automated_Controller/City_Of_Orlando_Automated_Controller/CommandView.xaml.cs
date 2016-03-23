@@ -25,6 +25,9 @@ namespace City_Of_Orlando_Automated_Controller
     /// </summary>
     public partial class CommandView : ModernDialog
     {
+        //Represents the string data of the referenced component
+        private string component;
+
         public CommandView(string data)
         {
             InitializeComponent();
@@ -37,11 +40,13 @@ namespace City_Of_Orlando_Automated_Controller
 
             // define component status
             componentStatus.Text = data;
+            component = data;
         }
 
         private void Raise_Click(object sender, RoutedEventArgs e)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/doors/raise");
+            string type = component.Contains("Door") ? "door" : "light";
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/" + type + "s/raise");
             WebHeaderCollection myWebHeaderCollection = httpWebRequest.Headers;
 
             httpWebRequest.ContentType = "application/json";
@@ -49,12 +54,10 @@ namespace City_Of_Orlando_Automated_Controller
             httpWebRequest.Method = "POST";
 
             var serializer = new JavaScriptSerializer();
-            //var serializedResult = serializer.Serialize("");
-            string data = "{\"door\":1}";
+            string data = "{\"" + type + "\":1}";
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
-                //streamWriter.Write(serializedResult);
                 streamWriter.Write(data);
                 streamWriter.Flush();
                 streamWriter.Close();
@@ -66,6 +69,11 @@ namespace City_Of_Orlando_Automated_Controller
                 var result = streamReader.ReadToEnd();
 
                 Dictionary<string, object> lr = serializer.Deserialize<dynamic>(result);
+
+                if((string)lr["success"] == "true")
+                {
+
+                }
                 
 
                 
@@ -74,7 +82,8 @@ namespace City_Of_Orlando_Automated_Controller
 
         private void Lower_Click(object sender, RoutedEventArgs e)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/doors/lower");
+            string type = component.Contains("Door") ? "door" : "light";
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/" + type + "s/lower");
             WebHeaderCollection myWebHeaderCollection = httpWebRequest.Headers;
 
             httpWebRequest.ContentType = "application/json";
@@ -82,11 +91,10 @@ namespace City_Of_Orlando_Automated_Controller
             httpWebRequest.Method = "POST";
 
             var serializer = new JavaScriptSerializer();
-            string data = "{\"door\":1}";
+            string data = "{\"" + type + "\":1}";
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
-                //streamWriter.Write(serializedResult);
                 streamWriter.Write(data);
                 streamWriter.Flush();
                 streamWriter.Close();

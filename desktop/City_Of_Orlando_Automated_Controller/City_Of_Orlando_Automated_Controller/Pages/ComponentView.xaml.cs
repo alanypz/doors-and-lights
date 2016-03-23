@@ -28,15 +28,17 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
         public ComponentView()
         {
+            // init for the page
             InitializeComponent();
-            initializeDoors();
+
+            // init for the doors/lights
+            initializeComponents();
         }
 
-        void initializeDoors()
+        void initializeComponents()
         {
-            string[] json = null;
-            object[] lr = null;
-
+            //Get the doors
+            object[] lrDoors = null;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/door");
             httpWebRequest.Method = "GET";
             httpWebRequest.ContentType = "application/json";
@@ -50,63 +52,71 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             {
                 var result = streamReader.ReadToEnd();
                 
-                lr = serializer.Deserialize<dynamic>(result);
+                lrDoors = serializer.Deserialize<dynamic>(result);
                 
-                for(int i=0; i<lr.Length; i++)
+                for(int i=0; i<lrDoors.Length; i++)
                 {
-                    lr[i] = serializer.Serialize(lr[i]);
+                    lrDoors[i] = serializer.Serialize(lrDoors[i]);
                 }
             }
 
-            Component[] components = new Component[lr.Length];
-            componentButtons = new Button[lr.Length];
+            //Get the lights
+            object[] lrLights = null;
+            httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/light");
+            httpWebRequest.Method = "GET";
+            httpWebRequest.ContentType = "application/json";
+            myWebHeaderCollection = httpWebRequest.Headers;
+            myWebHeaderCollection.Add("Authorization:" + Utility.user.token);
+            myWebHeaderCollection.Add("item:light");
+            httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
 
-            //Mach component data
-            /*json[0] = "{\"id\":\"0\"," +
-                              "\"garage\":\"1\"," +
-                              "\"bay\":\"2\"," +
-                              "\"status\":\"lowered\"," +
-                              "\"lastactiontime\":\"now\"," +
-                              "\"lastaction\":\"nothing\"}";
-            
-            json[1] = "{\"id\":\"1\"," +
-                              "\"garage\":\"1\"," +
-                              "\"bay\":\"2\"," +
-                              "\"status\":\"raised\"," +
-                              "\"lastactiontime\":\"now\"," +
-                              "\"lastaction\":\"nothing\"}";
-
-            json[2] = "{\"id\":\"0\"," +
-                              "\"garage\":\"1\"," +
-                              "\"bay\":\"3\"," +
-                              "\"status\":\"lowered\"," +
-                              "\"lastactiontime\":\"now\"," +
-                              "\"lastaction\":\"nothing\"}";
-
-            json[3] = "{\"id\":\"0\"," +
-                              "\"garage\":\"1\"," +
-                              "\"bay\":\"4\"," +
-                              "\"status\":\"lowered\"," +
-                              "\"lastactiontime\":\"now\"," +
-                              "\"lastaction\":\"nothing\"}";
-
-            json[4] = "{\"id\":\"0\"," +
-                              "\"garage\":\"1\"," +
-                              "\"bay\":\"5\"," +
-                              "\"status\":\"lowered\"," +
-                              "\"lastactiontime\":\"now\"," +
-                              "\"lastaction\":\"nothing\"}";*/
-            
-            for(int i=0; i< lr.Length; i++)
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                components[i] = serializer.Deserialize<Component>(lr[i].ToString());
+                var result = streamReader.ReadToEnd();
+
+                lrLights = serializer.Deserialize<dynamic>(result);
+
+                for (int i = 0; i < lrLights.Length; i++)
+                {
+                    lrLights[i] = serializer.Serialize(lrLights[i]);
+                }
+            }
+
+            //Put them together
+            Component[] components = new Component[lrDoors.Length + lrLights.Length];
+            componentButtons = new Button[lrDoors.Length + lrLights.Length];
+            
+            for(int i=0; i< lrDoors.Length + lrLights.Length; i++)
+            {
+                if(i<lrDoors.Length)
+                {
+                    components[i] = serializer.Deserialize<Component>(lrDoors[i].ToString());
+                    components[i].type = "Door";
+                }
+
+                else
+                {
+                    components[i] = serializer.Deserialize<Component>(lrLights[i - lrDoors.Length].ToString());
+                    components[i].type = "Light";
+                }
+ 
                 Button newComponent = new Button();
                 Thickness margin = newComponent.Margin;
                 margin.Left = 5;
                 margin.Right = 5;
                 margin.Top = 9;
                 newComponent.Tag = components[i];
-                newComponent.Content = "Component " + (i+1).ToString();
+
+                if(i<lrDoors.Length)
+                {
+                    newComponent.Content = "Door " + (i + 1).ToString();
+                }
+                
+                else
+                {
+                    newComponent.Content = "Light " + (i + 1 - lrDoors.Length).ToString();
+                }
+                
                 newComponent.HorizontalAlignment = HorizontalAlignment.Left;
                 newComponent.VerticalAlignment = VerticalAlignment.Top;
                 newComponent.HorizontalContentAlignment = HorizontalAlignment.Center;
@@ -132,15 +142,10 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 Component component = (Component)button.Tag;
 
                 string data =
-
-                    "ID: " + component._id + "\n" +
+                    "Type:" + component.type + "\n" +
                     "Number:" + component.number.ToString() + "\n" +
-                    //"Garage: " + component.garage.ToString() + "\n" +
-                    //"Bay: " + component.bay.ToString() + "\n" +
                     "Status: " + component.state + "\n" +
                     "Position: " + component.position
-                    //"Last Action Time: " + component.lastActionTime + "\n" +
-                    //"Last Action: " + component.lastAction
                 ;
 
 
@@ -174,7 +179,7 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             Component component = (Component)selectedComponent.Tag;
 
             string data =
-
+                    "Type:" + component.type + "\n" +
                     "Number: " + component.number.ToString() + "\n" +
                     "Position: " + component.position.ToString() + "\n" +
                     "Status: " + component.state + "\n" 

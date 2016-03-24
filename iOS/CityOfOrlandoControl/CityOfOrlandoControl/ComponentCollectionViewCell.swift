@@ -2,7 +2,7 @@
 //  ComponentCollectionViewCell.swift
 //  CityOfOrlandoControl
 //
-//  Created by Jonathan Cools-Lartigue on 2/8/16.
+//  Created by Alan Yepez on 02/8/16.
 //  Copyright © 2016 cop4935-coo. All rights reserved.
 //
 
@@ -10,14 +10,8 @@ import UIKit
 
 class ComponentCollectionViewCell: UICollectionViewCell {
     
-    override var selected: Bool {
+    @IBOutlet var imageView: UIImageView!
     
-        didSet {
-        
-            self.backgroundColor = selected ? UIColor.redColor() : UIColor.lightGrayColor()
-        
-        }
-    
-    }
+    @IBOutlet var titleLabel: UILabel!
     
 }

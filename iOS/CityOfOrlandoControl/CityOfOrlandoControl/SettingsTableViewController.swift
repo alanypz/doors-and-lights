@@ -26,7 +26,7 @@ class SettingsTableViewController: UITableViewController {
     
     var delegate: SettingsTableViewControllerDelegate?
     
-    @IBOutlet var notificationsSwitch: UISwitch!
+    @IBOutlet weak var notificationsSwitch: UISwitch!
 
     override func viewDidLoad() {
 

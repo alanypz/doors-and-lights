@@ -10,122 +10,101 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
-    @IBOutlet weak var userEmailTextField: UITextField!
-    @IBOutlet weak var userPasswordTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
     
-    let serverURL = NSURL(string: "http://localhost:8080")
-    //    let request = NSMutableURLRequest(URL: serverURL!)
+    @IBOutlet weak var passwordTextField: UITextField!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+    var completionBlock: (() -> Void)?
+
     @IBAction func login(sender: UIButton) {
         
-        let userEmail = userEmailTextField.text ?? ""
-        let userPassword = userPasswordTextField.text ?? ""
+        guard let email = emailTextField.text where !email.isEmpty else { return showEmailInvalid() }
         
-        if  userPassword.isEmpty || userEmail.isEmpty {
+        guard let password = passwordTextField.text where !password.isEmpty else { return showPasswordInvalid() }
+        
+//        guard let password = passwordTextField.text where kRegexPassword.match(password) else { return showPasswordInvalid() }
+//        
+//        guard let email = emailTextField.text where kRegexEmail.match(email) else { return showEmailInvalid() }
+
+        sender.enabled = false
+        
+        let operation = LoginOperation(email: email, password: password)
+        
+        operation.loginCompletionBlock = { [weak self] (error) in
+        
+            switch (self, error) {
             
-            displayAlertMessage("All fields are required.")
-            
-        }
-        else {
-            
-            let request = NSMutableURLRequest(URL: NSURL(string: "http://localhost:8080/api/authenticate")!)
-            let session = NSURLSession.sharedSession()
-            let params = [
-                "name": userEmail,
-                "password": userPassword
-            ]
-            
-            request.HTTPBody = try? NSJSONSerialization.dataWithJSONObject(params, options: [])
-            
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("application/json", forHTTPHeaderField: "Accept")
-            request.HTTPMethod = "POST"
-            
-            let task = session.dataTaskWithRequest(request, completionHandler: { [weak self] (data, response, error) in
+            case let (controller?, nil):
                 
-                switch (self, data, error) {
-                    
-                case let (controller?, data?, nil):
-                    
-                    guard let dictionary = try? NSJSONSerialization.JSONObjectWithData(data, options: []) else { return }
-                    
-                    guard let success = dictionary["success"] as? Bool where success else {
-                        
-                        dispatch_async(dispatch_get_main_queue()) {
-                            
-                            let alertMessage = UIAlertController(title: "Error", message: "Invalid username or password.", preferredStyle: UIAlertControllerStyle.Alert)
-                            
-                            alertMessage.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
-                            
-                            controller.presentViewController(alertMessage, animated: true, completion: nil)
-                            
-                        }
-                        
-                        return
-                        
-                    }
-                    
-                    dispatch_async(dispatch_get_main_queue()) {
-                        
-                        controller.dismissViewControllerAnimated(true, completion: nil)
-                        
-                    }
-                    
-                case let (controller?, nil, error?):
-                    
-                    let alertMessage = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
-                    
-                    alertMessage.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
-                    
-                    controller.presentViewController(alertMessage, animated: true, completion: nil)
-                    
-                default:
-                    
-                    break
-                    
-                }
+                controller.completionBlock?()
+             
+                controller.dismissViewControllerAnimated(true, completion: nil)
+               
+            case let (controller?, error?):
                 
-                })
-            
-            task.resume()
-            
+             controller.showError(error.localizedDescription)
+                
+             sender.enabled = true
+
+            default:
+                
+                break
+                
+            }
+        
         }
         
+        ServerCoordinator.sharedCoordinator.addOperation(operation)
+
     }
     
-    func displayAlertMessage(alertMessage: String)
-    {
-        let alertMessage = UIAlertController(title: "Error", message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
+    func showEmailInvalid() {
+    
+        let alertController = UIAlertController(title: "Error", message: "Invalid email address", preferredStyle: UIAlertControllerStyle.Alert)
         
-        let dismiss = UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
         
-        alertMessage.addAction(dismiss)
+        presentViewController(alertController, animated: true, completion: nil)
+
+    }
+    
+    func showPasswordInvalid() {
+    
+        let alertController = UIAlertController(title: "Error", message: "Invalid password.", preferredStyle: UIAlertControllerStyle.Alert)
         
-        self.presentViewController(alertMessage, animated: true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
         
+        presentViewController(alertController, animated: true, completion: nil)
+
+    }
+    
+    func showError(error: String) {
+
+        let alertController = UIAlertController(title: "Error", message: error, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
+        
+        presentViewController(alertController, animated: true, completion: nil)
         
     }
-        
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
     
 }
+
+// MARK: - Text Field Delegate
+
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        if textField == emailTextField {
+        
+            return passwordTextField.becomeFirstResponder()
+        
+        }
+        
+        return textField.resignFirstResponder()
+        
+    }
+    
+}
+

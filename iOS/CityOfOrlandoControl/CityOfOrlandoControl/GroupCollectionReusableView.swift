@@ -2,48 +2,15 @@
 //  GroupCollectionReusableView
 //  CityOfOrlandoControl
 //
-//  Created by Jonathan Cools-Lartigue on 2/8/16.
+//  Created by Alan Yepez on 02/8/16.
 //  Copyright © 2016 cop4935-coo. All rights reserved.
 //
-
 import UIKit
 
 class GroupCollectionReusableView: UICollectionReusableView {
     
-    @IBOutlet var titleTextField: UITextField!
+    @IBOutlet weak var textLabel: UILabel!
     
-    @IBOutlet var selectButton: UIButton!
-    
-    @IBOutlet var deleteButton: UIButton!
-   
-    override func prepareForReuse() {
-    
-        super.prepareForReuse()
-
-        selectButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-
-        deleteButton.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-        
-    }
-    
-    private(set) var editing = false
-    
-    // MARK: Editing
-    
-    func setEditing(editing: Bool, animated: Bool) {
-        
-        self.editing = editing
-        
-        titleTextField.enabled = editing
-        
-        titleTextField.textColor = editing ? UIColor.blackColor() : UIColor.darkGrayColor()
-        
-        titleTextField.placeholder = editing ? "title" : ""
-        
-        titleTextField.borderStyle = editing ? .RoundedRect : .None
-        
-    }
-    
-    
+    @IBOutlet weak var editButton: UIButton!
     
 }

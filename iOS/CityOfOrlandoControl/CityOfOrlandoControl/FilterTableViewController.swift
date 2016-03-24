@@ -8,105 +8,109 @@
 
 import UIKit
 
-
-struct FilterState {
-    
-    var doors = true
-    var lights = true
-    var raised = true
-    var lowered = true
-    var errors = true
-    
-}
-
-protocol FilterTableViewControllerDelegate {
-    
-    var filter: FilterState { get }
-    
-    func doorsFilter(value value: Bool)
-    func lightsFilter(value value: Bool)
-    func raisedFilter(value value: Bool)
-    func loweredFilter(value value: Bool)
-    func errorsFilter(value value: Bool)
-
-}
-
-
 class FilterTableViewController: UITableViewController {
-
-    var delegate: FilterTableViewControllerDelegate?
     
-    @IBOutlet var doorSwitch: UISwitch!
-    @IBOutlet var lightSwitch: UISwitch!
-    @IBOutlet var raisedSwitch: UISwitch!
-    @IBOutlet var loweredSwitch: UISwitch!
-    @IBOutlet var errorSwitch: UISwitch!
+    @IBOutlet weak var doorSwitch: UISwitch!
     
+    @IBOutlet weak var lightSwitch: UISwitch!
+    
+    @IBOutlet weak var raisedSwitch: UISwitch!
+    
+    @IBOutlet weak var loweredSwitch: UISwitch!
+    
+    @IBOutlet weak var errorSwitch: UISwitch!
+    
+    var filter: Filter!
+    
+    var completionBlock: ((filter: Filter) -> Void)?
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-
-        doorSwitch.on = delegate?.filter.doors ?? true
-        lightSwitch.on = delegate?.filter.lights ?? true
-        raisedSwitch.on = delegate?.filter.raised ?? true
-        loweredSwitch.on = delegate?.filter.lowered ?? true
-        errorSwitch.on = delegate?.filter.errors ?? true
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        doorSwitch.on = filter.doors
+        
+        lightSwitch.on = filter.lights
+        
+        raisedSwitch.on = filter.raised
+        
+        loweredSwitch.on = filter.lowered
+        
+        errorSwitch.on = filter.errors
+        
     }
     
-    @IBAction func cancelFilterPopup(sender: UIBarButtonItem) {
+    // MARK: - Navigation
+    
+    @IBAction func cancel(sender: UIBarButtonItem) {
+        
         dismissViewControllerAnimated(true, completion: nil)
+        
     }
-
-    @IBAction func doneFilterPopup(sender: UIBarButtonItem) {
+    
+    @IBAction func done(sender: UIBarButtonItem) {
+        
+        completionBlock?(filter: filter)
+        
         dismissViewControllerAnimated(true, completion: nil)
+        
     }
+    
+}
 
-    // MARK: - Switch Handler
+// MARK: - Switch
+
+extension FilterTableViewController {
+    
     
     @IBAction func doorsToggle(sender: UISwitch) {
-                
-        delegate?.doorsFilter(value: sender.on)
+        
+        filter.doors = sender.on
         
     }
     
     @IBAction func lightsToggle(sender: UISwitch) {
         
-        delegate?.lightsFilter(value: sender.on)
-        
+        filter.lights = sender.on
+    
     }
     
     @IBAction func raisedToggle(sender: UISwitch) {
         
-        delegate?.raisedFilter(value: sender.on)
+        filter.raised = sender.on
         
     }
     
     @IBAction func loweredToggle(sender: UISwitch) {
         
-        delegate?.loweredFilter(value: sender.on)
+        filter.lowered = sender.on
         
     }
     
     @IBAction func errorsToggle(sender: UISwitch) {
         
-        delegate?.errorsFilter(value: sender.on)
+        filter.errors = sender.on
+        
+    }
+
+}
+
+// MARK: - Filter
+
+extension FilterTableViewController {
+    
+    struct Filter {
+        
+        var doors = true
+        
+        var lights = true
+        
+        var raised = true
+        
+        var lowered = true
+        
+        var errors = true
         
     }
     
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

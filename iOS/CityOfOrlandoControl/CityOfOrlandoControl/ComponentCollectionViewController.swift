@@ -1,5 +1,5 @@
 //
-//  ConponentCollectionViewController.swift
+//  ComponentCollectionViewController.swift
 //  CityOfOrlandoControl
 //
 //  Created by Alan Yepez on 1/17/16.
@@ -10,154 +10,27 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class ConponentCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, FilterTableViewControllerDelegate, SettingsTableViewControllerDelegate {
+class ComponentCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, SettingsTableViewControllerDelegate {
     
     var groups: [Group] = []
     
-    @IBOutlet weak var selectButtonItem: UIBarButtonItem!
+    var saveAction: UIAlertAction?
     
-    @IBOutlet weak var actionButtonItem: UIBarButtonItem!
-    
-    override func viewDidLoad() {
-        
-        super.viewDidLoad()
-        
-    }
+    var filter = FilterTableViewController.Filter()
     
     override func viewDidAppear(animated: Bool) {
         
         super.viewDidAppear(animated)
         
-        //  Commented out log-in segue for quick testing.
-//        performSegueWithIdentifier("LoginSegue", sender: nil)
-        
-    }
-    
-    // MARK: Editing
-    
-    override func setEditing(editing: Bool, animated: Bool) {
-        
-        super.setEditing(editing, animated: animated)
-        
-        selectButtonItem.title = editing ? "Done" : "Select"
-    
-        navigationController?.setToolbarHidden(!editing, animated: animated)
-        
-        guard let collectionView = collectionView else { return }
-        
-        collectionView.allowsMultipleSelection = editing
-    
-        let count = collectionView.indexPathsForSelectedItems()?.count ?? 0
-        
-        actionButtonItem.enabled = count != 0
-        
-        let headerViews = collectionView.visibleSupplementaryViewsOfKind(UICollectionElementKindSectionHeader) as! [GroupCollectionReusableView]
-        
-        for header in headerViews {
+        if !ServerCoordinator.sharedCoordinator.isAuthenticated() {
             
-            header.setEditing(editing, animated: animated)
+            performSegueWithIdentifier("Login", sender: nil)
             
         }
         
     }
     
-    // MARK: Navigation
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        guard let identifier = segue.identifier else { return }
-        
-        switch identifier {
-            
-        case "FilterSegue":
-            
-            let navigation = segue.destinationViewController as! UINavigationController
-            
-            let viewController = navigation.topViewController as! FilterTableViewController
-            
-            viewController.delegate = self
-            
-        case "SettingsSegue":
-        
-            let navigation = segue.destinationViewController as! UINavigationController
-            
-            let viewController = navigation.topViewController as! SettingsTableViewController
-            
-            viewController.delegate = self
-            
-        default:
-            
-            break
-            
-        }
-        
-    }
-    
-    // MARK: Actions
-    
-    @IBAction func toggleEditing(sender: UIBarButtonItem) {
-        
-        setEditing(!editing, animated: true)
-        
-    }
-    
-    @IBAction func performAction(sender: UIBarButtonItem) {
-        
-        if let components = collectionView?.indexPathsForSelectedItems()?.map({ groups[$0.section].components[$0.item] }) {
-            
-            let actions = UIAlertController(title: "Select Action", message: "Performed on door and light components", preferredStyle: .ActionSheet)
-            
-            actions.addAction(UIAlertAction(title: "Raise", style: .Default, handler: nil))
-            
-            actions.addAction(UIAlertAction(title: "Lower", style: .Default, handler: nil))
-            
-            actions.addAction(UIAlertAction(title: "Stop", style: .Destructive, handler: nil))
-            
-            actions.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-            
-            actions.popoverPresentationController?.barButtonItem = sender
-            
-            actions.popoverPresentationController?.sourceView = view
-            
-            presentViewController(actions, animated: true, completion: nil)
-            
-        }
-        
-    }
-    
-    @IBAction func newGroup(sender: UIBarButtonItem) {
-        
-        if let collectionView = collectionView {
-            
-            setEditing(true, animated: true)
-            
-            let indexSet = NSIndexSet(index: groups.count)
-            
-            let components = [Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised), Component(name: "", garage: 1, bay: 1, side: "", status: .Raised)]
-            
-            groups.append(Group(title: "", components: components))
-            
-            let selectedIndexPaths = collectionView.indexPathsForSelectedItems()
-            
-            //move those items to the new section
-            
-            collectionView.performBatchUpdates({
-                
-                collectionView.insertSections(indexSet)
-                
-                }, completion: nil)
-            
-        }
-        
-    }
-    
-    @IBAction func logout(sender: UIBarButtonItem) {
-        
-        performSegueWithIdentifier("LoginSegue", sender: nil)
-        
-    }
-    
-    // MARK: UICollectionViewDataSource
+    // MARK: - Collection View Data Source
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         
@@ -167,15 +40,65 @@ class ConponentCollectionViewController: UICollectionViewController, UICollectio
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return groups[section].numberOfComponents()
+        return max(groups[section].numberOfComponents(), 1)
         
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ComponentCollectionViewCell
+        switch groups[indexPath.section].numberOfComponents() {
+            
+        case 0:
+            
+            return collectionView.dequeueReusableCellWithReuseIdentifier("Empty", forIndexPath: indexPath)
+            
+        default:
+            
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ComponentCollectionViewCell
+            
+            configureCell(cell, atIndexPath: indexPath)
+            
+            return cell
+            
+        }
         
-        return cell
+    }
+    
+    func configureCell(cell: ComponentCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
+        
+        let component = groups[indexPath.section].components[indexPath.item]
+        
+        switch component {
+            
+        case let (component as Door):
+            
+            cell.titleLabel.text = "#\(component.number)"
+            
+            cell.imageView.image = UIImage(named: "Door")
+            
+            let enabled = shouldEnableComponent(component)
+            
+            cell.alpha = enabled ? 1 : 0.35
+            
+            cell.tintAdjustmentMode = enabled ? .Automatic : .Dimmed
+            
+        case let (component as Light):
+            
+            cell.titleLabel.text = "#\(component.number)"
+            
+            cell.imageView.image = UIImage(named: "Light")
+            
+            let enabled = shouldEnableComponent(component)
+            
+            cell.alpha = enabled ? 1 : 0.35
+            
+            cell.tintAdjustmentMode = enabled ? .Automatic : .Dimmed
+            
+        default:
+            
+            fatalError("Invalid Component Class: \(component.dynamicType)")
+            
+        }
         
     }
     
@@ -189,21 +112,11 @@ class ConponentCollectionViewController: UICollectionViewController, UICollectio
             
             let group = groups[indexPath.section]
             
-            header.titleTextField.text = group.title
+            header.textLabel.text = group.title
             
-            header.titleTextField.tag = indexPath.section
+            header.editButton.tag = indexPath.section
             
-            header.selectButton.tag = indexPath.section
-
-            header.deleteButton.tag = indexPath.section
-            
-            header.titleTextField.addTarget(self, action: "didEditGroupTitle:", forControlEvents: .EditingChanged)
-            
-            header.selectButton.addTarget(self, action: "didSelectGroup:", forControlEvents: .TouchUpInside)
-            
-            header.deleteButton.addTarget(self, action: "didDeleteGroup:", forControlEvents: .TouchUpInside)
-            
-            header.setEditing(editing, animated: false)
+            header.editButton.addTarget(self, action: "editGroupTitle:", forControlEvents: .TouchUpInside)
             
             return header
             
@@ -215,63 +128,87 @@ class ConponentCollectionViewController: UICollectionViewController, UICollectio
         
     }
     
-    // MARK: UICollectionViewDelegate
-    
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        if let storyboard = storyboard where !editing {
-            
-            let viewController = storyboard.instantiateViewControllerWithIdentifier("Component") as! ComponentViewController
-            
-            viewController.component = groups[indexPath.section].components[indexPath.item]
-            
-            let navigation = UINavigationController(rootViewController: viewController)
-            
-            navigation.modalPresentationStyle = .FormSheet
-            
-            presentViewController(navigation, animated:true, completion: nil)
-            
-        }
-            
-        else {
-            
-            actionButtonItem.enabled = true
-            
-        }
-        
-    }
-    
-    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        if editing {
-        
-            actionButtonItem.enabled = false
-
-        }
-        
-    }
+    // MARK: - Collection View Delegate
     
     override func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         
-        return true
+        return groups[indexPath.section].numberOfComponents() > 0
         
     }
     
     override func collectionView(collectionView: UICollectionView, targetIndexPathForMoveFromItemAtIndexPath originalIndexPath: NSIndexPath, toProposedIndexPath proposedIndexPath: NSIndexPath) -> NSIndexPath {
         
-        return proposedIndexPath
+        switch groups[proposedIndexPath.section].numberOfComponents() {
+            
+        case 0:
+            
+            return NSIndexPath(forItem: 0, inSection: proposedIndexPath.section)
+            
+        default:
+            
+            return proposedIndexPath
+            
+        }
         
     }
     
     override func collectionView(collectionView: UICollectionView, moveItemAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
-        let component = groups[sourceIndexPath.section].components.removeAtIndex(sourceIndexPath.item)
+        let sourceGroup = groups[sourceIndexPath.section]
         
-        groups[destinationIndexPath.section].components.insert(component, atIndex: destinationIndexPath.item)
+        let destinationGroup = groups[destinationIndexPath.section]
+        
+        let removeEmpty = destinationGroup.numberOfComponents() == 0
+        
+        let component = sourceGroup.components.removeAtIndex(sourceIndexPath.item)
+        
+        destinationGroup.components.insert(component, atIndex: destinationIndexPath.item)
+        
+        let removeGroup = sourceGroup.numberOfComponents() == 0
+        
+        if removeGroup {
+            
+            groups.removeAtIndex(sourceIndexPath.section)
+            
+        }
+        
+        collectionView.performBatchUpdates({
+            
+            if removeGroup {
+                
+                collectionView.deleteSections(NSIndexSet(index: sourceIndexPath.section))
+                
+            }
+            
+            if removeEmpty {
+                
+                collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: 1, inSection: destinationIndexPath.section)])
+                
+            }
+            
+            }, completion: nil)
+        
+        saveComponents()
         
     }
     
-    // MARK: UICollectionViewDelegateFlowLayout
+    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        
+        switch groups[indexPath.section].numberOfComponents() {
+            
+        case 0:
+            
+            return false
+            
+        default:
+            
+            return shouldEnableComponent(groups[indexPath.section].components[indexPath.item])
+        
+        }
+
+    }
+    
+    // MARK: - Collection View Delegate Flow Layout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
@@ -281,122 +218,70 @@ class ConponentCollectionViewController: UICollectionViewController, UICollectio
         
     }
     
-    //MARK: GroupActions
     
-    func sectionForView(view: UIView) -> NSIndexPath? {
+    // MARK: - Navigation
     
-        guard let collectionView = collectionView, superview = view.superview else { return nil }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        return NSIndexPath(forItem: 0, inSection: view.tag)
-        
-        let point = collectionView.convertPoint(view.center, fromView: superview)
-    
-        return collectionView.indexPathForItemAtPoint(point)
-    
-    }
-    
-    func didEditGroupTitle(sender: UITextField) {
-        
-        if let indexPath = sectionForView(sender) {
-        
-            let group = groups[indexPath.section]
+        if let identifier = segue.identifier {
             
-            group.title = sender.text ?? ""
-        
-        }
-    
-    }
-    
-    func didSelectGroup(sender: UIButton) {
-        
-        if let collectionView = collectionView, indexPath = sectionForView(sender) {
-            
-            setEditing(true, animated: true)
-            
-            let group = groups[indexPath.section]
-            
-            for item in 0..<group.numberOfComponents() {
+            switch identifier {
                 
-                collectionView.selectItemAtIndexPath(NSIndexPath(forItem: item, inSection: indexPath.section), animated: true, scrollPosition: .None)
+            case "Login":
+                
+                let viewController = segue.destinationViewController as! LoginViewController
+                
+                viewController.completionBlock = {
+                    
+                    self.fetchComponents()
+                    
+                }
+                
+            case "Logout":
+                
+                let viewController = segue.destinationViewController as! LoginViewController
+                
+                viewController.completionBlock = {
+                    
+                    self.fetchComponents()
+                    
+                }
+                
+                ServerCoordinator.sharedCoordinator.token = nil
+                
+                groups.removeAll()
+                
+                collectionView?.reloadData()
+                
+            case "Filter":
+                
+                let navigation = segue.destinationViewController as! UINavigationController
+                
+                let viewController = navigation.topViewController as! FilterTableViewController
+                
+                viewController.filter = filter
+                
+                viewController.completionBlock = { (filter) in
+                    
+                    self.updateFilter(filter)
+                    
+                }
+                
+            case "SettingsSegue":
+                
+                let navigation = segue.destinationViewController as! UINavigationController
+                
+                let viewController = navigation.topViewController as! SettingsTableViewController
+                
+                viewController.delegate = self
+                
+            default:
+                
+                break
                 
             }
             
         }
-        
-    }
-    
-    func didDeleteGroup(sender: UIButton) {
-        
-        if let collectionView = collectionView, indexPath = sectionForView(sender) {
-            
-            
-            // CRASH
-            let group = groups.removeAtIndex(indexPath.section)
-        
-           // groups.append(Group(title: "", components: group.components))
-
-            
-        
-            
-            
-            
-            let indexSet = NSIndexSet(index: indexPath.section)
-            
-            collectionView.performBatchUpdates({
-                
-                collectionView.deleteSections(indexSet)
-                
-              //  collectionView.insertSections(NSIndexSet(index: 1))
-                
-                }, completion: nil)
-            
-        }
-
-        
-        
-        // ask for confirmation
-        
-    }
-    
-    // MARK: FilteTableViewController Delegate
-    
-    var filter = FilterState() {
-        
-        didSet {
-            
-            //  Apply changes.
-            
-        }
-        
-    }
-    
-    func doorsFilter(value value: Bool) {
-        
-        filter.doors = value
-        
-    }
-    
-    func lightsFilter(value value: Bool) {
-        
-        filter.lights = value
-        
-    }
-    
-    func raisedFilter(value value: Bool) {
-        
-        filter.raised = value
-        
-    }
-    
-    func loweredFilter(value value: Bool) {
-        
-        filter.lowered = value
-        
-    }
-    
-    func errorsFilter(value value: Bool) {
-        
-        filter.errors = value
         
     }
     
@@ -419,3 +304,371 @@ class ConponentCollectionViewController: UICollectionViewController, UICollectio
     }
     
 }
+
+// MARK: - Components
+
+extension ComponentCollectionViewController {
+    
+    func fetchComponents() {
+        
+        let operation = ComponentsOperation()
+        
+        operation.componentsCompletionBlock = { [weak self] (components, error) in
+            
+            switch (self, components, error) {
+                
+            case let (controller?, components?, nil):
+                
+                controller.groupComponents(components)
+                
+                controller.showRefreshItems(true)
+                
+            case let (controller?, nil, error?):
+                
+                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                
+                alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
+                
+                controller.presentViewController(alertController, animated: true, completion: nil)
+                
+                controller.showRefreshItems(true)
+                
+            default:
+                
+                break
+                
+            }
+            
+        }
+        
+        ServerCoordinator.sharedCoordinator.addOperation(operation)
+        
+    }
+    
+    func groupComponents(var components: [Component]) {
+        
+        groups.removeAll()
+        
+        if let dictionaries = NSUserDefaults.standardUserDefaults().objectForKey("Groups") as? [NSDictionary] {
+            
+            var groups: [Group] = []
+            
+            for dictionary in dictionaries {
+                
+                if let title = dictionary["title"] as? String, ids = dictionary["components"] as? [String] {
+                    
+                    let group = Group(title: title)
+                    
+                    for id in ids {
+                        
+                        if let index = components.indexOf({ $0.id == id }) {
+                            
+                            group.components.append(components.removeAtIndex(index))
+                            
+                        }
+                        
+                    }
+                    
+                    if group.numberOfComponents() > 0 {
+                        
+                        groups.append(group)
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            self.groups = groups
+            
+        }
+        
+        if components.count > 0 {
+            
+            groups.append(Group(title: "New Components", components: components))
+            
+        }
+        
+        collectionView?.reloadData()
+        
+        saveComponents()
+        
+    }
+    
+    func saveComponents() {
+        
+        let data = groups.map { ["title": $0.title, "components": $0.components.map { $0.id }] }
+        
+        NSUserDefaults.standardUserDefaults().setObject(data, forKey: "Groups")
+        
+    }
+    
+}
+
+// MARK: - Filter
+
+extension ComponentCollectionViewController {
+    
+    func updateFilter(filter: FilterTableViewController.Filter) {
+        
+        self.filter = filter
+        
+        if let collectionView = collectionView {
+            
+            for indexPath in collectionView.indexPathsForVisibleItems() {
+                
+                if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ComponentCollectionViewCell {
+                    
+                    configureCell(cell, atIndexPath: indexPath)
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    func shouldEnableComponent(component: Component) -> Bool {
+        
+        switch component {
+            
+        case let (component as Door):
+            
+            return filter.doors && ((filter.lowered && component.position == .Lowered) || (filter.raised && component.position == .Raised) || (filter.errors && component.position == .Error))
+            
+        case let (component as Light):
+            
+            return filter.lights && ((filter.lowered && component.position == .Lowered) || (filter.raised && component.position == .Raised) || (filter.errors && component.position == .Error))
+            
+        default:
+            
+            fatalError("Invalid Component Class: \(component.dynamicType)")
+            
+        }
+        
+    }
+    
+}
+
+// MARK: - ToolBar Items
+
+extension ComponentCollectionViewController {
+    
+    func showRefreshItems(animated: Bool) {
+        
+        let newGroupItem = UIBarButtonItem(title: "New Group", style: .Plain, target: self, action: "newGroup:")
+        
+        let textLabel = UILabel()
+        
+        let date = NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .MediumStyle, timeStyle: .ShortStyle)
+        
+        textLabel.text = "Updated On\n\(date)"
+        
+        textLabel.textAlignment = .Center
+        
+        textLabel.numberOfLines = 2
+        
+        textLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+        
+        textLabel.sizeToFit()
+        
+        let textItem = UIBarButtonItem(customView: textLabel)
+        
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        
+        let refreshItem = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "refresh:")
+        
+        setToolbarItems([newGroupItem, flexibleItem, textItem, flexibleItem, refreshItem], animated: animated)
+        
+        view.tintAdjustmentMode = .Automatic
+        
+    }
+    
+    func showLoadingItems(animated: Bool) {
+        
+        let flexibleItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        
+        let textLabel = UILabel()
+        
+        textLabel.text = "Loading Components..."
+        
+        textLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+        
+        textLabel.sizeToFit()
+        
+        let textItem = UIBarButtonItem(customView: textLabel)
+        
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        
+        let loadingItem = UIBarButtonItem(customView: activityIndicator)
+        
+        activityIndicator.startAnimating()
+        
+        setToolbarItems([flexibleItem, textItem, flexibleItem, loadingItem], animated: animated)
+        
+        view.tintAdjustmentMode = .Dimmed
+        
+    }
+    
+}
+
+// MARK: - Actions
+
+extension ComponentCollectionViewController {
+    
+    func newGroup(sender: UIBarButtonItem) {
+        
+        let alertController = UIAlertController(title: "New Group", message: "Please enter a title", preferredStyle: .Alert)
+        
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            
+            textField.placeholder = "Title"
+            
+            textField.autocapitalizationType = .Words
+            
+            textField.autocorrectionType = .Yes
+            
+            textField.clearButtonMode = .Always
+            
+            textField.delegate = self
+            
+            textField.addTarget(self, action: "titleChanged:", forControlEvents: .EditingChanged)
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            
+            self.saveAction = nil
+            
+            })
+        
+        let saveAction = UIAlertAction(title: "Save", style: .Default) { [weak alertController] (action) in
+            
+            self.saveAction = nil
+            
+            if let title = alertController?.textFields?.first?.text, collectionView = self.collectionView {
+                
+                let indexSet = NSIndexSet(index: self.groups.count)
+                
+                self.groups.append(Group(title: title))
+                
+                collectionView.performBatchUpdates({
+                    
+                    collectionView.insertSections(indexSet)
+                    
+                    }, completion: nil)
+                
+            }
+            
+        }
+        
+        saveAction.enabled = false
+        
+        alertController.addAction(saveAction)
+        
+        alertController.preferredAction = saveAction
+        
+        presentViewController(alertController, animated: true, completion: nil)
+        
+        self.saveAction = saveAction
+        
+    }
+    
+    func refresh(sender: UIBarButtonItem) {
+        
+        showLoadingItems(true)
+        
+        fetchComponents()
+        
+    }
+    
+}
+
+// MARK: - Group Actions
+
+extension ComponentCollectionViewController {
+    
+    func editGroupTitle(sender: UIButton) {
+        
+        let group = groups[sender.tag]
+        
+        let alertController = UIAlertController(title: "Edit Group", message: "Please update a title", preferredStyle: .Alert)
+        
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            
+            textField.placeholder = "Title"
+            
+            textField.text = group.title
+            
+            textField.autocapitalizationType = .Words
+            
+            textField.autocorrectionType = .Yes
+            
+            textField.clearButtonMode = .Always
+            
+            textField.delegate = self
+            
+            textField.addTarget(self, action: "titleChanged:", forControlEvents: .EditingChanged)
+            
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+            
+            self.saveAction = nil
+            
+            })
+        
+        let saveAction = UIAlertAction(title: "Save", style: .Default) { [weak alertController] (action) in
+            
+            self.saveAction = nil
+            
+            let indexPath = NSIndexPath(forItem: 0, inSection: sender.tag)
+            
+            if let title = alertController?.textFields?.first?.text, collectionView = self.collectionView, view = collectionView.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: indexPath) as? GroupCollectionReusableView  {
+                
+                group.title = title
+                
+                view.textLabel.text = title
+                
+            }
+            
+            self.saveComponents()
+            
+        }
+        
+        alertController.addAction(saveAction)
+        
+        alertController.preferredAction = saveAction
+        
+        presentViewController(alertController, animated: true, completion: nil)
+        
+        self.saveAction = saveAction
+        
+    }
+    
+}
+
+// MARK: - Text Field Delegate
+
+extension ComponentCollectionViewController: UITextFieldDelegate {
+    
+    func titleChanged(sender: UITextField) {
+        
+        if let action = saveAction, text = sender.text {
+            
+            action.enabled = !text.isEmpty
+            
+        }
+        
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+        
+        return true
+        
+    }
+    
+}
+

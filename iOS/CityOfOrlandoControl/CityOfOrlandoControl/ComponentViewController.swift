@@ -2,7 +2,7 @@
 //  ComponentViewController.swift
 //  CityOfOrlandoControl
 //
-//  Created by Jonathan Cools-Lartigue on 2/8/16.
+//  Created by Alan Yepez on 02/16/16.
 //  Copyright © 2016 cop4935-coo. All rights reserved.
 //
 

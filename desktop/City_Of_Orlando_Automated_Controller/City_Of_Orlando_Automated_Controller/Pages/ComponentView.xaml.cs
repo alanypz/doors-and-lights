@@ -24,7 +24,6 @@ namespace City_Of_Orlando_Automated_Controller.Pages
     /// </summary>
     public partial class ComponentView : UserControl
     {
-        private Button[] componentButtons = null;
 
         public ComponentView()
         {
@@ -83,21 +82,21 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             }
 
             //Put them together
-            Component[] components = new Component[lrDoors.Length + lrLights.Length];
-            componentButtons = new Button[lrDoors.Length + lrLights.Length];
+            Utility.components = new Component[lrDoors.Length + lrLights.Length];
+            Utility.componentButtons = new Button[lrDoors.Length + lrLights.Length];
             
             for(int i=0; i< lrDoors.Length + lrLights.Length; i++)
             {
                 if(i<lrDoors.Length)
                 {
-                    components[i] = serializer.Deserialize<Component>(lrDoors[i].ToString());
-                    components[i].type = "Door";
+                    Utility.components[i] = serializer.Deserialize<Component>(lrDoors[i].ToString());
+                    Utility.components[i].type = "Door";
                 }
 
                 else
                 {
-                    components[i] = serializer.Deserialize<Component>(lrLights[i - lrDoors.Length].ToString());
-                    components[i].type = "Light";
+                    Utility.components[i] = serializer.Deserialize<Component>(lrLights[i - lrDoors.Length].ToString());
+                    Utility.components[i].type = "Light";
                 }
  
                 Button newComponent = new Button();
@@ -105,7 +104,7 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 margin.Left = 5;
                 margin.Right = 5;
                 margin.Top = 9;
-                newComponent.Tag = components[i];
+                newComponent.Tag = Utility.components[i];
 
                 if(i<lrDoors.Length)
                 {
@@ -125,7 +124,7 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 newComponent.Height = 30;
                 newComponent.Margin = margin;
                 newComponent.AddHandler(Button.ClickEvent, new RoutedEventHandler(button_Click));
-                componentButtons[i] = newComponent;
+                Utility.componentButtons[i] = newComponent;
                 wp.Children.Add(newComponent);
             }
 
@@ -154,9 +153,9 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
             else
             {
-                for(int i=0; i<componentButtons.Length; i++)
+                for(int i=0; i<Utility.componentButtons.Length; i++)
                 {
-                    componentButtons[i].ClearValue(BackgroundProperty);
+                    Utility.componentButtons[i].ClearValue(BackgroundProperty);
                 }
 
                 button.Background = Brushes.PowderBlue;
@@ -168,15 +167,16 @@ namespace City_Of_Orlando_Automated_Controller.Pages
         {
             Button selectedComponent = null;
 
-            for(int i=0; i<componentButtons.Length; i++)
+            for(int i=0; i<Utility.componentButtons.Length; i++)
             {
-                if(componentButtons[i].Background == Brushes.PowderBlue)
+                if(Utility.componentButtons[i].Background == Brushes.PowderBlue)
                 {
-                    selectedComponent = componentButtons[i];
+                    selectedComponent = Utility.componentButtons[i];
+                    Utility.componentIndex = i;
                 }
             }
 
-            Component component = (Component)selectedComponent.Tag;
+            Component component = Utility.components[Utility.componentIndex];
 
             string data =
                     "Type:" + component.type + "\n" +
@@ -185,23 +185,25 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                     "Status: " + component.state + "\n" 
                 ;
 
-            ModernDialog commandView = new CommandView(data);
+            ModernDialog commandView = new CommandView(component, data);
             commandView.ShowDialog();
+            Utility.componentButtons[Utility.componentIndex].Background = Brushes.Gold;
+
         }
 
         private void SelectionMode_Checked(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < componentButtons.Length; i++)
+            for (int i = 0; i < Utility.componentButtons.Length; i++)
             {
-                componentButtons[i].ClearValue(BackgroundProperty);
+                Utility.componentButtons[i].ClearValue(BackgroundProperty);
             }
         }
 
         private void SelectionMode_Unchecked(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < componentButtons.Length; i++)
+            for (int i = 0; i < Utility.componentButtons.Length; i++)
             {
-                componentButtons[i].ClearValue(BackgroundProperty);
+                Utility.componentButtons[i].ClearValue(BackgroundProperty);
             }
 
             CommandButton.IsEnabled = false;

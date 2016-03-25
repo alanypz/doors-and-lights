@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace City_Of_Orlando_Automated_Controller
 {
-    class Component
+    public class Component
     {
 
         public Component()

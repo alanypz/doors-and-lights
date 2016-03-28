@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB119D5D1C96098F0008BA01 /* LowerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB119D5C1C96098F0008BA01 /* LowerOperation.swift */; };
-		AB119D5F1C9609A00008BA01 /* RaiseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB119D5E1C9609A00008BA01 /* RaiseOperation.swift */; };
-		AB119D611C960A010008BA01 /* StatusOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB119D601C960A010008BA01 /* StatusOperation.swift */; };
+		AB119D5D1C96098F0008BA01 /* ActionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB119D5C1C96098F0008BA01 /* ActionOperation.swift */; };
 		AB119D631C960A6B0008BA01 /* ComponentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB119D621C960A6B0008BA01 /* ComponentsOperation.swift */; };
 		AB119D661C960C9F0008BA01 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB119D651C960C9F0008BA01 /* Error.swift */; };
 		AB119D691C960F290008BA01 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB119D681C960F290008BA01 /* Component.swift */; };
@@ -53,9 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AB119D5C1C96098F0008BA01 /* LowerOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LowerOperation.swift; sourceTree = "<group>"; };
-		AB119D5E1C9609A00008BA01 /* RaiseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RaiseOperation.swift; sourceTree = "<group>"; };
-		AB119D601C960A010008BA01 /* StatusOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOperation.swift; sourceTree = "<group>"; };
+		AB119D5C1C96098F0008BA01 /* ActionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionOperation.swift; sourceTree = "<group>"; };
 		AB119D621C960A6B0008BA01 /* ComponentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentsOperation.swift; sourceTree = "<group>"; };
 		AB119D651C960C9F0008BA01 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		AB119D681C960F290008BA01 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
@@ -146,7 +142,7 @@
 			name = Collection;
 			sourceTree = "<group>";
 		};
-		AB162D971C69281E00D43C75 /* Controller */ = {
+		AB162D971C69281E00D43C75 /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
 				E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */,
@@ -155,7 +151,7 @@
 				E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */,
 				E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */,
 			);
-			name = Controller;
+			name = "View Controller";
 			sourceTree = "<group>";
 		};
 		AB162D981C69282800D43C75 /* Model */ = {
@@ -178,12 +174,10 @@
 		E712FA401C95F5F8001F8A49 /* Operation */ = {
 			isa = PBXGroup;
 			children = (
-				AB119D641C960AC20008BA01 /* Server */,
+				AB119D5C1C96098F0008BA01 /* ActionOperation.swift */,
 				AB119D621C960A6B0008BA01 /* ComponentsOperation.swift */,
 				E712FA381C95F541001F8A49 /* LoginOperation.swift */,
-				AB119D5C1C96098F0008BA01 /* LowerOperation.swift */,
-				AB119D5E1C9609A00008BA01 /* RaiseOperation.swift */,
-				AB119D601C960A010008BA01 /* StatusOperation.swift */,
+				AB119D641C960AC20008BA01 /* Server */,
 			);
 			name = Operation;
 			sourceTree = "<group>";
@@ -218,11 +212,11 @@
 				E7F0E4231C4C37D8003D4DEA /* LaunchScreen.storyboard */,
 				E7F0E41B1C4C37D8003D4DEA /* Main.storyboard */,
 				AB162D961C6927B100D43C75 /* Collection */,
-				AB162D971C69281E00D43C75 /* Controller */,
 				E712FA3F1C95F5D6001F8A49 /* Coordinator */,
 				AB119D671C960CA20008BA01 /* Extension */,
 				AB162D981C69282800D43C75 /* Model */,
 				E712FA401C95F5F8001F8A49 /* Operation */,
+				AB162D971C69281E00D43C75 /* View Controller */,
 				AB13443C1C9F6430002BC2A6 /* Utilties */,
 			);
 			path = CityOfOrlandoControl;
@@ -381,12 +375,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E76891741C4EFF9C00A64A93 /* FilterTableViewController.swift in Sources */,
-				AB119D5D1C96098F0008BA01 /* LowerOperation.swift in Sources */,
+				AB119D5D1C96098F0008BA01 /* ActionOperation.swift in Sources */,
 				E712FA3C1C95F541001F8A49 /* LoginOperation.swift in Sources */,
 				E712FA3D1C95F541001F8A49 /* ServerCoordinator.swift in Sources */,
 				AB162D8F1C691A8C00D43C75 /* GroupCollectionReusableView.swift in Sources */,
-				AB119D611C960A010008BA01 /* StatusOperation.swift in Sources */,
-				AB119D5F1C9609A00008BA01 /* RaiseOperation.swift in Sources */,
 				E7353FD81C4C6B2200D50E9E /* LoginViewController.swift in Sources */,
 				AB162D911C691B6E00D43C75 /* Group.swift in Sources */,
 				AB119D691C960F290008BA01 /* Component.swift in Sources */,

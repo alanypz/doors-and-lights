@@ -62,7 +62,6 @@ class ComponentsOperation: ServerOperation {
 
             session.dataTaskWithURL(url) { [unowned self] (data, response, error) in
                 
-
                 do {
                     
                     let (data, _) = try self.checkResponse(data, response: response, error: error)
@@ -134,13 +133,5 @@ class ComponentsOperation: ServerOperation {
         super.finishWithError(error)
         
     }
-    
-}
-
-// MARK: - Type
-
-enum ComponentType {
-    
-    case Door, Light
     
 }

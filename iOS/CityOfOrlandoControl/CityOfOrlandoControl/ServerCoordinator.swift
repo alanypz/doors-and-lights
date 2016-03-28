@@ -8,18 +8,24 @@
 
 import UIKit
 
+let ComponentStatusNotification = "ComponentStatus"
+let ComponentStatusNotificationComponentKey = "component"
+let ComponentStatusNotificationIdKey = "id"
+let ComponentStatusNotificationErrorKey = "error"
+
 class ServerCoordinator {
     
     static let sharedCoordinator = ServerCoordinator()
     
     class Routes {
-    
-        static let host = "http://localhost:8080"
+        
+        static let host =  "http://localhost:8080"
+//        static let host =  "http://10.0.1.5:8080" //  Local IP access
         
         class func authenticate() -> NSURL {
-        
+            
             return NSURL(string: "\(host)/authenticate")!
-        
+            
         }
         
         class func statusLight() -> NSURL {
@@ -59,25 +65,25 @@ class ServerCoordinator {
         }
         
     }
-
-    var token: String? {
     
+    var token: String? {
+        
         didSet {
-        
+            
             if let token = token {
-            
+                
                 sessionConfiguration.HTTPAdditionalHeaders = ["Authorization": token]
-        
+                
             }
-            
+                
             else {
-            
+                
                 sessionConfiguration.HTTPAdditionalHeaders = nil
-            
+                
             }
             
         }
-    
+        
     }
     
     // MARK: - Authentication
@@ -90,6 +96,14 @@ class ServerCoordinator {
     
     // MARK: - Operation Queue
     
+    var actionOperation: ActionOperation?
+    
+    func canAddActionOperation() -> Bool {
+        
+        return actionOperation == nil
+        
+    }
+    
     lazy var operationQueue: NSOperationQueue = {
         
         var operationQueue = NSOperationQueue()
@@ -100,11 +114,55 @@ class ServerCoordinator {
         
         return operationQueue
         
-        }()
+    }()
     
-    func addOperation(operation: ServerOperation) {
+    func addOperation(operation: ServerOperation) -> Bool {
         
-        operationQueue.addOperation(operation)
+        switch (operation, actionOperation) {
+            
+        case (_ as ActionOperation, _?):
+            
+            return false
+            
+        case let (operation as ActionOperation, nil):
+            
+            actionOperation = operation
+            
+            operation.actionCompletionBlock = { [weak self] (component, error) in
+                
+                switch (self, component, error) {
+                    
+                case let (coordinator?, component?, nil):
+                    
+                    coordinator.actionOperation = nil
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(ComponentStatusNotification, object: coordinator, userInfo: [ComponentStatusNotificationComponentKey: component])
+                    
+                case let (coordinator?, nil, error?):
+                    
+                    coordinator.actionOperation = nil
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(ComponentStatusNotification, object: coordinator, userInfo: [ComponentStatusNotificationIdKey: operation.id, ComponentStatusNotificationErrorKey: error])
+                    
+                default:
+                    
+                    break
+                    
+                }
+                
+            }
+            
+            operationQueue.addOperation(operation)
+            
+            return true
+            
+        default:
+            
+            operationQueue.addOperation(operation)
+            
+            return true
+            
+        }
         
     }
     
@@ -114,11 +172,11 @@ class ServerCoordinator {
         
         var configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         
-        configuration.timeoutIntervalForRequest = 10
+        configuration.timeoutIntervalForRequest = 30
         
         return configuration
         
-        }()
+    } ()
     
 }
 

@@ -18,6 +18,14 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
     
     var filter = FilterTableViewController.Filter()
     
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComponentCollectionViewController.statusChanged(_:)), name: ComponentStatusNotification, object: ServerCoordinator.sharedCoordinator)
+        
+    }
+    
     override func viewDidAppear(animated: Bool) {
         
         super.viewDidAppear(animated)
@@ -116,7 +124,7 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             
             header.editButton.tag = indexPath.section
             
-            header.editButton.addTarget(self, action: "editGroupTitle:", forControlEvents: .TouchUpInside)
+            header.editButton.addTarget(self, action: #selector(ComponentCollectionViewController.editGroupTitle(_:)), forControlEvents: .TouchUpInside)
             
             return header
             
@@ -203,9 +211,9 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
         default:
             
             return shouldEnableComponent(groups[indexPath.section].components[indexPath.item])
-        
+            
         }
-
+        
     }
     
     // MARK: - Collection View Delegate Flow Layout
@@ -252,6 +260,28 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
                 groups.removeAll()
                 
                 collectionView?.reloadData()
+                
+            case "Detail":
+                
+                let navigation = segue.destinationViewController as! UINavigationController
+                
+                let viewController = navigation.topViewController as! ComponentViewController
+                
+                if let indexPath = collectionView?.indexPathsForSelectedItems()?.first {
+                    
+                    viewController.component = groups[indexPath.section].components[indexPath.item]
+                    
+                    viewController.actionHandler = { [weak self] in
+                        
+                        self?.collectionView?.performBatchUpdates({
+                            
+                            self?.collectionView?.reloadItemsAtIndexPaths([indexPath])
+                            
+                            }, completion: nil)
+                        
+                    }
+                    
+                }
                 
             case "Filter":
                 
@@ -345,7 +375,9 @@ extension ComponentCollectionViewController {
         
     }
     
-    func groupComponents(var components: [Component]) {
+    func groupComponents(components: [Component]) {
+        
+        var allComponents = components
         
         groups.removeAll()
         
@@ -361,9 +393,9 @@ extension ComponentCollectionViewController {
                     
                     for id in ids {
                         
-                        if let index = components.indexOf({ $0.id == id }) {
+                        if let index = allComponents.indexOf({ $0.id == id }) {
                             
-                            group.components.append(components.removeAtIndex(index))
+                            group.components.append(allComponents.removeAtIndex(index))
                             
                         }
                         
@@ -383,9 +415,9 @@ extension ComponentCollectionViewController {
             
         }
         
-        if components.count > 0 {
+        if allComponents.count > 0 {
             
-            groups.append(Group(title: "New Components", components: components))
+            groups.append(Group(title: "New Components", components: allComponents))
             
         }
         
@@ -457,7 +489,7 @@ extension ComponentCollectionViewController {
     
     func showRefreshItems(animated: Bool) {
         
-        let newGroupItem = UIBarButtonItem(title: "New Group", style: .Plain, target: self, action: "newGroup:")
+        let newGroupItem = UIBarButtonItem(title: "New Group", style: .Plain, target: self, action: #selector(ComponentCollectionViewController.newGroup(_:)))
         
         let textLabel = UILabel()
         
@@ -477,7 +509,7 @@ extension ComponentCollectionViewController {
         
         let flexibleItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
         
-        let refreshItem = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "refresh:")
+        let refreshItem = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: #selector(ComponentCollectionViewController.refresh(_:)))
         
         setToolbarItems([newGroupItem, flexibleItem, textItem, flexibleItem, refreshItem], animated: animated)
         
@@ -533,7 +565,7 @@ extension ComponentCollectionViewController {
             
             textField.delegate = self
             
-            textField.addTarget(self, action: "titleChanged:", forControlEvents: .EditingChanged)
+            textField.addTarget(self, action: #selector(ComponentCollectionViewController.titleChanged(_:)), forControlEvents: .EditingChanged)
         }
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
@@ -608,7 +640,7 @@ extension ComponentCollectionViewController {
             
             textField.delegate = self
             
-            textField.addTarget(self, action: "titleChanged:", forControlEvents: .EditingChanged)
+            textField.addTarget(self, action: #selector(ComponentCollectionViewController.titleChanged(_:)), forControlEvents: .EditingChanged)
             
         }
         
@@ -667,6 +699,72 @@ extension ComponentCollectionViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         
         return true
+        
+    }
+    
+}
+
+// MARK: Notification
+
+extension ComponentCollectionViewController {
+    
+    func statusChanged(notification: NSNotification) {
+        
+        guard let userInfo = notification.userInfo else { return }
+        
+        if let component = userInfo[ComponentStatusNotificationComponentKey] as? Component, let result = findComponent(component.id) {
+            
+            result.component.state = component.state
+            
+            result.component.position = component.position
+            
+            collectionView?.performBatchUpdates({
+                
+                self.collectionView?.reloadItemsAtIndexPaths([result.indexPath])
+                
+                }, completion: nil)
+            
+        }
+        
+        if let id = userInfo[ComponentStatusNotificationIdKey] as? String, let result = findComponent(id) {
+            
+            result.component.state = .Stopped
+            
+            result.component.position = .Error
+            
+            collectionView?.performBatchUpdates({
+                
+                self.collectionView?.reloadItemsAtIndexPaths([result.indexPath])
+                
+                }, completion: nil)
+            
+        }
+        
+        if let error = userInfo[ComponentStatusNotificationErrorKey] as? NSError where presentedViewController == nil{
+            
+            let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+            
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
+            
+            presentViewController(alertController, animated: true, completion: nil)
+            
+        }
+        
+    }
+    
+    func findComponent(id: String) -> (component: Component, indexPath: NSIndexPath)? {
+        
+        for (section, group) in groups.enumerate() {
+            
+            if let item = group.components.indexOf({ $0.id == id }) {
+                
+                return (group.components[item], NSIndexPath(forItem: item, inSection: section))
+                
+            }
+            
+        }
+        
+        return nil
         
     }
     

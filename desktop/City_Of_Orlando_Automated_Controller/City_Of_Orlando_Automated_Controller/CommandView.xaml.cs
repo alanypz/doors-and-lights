@@ -19,6 +19,7 @@ using System.Web.Script.Serialization;
 using System.Net.Http;
 using System.ComponentModel;
 using System.Threading;
+using System.Windows.Resources;
 
 namespace City_Of_Orlando_Automated_Controller
 {
@@ -57,7 +58,7 @@ namespace City_Of_Orlando_Automated_Controller
             httpWebRequest.Method = "POST";
 
             var serializer = new JavaScriptSerializer();
-            string data = "{\"" + type + "\":1}";
+            string data = "{\"" + type + "\":" + componentData.number + "}";
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
@@ -97,7 +98,7 @@ namespace City_Of_Orlando_Automated_Controller
             httpWebRequest.Method = "POST";
 
             var serializer = new JavaScriptSerializer();
-            string data = "{\"" + type.ToLower() + "\":1}";
+            string data = "{\"" + type.ToLower() + "\":" + componentData.number + "}";
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
@@ -129,6 +130,25 @@ namespace City_Of_Orlando_Automated_Controller
         private static void commandResult(object sender, DoWorkEventArgs eventArgs)
         {
             int counter = 0;
+            Uri resourceUri = null;
+
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                if(componentData.type.ToLower() == "door")
+                {
+                    resourceUri = new Uri("Images/garage_progress.png", UriKind.Relative);
+                }
+
+                else
+                {
+                    resourceUri = new Uri("Images/light_progress.png", UriKind.Relative);
+                }
+                var brush = new ImageBrush();
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
+                Utility.componentButtons[Utility.componentIndex].Background = brush;
+            }));
 
             var serializer = new JavaScriptSerializer();
 
@@ -162,7 +182,30 @@ namespace City_Of_Orlando_Automated_Controller
 
         private static void complete(object sender, RunWorkerCompletedEventArgs eventArgs)
         {
-            Utility.componentButtons[Utility.componentIndex].Background = Brushes.LightGreen;
+            Uri resourceUri = null;
+            ImageBrush defaultBrush = new ImageBrush();
+
+            Application.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                if (componentData.type.ToLower() == "door")
+                {
+                    resourceUri = new Uri("Images/garage_complete.png" , UriKind.Relative);
+                    defaultBrush = Utility.doorBrush;
+                }
+
+                else
+                {
+                    resourceUri = new Uri("Images/light_complete.png", UriKind.Relative);
+                    defaultBrush = Utility.lightBrush;
+                }
+                var brush = new ImageBrush();
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
+                Utility.componentButtons[Utility.componentIndex].Background = brush;
+            }));
+
+            Thread.Sleep(5000);
         }
     }
 }

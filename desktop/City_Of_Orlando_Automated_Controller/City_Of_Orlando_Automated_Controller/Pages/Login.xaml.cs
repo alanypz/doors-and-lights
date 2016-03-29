@@ -83,6 +83,8 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             string password = pass.Password;
             User user = new User(email, password);
             login(user, this);
+            username.Text = "";
+            pass.Password = "";
         }
 
         

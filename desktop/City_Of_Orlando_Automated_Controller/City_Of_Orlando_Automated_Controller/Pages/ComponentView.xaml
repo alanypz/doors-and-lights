@@ -6,6 +6,7 @@
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="690">
+    
     <Grid Name="componentGrid" Style="{StaticResource ContentRoot}">
         <ScrollViewer>
             <StackPanel Name="sp" MinWidth="200" Orientation="Vertical">
@@ -13,13 +14,33 @@
                     <TextBlock Text="Component View" Style="{StaticResource Heading2}" />
                 </StackPanel>
 
-                <WrapPanel Name="wp" Orientation="Horizontal">
+                <WrapPanel>
+                    <TextBlock Text="&#xD;"/>
+                    <!--Space-->
+                </WrapPanel>
+
+                <WrapPanel>
+                    <TextBlock FontWeight="Bold" Text="Doors"/>
+                </WrapPanel>
+
+                <WrapPanel Name="wpLight" Orientation="Horizontal">
+
+                </WrapPanel>
+
+                <WrapPanel>
+                    <TextBlock Text="&#xD;"/>
+                </WrapPanel>
+
+                <WrapPanel>
+                    <TextBlock FontWeight="Bold" Text="Lights"/>
+                </WrapPanel>
+
+                <WrapPanel Name="wpDoor" Orientation="Horizontal">
 
                 </WrapPanel>
                 <!--<TextBlock Text="Content goes here" />-->
             </StackPanel>
         </ScrollViewer>
-        <CheckBox x:Name="SelectionMode" Content="Selection Mode" HorizontalAlignment="Left" Margin="545,4,0,0" VerticalAlignment="Top" Checked="SelectionMode_Checked" Unchecked="SelectionMode_Unchecked" />
-        <Button x:Name="CommandButton" Content="Command" Margin="248,390,286,0" VerticalAlignment="Top" IsEnabled="False" Height="30" Width="124" Click="CommandButton_Click"/>
+        <Button x:Name="refresh" Content="" HorizontalAlignment="Left" Margin="598,0,0,0" VerticalAlignment="Top" Height="50"  Width="50" BorderThickness="0" Click="refresh_Click" MouseEnter="refresh_MouseEnter" MouseLeave="refresh_MouseLeave"/>
     </Grid>
 </UserControl>

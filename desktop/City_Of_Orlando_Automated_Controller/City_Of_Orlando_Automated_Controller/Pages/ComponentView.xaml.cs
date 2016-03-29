@@ -16,6 +16,8 @@ using System.Net;
 using System.IO;
 using System.Web.Script.Serialization;
 using FirstFloor.ModernUI.Windows.Controls;
+using System.Windows.Resources;
+using System.Threading;
 
 namespace City_Of_Orlando_Automated_Controller.Pages
 {
@@ -32,12 +34,14 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
             // init for the doors/lights
             initializeComponents();
+
+            // init refresh
+            initializeRefresh();
         }
 
         void initializeComponents()
         {
             //Get the doors
-            object[] lrDoors = null;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/door");
             httpWebRequest.Method = "GET";
             httpWebRequest.ContentType = "application/json";
@@ -51,16 +55,15 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             {
                 var result = streamReader.ReadToEnd();
                 
-                lrDoors = serializer.Deserialize<dynamic>(result);
+                Utility.lrDoors = serializer.Deserialize<dynamic>(result);
                 
-                for(int i=0; i<lrDoors.Length; i++)
+                for(int i=0; i<Utility.lrDoors.Length; i++)
                 {
-                    lrDoors[i] = serializer.Serialize(lrDoors[i]);
+                    Utility.lrDoors[i] = serializer.Serialize(Utility.lrDoors[i]);
                 }
             }
 
             //Get the lights
-            object[] lrLights = null;
             httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/light");
             httpWebRequest.Method = "GET";
             httpWebRequest.ContentType = "application/json";
@@ -73,29 +76,29 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             {
                 var result = streamReader.ReadToEnd();
 
-                lrLights = serializer.Deserialize<dynamic>(result);
+                Utility.lrLights = serializer.Deserialize<dynamic>(result);
 
-                for (int i = 0; i < lrLights.Length; i++)
+                for (int i = 0; i < Utility.lrLights.Length; i++)
                 {
-                    lrLights[i] = serializer.Serialize(lrLights[i]);
+                    Utility.lrLights[i] = serializer.Serialize(Utility.lrLights[i]);
                 }
             }
 
             //Put them together
-            Utility.components = new Component[lrDoors.Length + lrLights.Length];
-            Utility.componentButtons = new Button[lrDoors.Length + lrLights.Length];
+            Utility.components = new Component[Utility.lrDoors.Length + Utility.lrLights.Length];
+            Utility.componentButtons = new Button[Utility.lrDoors.Length + Utility.lrLights.Length];
             
-            for(int i=0; i< lrDoors.Length + lrLights.Length; i++)
+            for(int i=0; i< Utility.lrDoors.Length + Utility.lrLights.Length; i++)
             {
-                if(i<lrDoors.Length)
+                if(i<Utility.lrDoors.Length)
                 {
-                    Utility.components[i] = serializer.Deserialize<Component>(lrDoors[i].ToString());
+                    Utility.components[i] = serializer.Deserialize<Component>(Utility.lrDoors[i].ToString());
                     Utility.components[i].type = "Door";
                 }
 
                 else
                 {
-                    Utility.components[i] = serializer.Deserialize<Component>(lrLights[i - lrDoors.Length].ToString());
+                    Utility.components[i] = serializer.Deserialize<Component>(Utility.lrLights[i - Utility.lrDoors.Length].ToString());
                     Utility.components[i].type = "Light";
                 }
  
@@ -104,77 +107,89 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 margin.Left = 5;
                 margin.Right = 5;
                 margin.Top = 9;
-                newComponent.Tag = Utility.components[i];
 
-                if(i<lrDoors.Length)
+                Uri resourceUri = null;
+
+                if (i < Utility.lrDoors.Length)
                 {
-                    newComponent.Content = "Door " + (i + 1).ToString();
+                    newComponent.Content = (i + 1).ToString();
+                    newComponent.Tag = "Door";
+                    resourceUri = new Uri("Images/garage.png", UriKind.Relative);
                 }
-                
+
                 else
                 {
-                    newComponent.Content = "Light " + (i + 1 - lrDoors.Length).ToString();
+                    newComponent.Content = (i + 1 - Utility.lrDoors.Length).ToString();
+                    newComponent.Tag = "Light";
+                    resourceUri = new Uri("Images/light.png", UriKind.Relative);
                 }
-                
+
+                var brush = new ImageBrush();
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
                 newComponent.HorizontalAlignment = HorizontalAlignment.Left;
                 newComponent.VerticalAlignment = VerticalAlignment.Top;
                 newComponent.HorizontalContentAlignment = HorizontalAlignment.Center;
-                newComponent.VerticalContentAlignment = VerticalAlignment.Center;
-                newComponent.Width = 124;
-                newComponent.Height = 30;
+                newComponent.VerticalContentAlignment = VerticalAlignment.Top;
+                newComponent.Width = 60;
+                newComponent.Height = 60;
                 newComponent.Margin = margin;
+                newComponent.Background = brush;
                 newComponent.AddHandler(Button.ClickEvent, new RoutedEventHandler(button_Click));
                 Utility.componentButtons[i] = newComponent;
-                wp.Children.Add(newComponent);
+
+                if(Utility.doorBrush == null && Utility.components[i].type.ToLower() == "door")
+                {
+                    Utility.doorBrush = new ImageBrush();
+                    Utility.doorBrush = brush;
+                }
+
+                if(Utility.lightBrush == null && Utility.components[i].type.ToLower() == "light")
+                {
+                    Utility.lightBrush = new ImageBrush();
+                    Utility.lightBrush = brush;
+                }
+
+                if (i < Utility.lrDoors.Length)
+                {
+                    wpLight.Children.Add(newComponent);
+                }
+
+                else
+                {
+                    wpDoor.Children.Add(newComponent);
+                }
             }
 
            
         }
 
+        void initializeRefresh()
+        {
+            var brush = new ImageBrush();
+            Uri resourceUri = new Uri("Images/refresh.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            refresh.Background = brush;
+        }
 
         void button_Click(object sender, EventArgs e)
         {
-            Button button = sender as Button;
 
-            if (!SelectionMode.IsChecked.Value)
+            resetButtons();
+
+            Button selectedComponent = (Button)sender;
+
+            Utility.componentIndex = Int32.Parse(selectedComponent.Content.ToString()) - 1;
+
+            if((string)selectedComponent.Tag == "Light")
             {
-                Component component = (Component)button.Tag;
-
-                string data =
-                    "Type:" + component.type + "\n" +
-                    "Number:" + component.number.ToString() + "\n" +
-                    "Status: " + component.state + "\n" +
-                    "Position: " + component.position
-                ;
-
-
-                ModernDialog.ShowMessage(data, "Component Status", MessageBoxButton.OK);
+                Utility.componentIndex += Utility.lrDoors.Length;
             }
 
-            else
-            {
-                for(int i=0; i<Utility.componentButtons.Length; i++)
-                {
-                    Utility.componentButtons[i].ClearValue(BackgroundProperty);
-                }
-
-                button.Background = Brushes.PowderBlue;
-                CommandButton.IsEnabled = true;
-            }
-        }
-
-        private void CommandButton_Click(object sender, RoutedEventArgs e)
-        {
-            Button selectedComponent = null;
-
-            for(int i=0; i<Utility.componentButtons.Length; i++)
-            {
-                if(Utility.componentButtons[i].Background == Brushes.PowderBlue)
-                {
-                    selectedComponent = Utility.componentButtons[i];
-                    Utility.componentIndex = i;
-                }
-            }
+            selectedComponent = Utility.componentButtons[Utility.componentIndex];
 
             Component component = Utility.components[Utility.componentIndex];
 
@@ -182,31 +197,107 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                     "Type:" + component.type + "\n" +
                     "Number: " + component.number.ToString() + "\n" +
                     "Position: " + component.position.ToString() + "\n" +
-                    "Status: " + component.state + "\n" 
+                    "Status: " + component.state + "\n"
                 ;
 
             ModernDialog commandView = new CommandView(component, data);
+            commandView.Buttons = new Button[] { commandView.CancelButton };
             commandView.ShowDialog();
-            Utility.componentButtons[Utility.componentIndex].Background = Brushes.Gold;
-
+            
         }
 
-        private void SelectionMode_Checked(object sender, RoutedEventArgs e)
+        void resetButtons()
         {
-            for (int i = 0; i < Utility.componentButtons.Length; i++)
+            for (int i = 0; i < Utility.components.Length; i++)
             {
-                Utility.componentButtons[i].ClearValue(BackgroundProperty);
+                if (Utility.components[i].type.ToLower() == "door")
+                {
+                    Utility.componentButtons[i].Background = Utility.doorBrush;
+                }
+
+                else
+                {
+                    Utility.componentButtons[i].Background = Utility.lightBrush;
+                }
             }
         }
 
-        private void SelectionMode_Unchecked(object sender, RoutedEventArgs e)
+        private void refresh_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < Utility.componentButtons.Length; i++)
+
+            refresh.Cursor = Cursors.Wait;
+
+            //Get the doors
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/door");
+            httpWebRequest.Method = "GET";
+            httpWebRequest.ContentType = "application/json";
+            WebHeaderCollection myWebHeaderCollection = httpWebRequest.Headers;
+            myWebHeaderCollection.Add("Authorization:" + Utility.user.token);
+            myWebHeaderCollection.Add("item:door");
+            var serializer = new JavaScriptSerializer();
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                Utility.componentButtons[i].ClearValue(BackgroundProperty);
+                var result = streamReader.ReadToEnd();
+
+                Utility.lrDoors = serializer.Deserialize<dynamic>(result);
+
+                for (int i = 0; i < Utility.lrDoors.Length; i++)
+                {
+                    Utility.lrDoors[i] = serializer.Serialize(Utility.lrDoors[i]);
+                }
             }
 
-            CommandButton.IsEnabled = false;
+            //Get the lights
+            httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/light");
+            httpWebRequest.Method = "GET";
+            httpWebRequest.ContentType = "application/json";
+            myWebHeaderCollection = httpWebRequest.Headers;
+            myWebHeaderCollection.Add("Authorization:" + Utility.user.token);
+            myWebHeaderCollection.Add("item:light");
+            httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+
+                Utility.lrLights = serializer.Deserialize<dynamic>(result);
+
+                for (int i = 0; i < Utility.lrLights.Length; i++)
+                {
+                    Utility.lrLights[i] = serializer.Serialize(Utility.lrLights[i]);
+                }
+            }
+
+            //Put them together
+            for (int i = 0; i < Utility.lrDoors.Length + Utility.lrLights.Length; i++)
+            {
+                if (i < Utility.lrDoors.Length)
+                {
+                    Utility.components[i] = serializer.Deserialize<Component>(Utility.lrDoors[i].ToString());
+                    Utility.components[i].type = "Door";
+                }
+
+                else
+                {
+                    Utility.components[i] = serializer.Deserialize<Component>(Utility.lrLights[i - Utility.lrDoors.Length].ToString());
+                    Utility.components[i].type = "Light";
+                }
+            }
+
+            ModernDialog.ShowMessage("Components Successfully Updated", "Update", MessageBoxButton.OK, null);
+            resetButtons();
+        }
+
+        private void refresh_MouseEnter(object sender, MouseEventArgs e)
+        {
+            refresh.Cursor = Cursors.Hand;
+        }
+
+        private void refresh_MouseLeave(object sender, MouseEventArgs e)
+        {
+            refresh.Cursor = Cursors.Arrow;
         }
     }
 }

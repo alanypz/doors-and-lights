@@ -25,5 +25,10 @@ namespace City_Of_Orlando_Automated_Controller
         {
             InitializeComponent();
         }
+
+        public void logout(string val)
+        {
+            Display.DisplayName = val;
+        }
     }
 }

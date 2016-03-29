@@ -12,6 +12,10 @@ class ComponentCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet var imageView: UIImageView!
     
+    @IBOutlet var positionView: UIImageView!
+    
     @IBOutlet var titleLabel: UILabel!
+    
+    @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     
 }

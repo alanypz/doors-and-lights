@@ -19,8 +19,8 @@ class ServerCoordinator {
     
     class Routes {
         
-        static let host =  "http://localhost:8080"
-//        static let host =  "http://10.0.1.5:8080" //  Local IP access
+  //      static let host =  "http://localhost:8080"
+      static let host =  "http://10.0.1.5:8080" //  Local IP access
         
         class func authenticate() -> NSURL {
             

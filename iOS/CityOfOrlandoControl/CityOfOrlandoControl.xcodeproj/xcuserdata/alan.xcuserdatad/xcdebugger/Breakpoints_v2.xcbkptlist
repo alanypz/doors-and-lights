@@ -2,4 +2,70 @@
 <Bucket
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CityOfOrlandoControl/ComponentViewController.swift"
+            timestampString = "480878988.138473"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
+            landmarkName = "statusChanged(_:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CityOfOrlandoControl.ComponentViewController.statusChanged (__ObjC.NSNotification) -&gt; ()"
+                  moduleName = "CityOfOrlandoControl"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alan/Desktop/CityOfOrlandoControl/CityOfOrlandoControl/ComponentViewController.swift"
+                  timestampString = "480878988.140894"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "356"
+                  endingLineNumber = "356"
+                  offsetFromSymbolStart = "1517">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CityOfOrlandoControl.ComponentViewController.statusChanged (__ObjC.NSNotification) -&gt; ()"
+                  moduleName = "CityOfOrlandoControl"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/alan/Desktop/CityOfOrlandoControl/CityOfOrlandoControl/ComponentViewController.swift"
+                  timestampString = "480878988.141038"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "356"
+                  endingLineNumber = "356"
+                  offsetFromSymbolStart = "1617">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CityOfOrlandoControl/ActionOperation.swift"
+            timestampString = "480880167.051568"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "requestAction(URLRequest:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -36,7 +36,7 @@ class SettingsTableViewController: UITableViewController {
 
     }
     
-    @IBOutlet weak var notificationSwitch: UISwitch!        
+    @IBOutlet weak var closeDetailedViewSwitch: UISwitch!
     
     @IBAction func notificationsToggle(sender: UISwitch) {
         delegate?.notificationsSetting(value: sender.on)

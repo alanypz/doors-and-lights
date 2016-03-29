@@ -58,7 +58,11 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             
         case 0:
             
-            return collectionView.dequeueReusableCellWithReuseIdentifier("Empty", forIndexPath: indexPath)
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Empty", forIndexPath: indexPath)
+            
+            cell.layer.borderColor = UIColor.darkGrayColor().CGColor
+
+            return cell
             
         default:
             
@@ -82,32 +86,92 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             
             cell.titleLabel.text = "#\(component.number)"
             
-            cell.imageView.image = UIImage(named: "Door")
+            cell.imageView.image = UIImage(named: "Garage")
             
+            cell.positionView.image = findPositionIcon(component.position)
+            
+            configureActivity(component.state, activity: cell.activityIndicatorView, positionView: cell.positionView)
+
             let enabled = shouldEnableComponent(component)
             
             cell.alpha = enabled ? 1 : 0.35
             
             cell.tintAdjustmentMode = enabled ? .Automatic : .Dimmed
+            
+            cell.layer.borderWidth = 0.5
+            
+            cell.layer.borderColor = UIColor.darkGrayColor().CGColor
             
         case let (component as Light):
             
             cell.titleLabel.text = "#\(component.number)"
             
-            cell.imageView.image = UIImage(named: "Light")
+            cell.imageView.image = UIImage(named: "Bulb")
             
+            cell.positionView.image = findPositionIcon(component.position)
+            
+            configureActivity(component.state, activity: cell.activityIndicatorView, positionView: cell.positionView)
+
             let enabled = shouldEnableComponent(component)
             
             cell.alpha = enabled ? 1 : 0.35
             
             cell.tintAdjustmentMode = enabled ? .Automatic : .Dimmed
             
+            cell.layer.borderWidth = 0.5
+
+            cell.layer.borderColor = UIColor.darkGrayColor().CGColor
+
         default:
             
             fatalError("Invalid Component Class: \(component.dynamicType)")
             
         }
         
+    }
+    
+    func findPositionIcon(position: Component.Position) -> UIImage {
+        
+        switch position {
+            
+        case .Lowered:
+            
+            return UIImage(named: "DownArrow")!
+            
+        case .Raised:
+            
+            return UIImage(named: "UpArrow")!
+            
+        case .Error:
+            
+            return UIImage(named: "Warning")!
+            
+        }
+        
+    }
+    
+    func configureActivity(state: Component.State, activity: UIActivityIndicatorView, positionView: UIImageView) {
+    
+        switch state {
+            
+        case .Executing:
+            
+            positionView.hidden = true
+            
+            activity.startAnimating()
+            
+        case .Stopped:
+           
+            positionView.hidden = false
+            
+            if activity.isAnimating() {
+            
+                activity.stopAnimating()
+            
+            }
+            
+        }
+    
     }
     
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
@@ -215,18 +279,7 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
         }
         
     }
-    
-    // MARK: - Collection View Delegate Flow Layout
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        traitCollection.userInterfaceIdiom
-        
-        return CGSize(width: 100, height: 100)
-        
-    }
-    
-    
     // MARK: - Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

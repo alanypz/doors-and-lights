@@ -168,7 +168,7 @@ class ActionOperation: ServerOperation {
             
             request.addValue(String(number), forHTTPHeaderField: "door")
             
-            requestAction(URLRequest: request)
+            requestStatus(URLRequest: request)
             
         case .Light:
             

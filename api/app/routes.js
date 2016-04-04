@@ -45,6 +45,217 @@ module.exports = function (app, passport) {
             console.log('door 3 created');
         }
     });
+    var door4 = new Door({number: 4, state: 'stopped', position: 'lowered', ip: '10.10.10.4' });
+    door4.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('door 4 created');
+        }
+    });
+
+    var door5 = new Door({number: 5, state: 'stopped', position: 'lowered', ip: '10.10.10.5'});
+    door5.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 5 created');
+        }
+    });
+
+    var door6 = new Door({number: 6, state: 'stopped', position: 'lowered', ip: '10.10.10.6'});
+    door6.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 6 created');
+        }
+    });
+
+    var door7 = new Door({number: 7, state: 'stopped', position: 'lowered', ip: '10.10.10.7' });
+    door7.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('door 7 created');
+        }
+    });
+
+    var door8 = new Door({number: 8, state: 'stopped', position: 'lowered', ip: '10.10.10.8'});
+    door8.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 8 created');
+        }
+    });
+
+    var door9 = new Door({number: 9, state: 'stopped', position: 'lowered', ip: '10.10.10.9'});
+    door9.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 9 created');
+        }
+    });
+    var door10 = new Door({number: 10, state: 'stopped', position: 'lowered', ip: '10.10.10.10' });
+    door10.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('door 10 created');
+        }
+    });
+
+    var door11 = new Door({number: 11, state: 'stopped', position: 'lowered', ip: '10.10.10.11'});
+    door11.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 11 created');
+        }
+    });
+
+    var door12 = new Door({number: 12, state: 'stopped', position: 'lowered', ip: '10.10.10.12'});
+    door12.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 12 created');
+        }
+    });
+
+    var door13 = new Door({number: 13, state: 'stopped', position: 'lowered', ip: '10.10.10.13' });
+    door13.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('door 13 created');
+        }
+    });
+
+    var door14 = new Door({number: 14, state: 'stopped', position: 'lowered', ip: '10.10.10.14'});
+    door14.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 14 created');
+        }
+    });
+
+    var door15 = new Door({number: 15, state: 'stopped', position: 'lowered', ip: '10.10.10.15'});
+    door15.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 15 created');
+        }
+    });
+    var door16 = new Door({number: 16, state: 'stopped', position: 'lowered', ip: '10.10.10.16' });
+    door16.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('door 16 created');
+        }
+    });
+
+    var door17 = new Door({number: 17, state: 'stopped', position: 'lowered', ip: '10.10.10.17'});
+    door17.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 17 created');
+        }
+    });
+
+    var door18 = new Door({number: 18, state: 'stopped', position: 'lowered', ip: '10.10.10.18'});
+    door18.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 18 created');
+        }
+    });
+
+    var door19 = new Door({number: 19, state: 'stopped', position: 'lowered', ip: '10.10.10.19' });
+    door19.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('door 19 created');
+        }
+    });
+
+    var door20 = new Door({number: 20, state: 'stopped', position: 'lowered', ip: '10.10.10.20'});
+    door20.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 20 created');
+        }
+    });
+
+    var door21 = new Door({number: 21, state: 'stopped', position: 'lowered', ip: '10.10.10.21'});
+    door21.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 21 created');
+        }
+    });
+    var door22 = new Door({number: 22, state: 'stopped', position: 'lowered', ip: '10.10.10.22' });
+    door22.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('door 22 created');
+        }
+    });
+
+    var door23 = new Door({number: 23, state: 'stopped', position: 'lowered', ip: '10.10.10.23'});
+    door23.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 23 created');
+        }
+    });
+
+    var door24 = new Door({number: 24, state: 'stopped', position: 'lowered', ip: '10.10.10.24'});
+    door24.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 24 created');
+        }
+    });
+
+    var door25 = new Door({number: 25, state: 'stopped', position: 'lowered', ip: '10.10.10.25' });
+    door25.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('door 25 created');
+        }
+    });
+
+    var door26 = new Door({number: 26, state: 'stopped', position: 'lowered', ip: '10.10.10.26'});
+    door26.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 26 created');
+        }
+    });
+
+    var door27 = new Door({number: 27, state: 'stopped', position: 'lowered', ip: '10.10.10.27'});
+    door27.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 27 created');
+        }
+    });
+    var door28 = new Door({number: 28, state: 'stopped', position: 'lowered', ip: '10.10.10.28' });
+    door28.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('door 28 created');
+        }
+    });
+
+    var door29 = new Door({number: 29, state: 'stopped', position: 'lowered', ip: '10.10.10.29'});
+    door29.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 29 created');
+        }
+    });
+
+    var door30 = new Door({number: 30, state: 'stopped', position: 'lowered', ip: '10.10.10.30'});
+    door30.save(function (err) {
+        if (err) {
+        } else {
+            console.log('door 30 created');
+        }
+    });
 
     var light1 = new Light({ number: 1, state: 'stopped', position: 'raised', ip: '10.10.20.1' });
     light1.save(function (err) {
@@ -67,6 +278,218 @@ module.exports = function (app, passport) {
         if (err) {
         } else {
             console.log('light 3 created');
+        }
+    });
+
+    var light4 = new Light({number: 4, state: 'stopped', position: 'lowered', ip: '10.10.10.4' });
+    light4.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 4 created');
+        }
+    });
+
+    var light5 = new Light({number: 5, state: 'stopped', position: 'lowered', ip: '10.10.10.5'});
+    light5.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 5 created');
+        }
+    });
+
+    var light6 = new Light({number: 6, state: 'stopped', position: 'lowered', ip: '10.10.10.6'});
+    light6.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 6 created');
+        }
+    });
+
+    var light7 = new Light({number: 7, state: 'stopped', position: 'lowered', ip: '10.10.10.7' });
+    light7.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 7 created');
+        }
+    });
+
+    var light8 = new Light({number: 8, state: 'stopped', position: 'lowered', ip: '10.10.10.8'});
+    light8.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 8 created');
+        }
+    });
+
+    var light9 = new Light({number: 9, state: 'stopped', position: 'lowered', ip: '10.10.10.9'});
+    light9.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 9 created');
+        }
+    });
+    var light10 = new Light({number: 10, state: 'stopped', position: 'lowered', ip: '10.10.10.10' });
+    light10.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 10 created');
+        }
+    });
+
+    var light11 = new Light({number: 11, state: 'stopped', position: 'lowered', ip: '10.10.10.11'});
+    light11.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 11 created');
+        }
+    });
+
+    var light12 = new Light({number: 12, state: 'stopped', position: 'lowered', ip: '10.10.10.12'});
+    light12.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 12 created');
+        }
+    });
+
+    var light13 = new Light({number: 13, state: 'stopped', position: 'lowered', ip: '10.10.10.13' });
+    light13.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 13 created');
+        }
+    });
+
+    var light14 = new Light({number: 14, state: 'stopped', position: 'lowered', ip: '10.10.10.14'});
+    light14.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 14 created');
+        }
+    });
+
+    var light15 = new Light({number: 15, state: 'stopped', position: 'lowered', ip: '10.10.10.15'});
+    light15.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 15 created');
+        }
+    });
+    var light16 = new Light({number: 16, state: 'stopped', position: 'lowered', ip: '10.10.10.16' });
+    light16.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 16 created');
+        }
+    });
+
+    var light17 = new Light({number: 17, state: 'stopped', position: 'lowered', ip: '10.10.10.17'});
+    light17.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 17 created');
+        }
+    });
+
+    var light18 = new Light({number: 18, state: 'stopped', position: 'lowered', ip: '10.10.10.18'});
+    light18.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 18 created');
+        }
+    });
+
+    var light19 = new Light({number: 19, state: 'stopped', position: 'lowered', ip: '10.10.10.19' });
+    light19.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 19 created');
+        }
+    });
+
+    var light20 = new Light({number: 20, state: 'stopped', position: 'lowered', ip: '10.10.10.20'});
+    light20.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 20 created');
+        }
+    });
+
+    var light21 = new Light({number: 21, state: 'stopped', position: 'lowered', ip: '10.10.10.21'});
+    light21.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 21 created');
+        }
+    });
+    var light22 = new Light({number: 22, state: 'stopped', position: 'lowered', ip: '10.10.10.22' });
+    light22.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 22 created');
+        }
+    });
+
+    var light23 = new Light({number: 23, state: 'stopped', position: 'lowered', ip: '10.10.10.23'});
+    light23.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 23 created');
+        }
+    });
+
+    var light24 = new Light({number: 24, state: 'stopped', position: 'lowered', ip: '10.10.10.24'});
+    light24.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 24 created');
+        }
+    });
+
+    var light25 = new Light({number: 25, state: 'stopped', position: 'lowered', ip: '10.10.10.25' });
+    light25.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 25 created');
+        }
+    });
+
+    var light26 = new Light({number: 26, state: 'stopped', position: 'lowered', ip: '10.10.10.26'});
+    light26.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 26 created');
+        }
+    });
+
+    var light27 = new Light({number: 27, state: 'stopped', position: 'lowered', ip: '10.10.10.27'});
+    light27.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 27 created');
+        }
+    });
+    var light28 = new Light({number: 28, state: 'stopped', position: 'lowered', ip: '10.10.10.28' });
+    light28.save(function (err) {
+        if (err) {// ...
+        } else {
+            console.log('light 28 created');
+        }
+    });
+
+    var light29 = new Light({number: 29, state: 'stopped', position: 'lowered', ip: '10.10.10.29'});
+    light29.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 29 created');
+        }
+    });
+
+    var light30 = new Light({number: 30, state: 'stopped', position: 'lowered', ip: '10.10.10.30'});
+    light30.save(function (err) {
+        if (err) {
+        } else {
+            console.log('light 30 created');
         }
     });
 

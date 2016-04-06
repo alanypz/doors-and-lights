@@ -18,14 +18,20 @@ using System.Web.Script.Serialization;
 using FirstFloor.ModernUI.Windows.Controls;
 using System.Windows.Resources;
 using System.Threading;
+using System.ComponentModel;
+using City_Of_Orlando_Automated_Controller.HelperClasses;
 
 namespace City_Of_Orlando_Automated_Controller.Pages
 {
     /// <summary>
     /// Interaction logic for ComponentView.xaml
     /// </summary>
-    public partial class ComponentView : UserControl
+    public partial class ComponentView : UserControl, INotifyPropertyChanged
     {
+
+        private bool _panelLoading;
+        private string _panelMainMessage = "Main Loading Message";
+        private string _panelSubMessage = "Sub Loading Message";
 
         public ComponentView()
         {
@@ -37,6 +43,9 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
             // init refresh
             initializeRefresh();
+
+            // Data Context
+            DataContext = this;
         }
 
         void initializeComponents()
@@ -112,14 +121,42 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
                 if (i < Utility.lrDoors.Length)
                 {
-                    newComponent.Content = (i + 1).ToString();
+                    if (i < 10)
+                    {
+                        newComponent.Content = " " + (i + 1).ToString();
+                    }
+
+                    else
+                    {
+                        newComponent.Content = (i + 1).ToString();
+                    }
+
                     newComponent.Tag = "Door";
-                    resourceUri = new Uri("Images/garage.png", UriKind.Relative);
+
+                    if(Utility.components[i].position == "raised")
+                    {
+                        resourceUri = new Uri("Images/garage_raised.png", UriKind.Relative);
+                    }
+
+                    else
+                    {
+                        resourceUri = new Uri("Images/garage_lowered.png", UriKind.Relative);
+                    }
+                    
                 }
 
                 else
                 {
-                    newComponent.Content = (i + 1 - Utility.lrDoors.Length).ToString();
+                    if (i < 10)
+                    {
+                        newComponent.Content = " " + (i + 1 - Utility.lrDoors.Length).ToString();
+                    }
+
+                    else
+                    {
+                        newComponent.Content = (i + 1 - Utility.lrDoors.Length).ToString();
+                    }
+                    
                     newComponent.Tag = "Light";
                     resourceUri = new Uri("Images/light.png", UriKind.Relative);
                 }
@@ -130,10 +167,10 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 brush.ImageSource = temp;
                 newComponent.HorizontalAlignment = HorizontalAlignment.Left;
                 newComponent.VerticalAlignment = VerticalAlignment.Top;
-                newComponent.HorizontalContentAlignment = HorizontalAlignment.Center;
+                newComponent.HorizontalContentAlignment = HorizontalAlignment.Left;
                 newComponent.VerticalContentAlignment = VerticalAlignment.Top;
-                newComponent.Width = 60;
-                newComponent.Height = 60;
+                newComponent.Width = 75;
+                newComponent.Height = 52;
                 newComponent.Margin = margin;
                 newComponent.Background = brush;
                 newComponent.AddHandler(Button.ClickEvent, new RoutedEventHandler(button_Click));
@@ -153,12 +190,12 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
                 if (i < Utility.lrDoors.Length)
                 {
-                    wpLight.Children.Add(newComponent);
+                    wpDoor.Children.Add(newComponent);
                 }
 
                 else
                 {
-                    wpDoor.Children.Add(newComponent);
+                    wpLight.Children.Add(newComponent);
                 }
             }
 
@@ -177,8 +214,6 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
         void button_Click(object sender, EventArgs e)
         {
-
-            resetButtons();
 
             Button selectedComponent = (Button)sender;
 
@@ -200,26 +235,16 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                     "Status: " + component.state + "\n"
                 ;
 
-            ModernDialog commandView = new CommandView(component, data);
+            ModernDialog commandView = new CommandView(component, data, this);
             commandView.Buttons = new Button[] { commandView.CancelButton };
             commandView.ShowDialog();
-            
-        }
 
-        void resetButtons()
-        {
-            for (int i = 0; i < Utility.components.Length; i++)
+            if(Utility.cancel == 0)
             {
-                if (Utility.components[i].type.ToLower() == "door")
-                {
-                    Utility.componentButtons[i].Background = Utility.doorBrush;
-                }
-
-                else
-                {
-                    Utility.componentButtons[i].Background = Utility.lightBrush;
-                }
+                PanelSubMessage = "";
+                ShowPanelCommand.Execute(null);
             }
+            
         }
 
         private void refresh_Click(object sender, RoutedEventArgs e)
@@ -287,7 +312,6 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             }
 
             ModernDialog.ShowMessage("Components Successfully Updated", "Update", MessageBoxButton.OK, null);
-            resetButtons();
         }
 
         private void refresh_MouseEnter(object sender, MouseEventArgs e)
@@ -299,5 +323,136 @@ namespace City_Of_Orlando_Automated_Controller.Pages
         {
             refresh.Cursor = Cursors.Arrow;
         }
+
+        //New Stuff
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [panel loading].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [panel loading]; otherwise, <c>false</c>.
+        /// </value>
+        public bool PanelLoading
+        {
+            get
+            {
+                return _panelLoading;
+            }
+            set
+            {
+                _panelLoading = value;
+                RaisePropertyChanged("PanelLoading");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the panel main message.
+        /// </summary>
+        /// <value>The panel main message.</value>
+        public string PanelMainMessage
+        {
+            get
+            {
+                return _panelMainMessage;
+            }
+            set
+            {
+                _panelMainMessage = value;
+                RaisePropertyChanged("PanelMainMessage");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the panel sub message.
+        /// </summary>
+        /// <value>The panel sub message.</value>
+        public string PanelSubMessage
+        {
+            get
+            {
+                return _panelSubMessage;
+            }
+            set
+            {
+                _panelSubMessage = value;
+                RaisePropertyChanged("PanelSubMessage");
+            }
+        }
+
+        /// <summary>
+        /// Gets the panel close command.
+        /// </summary>
+        public ICommand PanelCloseCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    // Your code here.
+                    // You may want to terminate the running thread etc.
+                    PanelLoading = false;
+                });
+            }
+        }
+
+        /// <summary>
+        /// Gets the show panel command.
+        /// </summary>
+        public ICommand ShowPanelCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    PanelLoading = true;
+                });
+            }
+        }
+
+        /// <summary>
+        /// Gets the hide panel command.
+        /// </summary>
+        public ICommand HidePanelCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    PanelLoading = false;
+                });
+            }
+        }
+
+        /// <summary>
+        /// Gets the change sub message command.
+        /// </summary>
+        public ICommand ChangeSubMessageCommand
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    PanelSubMessage = string.Format("Message: {0}", DateTime.Now);
+                });
+            }
+        }
+
+        /// <summary>
+        /// Raises the property changed.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
     }
 }

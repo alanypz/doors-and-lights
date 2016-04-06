@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="690">
-    
+             d:DesignHeight="500" d:DesignWidth="690"
+             xmlns:ctr="clr-namespace:City_Of_Orlando_Automated_Controller.Controls">
+
     <Grid Name="componentGrid" Style="{StaticResource ContentRoot}">
         <ScrollViewer>
             <StackPanel Name="sp" MinWidth="200" Orientation="Vertical">
@@ -23,7 +24,7 @@
                     <TextBlock FontWeight="Bold" Text="Doors"/>
                 </WrapPanel>
 
-                <WrapPanel Name="wpLight" Orientation="Horizontal">
+                <WrapPanel Name="wpDoor" Orientation="Horizontal">
 
                 </WrapPanel>
 
@@ -35,12 +36,22 @@
                     <TextBlock FontWeight="Bold" Text="Lights"/>
                 </WrapPanel>
 
-                <WrapPanel Name="wpDoor" Orientation="Horizontal">
+                <WrapPanel Name="wpLight" Orientation="Horizontal">
 
                 </WrapPanel>
                 <!--<TextBlock Text="Content goes here" />-->
             </StackPanel>
         </ScrollViewer>
-        <Button x:Name="refresh" Content="" HorizontalAlignment="Left" Margin="598,0,0,0" VerticalAlignment="Top" Height="50"  Width="50" BorderThickness="0" Click="refresh_Click" MouseEnter="refresh_MouseEnter" MouseLeave="refresh_MouseLeave"/>
+        <Button x:Name="refresh" Content="" HorizontalAlignment="Left" Margin="625,0,-17,0" VerticalAlignment="Top" Height="50"  Width="50" BorderThickness="0" Click="refresh_Click" MouseEnter="refresh_MouseEnter" MouseLeave="refresh_MouseLeave"/>
+
+        <Grid VerticalAlignment="Bottom">
+            <ctr:LoadingPanel x:Name="loadingPanel"
+                        IsLoading="{Binding PanelLoading}"
+                        Message="{Binding PanelMainMessage}"
+                        SubMessage="{Binding PanelSubMessage}" 
+                        ClosePanelCommand="{Binding PanelCloseCommand}" />
+        </Grid>
+
     </Grid>
+
 </UserControl>

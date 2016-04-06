@@ -20,6 +20,8 @@ using System.Net.Http;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Resources;
+using City_Of_Orlando_Automated_Controller.HelperClasses;
+using City_Of_Orlando_Automated_Controller.Pages;
 
 namespace City_Of_Orlando_Automated_Controller
 {
@@ -30,8 +32,10 @@ namespace City_Of_Orlando_Automated_Controller
     {
         //Represents the string data of the referenced component
         private static Component componentData;
+        private static ComponentView loadingBar = null;
+       
 
-        public CommandView(Component componentData, string data)
+        public CommandView(Component componentData, string data, ComponentView componentView)
         {
             InitializeComponent();
             
@@ -44,10 +48,17 @@ namespace City_Of_Orlando_Automated_Controller
             // define component status
             componentStatus.Text = data;
             CommandView.componentData = componentData;
+            Utility.cancel = 1;
+
+            loadingBar = componentView;
+
         }
 
         private void Raise_Click(object sender, RoutedEventArgs e)
         {
+            Utility.cancel = 0;
+            loadingBar.PanelMainMessage = "Raising " + componentData.type + " " + componentData.number;
+
             BackgroundWorker bw = new BackgroundWorker();
             string type = componentData.type.ToLower();
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/" + type + "s/raise");
@@ -83,11 +94,15 @@ namespace City_Of_Orlando_Automated_Controller
 
                 } 
             }
+
             Close();
         }
 
         private void Lower_Click(object sender, RoutedEventArgs e)
         {
+            Utility.cancel = 0;
+            loadingBar.PanelMainMessage = "Lowering " + componentData.type + " " + componentData.number;
+
             BackgroundWorker bw = new BackgroundWorker();
             string type = componentData.type;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/" + type.ToLower() + "s/lower");
@@ -203,9 +218,10 @@ namespace City_Of_Orlando_Automated_Controller
                 BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                 brush.ImageSource = temp;
                 Utility.componentButtons[Utility.componentIndex].Background = brush;
+
+                loadingBar.HidePanelCommand.Execute(null);
             }));
 
-            Thread.Sleep(5000);
         }
     }
 }

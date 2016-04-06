@@ -51,12 +51,12 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 var result = streamReader.ReadToEnd();
                 
                 Dictionary<string,object> lr = serializer.Deserialize<dynamic>(result);
-                user.token = (string)lr["token"];
                 Utility.user = user;
 
                 if(lr.ContainsValue(true))
                 {
                     BBCodeBlock bs = new BBCodeBlock();
+                    user.token = (string)lr["token"];
                     try
                     {
                         bs.LinkNavigator.Navigate(new Uri("/Pages/ComponentView.xaml", UriKind.Relative), lg);

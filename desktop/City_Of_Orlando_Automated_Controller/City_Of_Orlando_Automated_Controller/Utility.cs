@@ -20,5 +20,6 @@ namespace City_Of_Orlando_Automated_Controller
         public static object[] lrDoors = null;
         public static object[] lrLights = null;
         public static string title { get; set; }
+        public static int cancel { get; set; }
     }
 }

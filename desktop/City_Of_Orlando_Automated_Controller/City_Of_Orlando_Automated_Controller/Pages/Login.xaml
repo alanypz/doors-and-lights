@@ -7,11 +7,12 @@
              d:DesignHeight="500" d:DesignWidth="690">
     <Grid Style="{StaticResource ContentRoot}">
 
-        <Button x:Name="button" Content="Login" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="124" Height="30" Margin="268,321,0,0" Click="button_Click" />
+        <Button x:Name="button" Content="Login" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="90" Height="30" Margin="354,323,0,0" Click="button_Click" />
         <TextBox x:Name="username" HorizontalAlignment="Left" Height="22" Margin="324,252,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <PasswordBox x:Name="pass" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="120" Margin="324,285,0,0"/>
         <TextBlock  HorizontalAlignment="Left" Margin="251,252,0,0" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Height="22" Width="68"/>
         <TextBlock  HorizontalAlignment="Left" Margin="251,285,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Height="22" Width="68"/>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,42,0,0" TextAlignment="Center" TextWrapping="Wrap" Text="City of Orlando Automated Controller" VerticalAlignment="Top" Height="122" Width="638" FontSize="40"/>
+        <Button x:Name="Signup" Content="Sign Up" HorizontalAlignment="Left" Margin="251,323,0,0" VerticalAlignment="Top" Width="90" Height="30" Click="Signup_Click"/>
     </Grid>
 </UserControl>

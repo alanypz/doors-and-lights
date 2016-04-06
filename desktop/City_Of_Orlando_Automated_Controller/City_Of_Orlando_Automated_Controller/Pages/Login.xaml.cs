@@ -87,6 +87,12 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             pass.Password = "";
         }
 
-        
+        private void Signup_Click(object sender, RoutedEventArgs e)
+        {
+
+            ModernDialog signup = new Signup();
+            signup.ShowDialog();
+
+        }
     }
 }

@@ -25,7 +25,9 @@
                 </WrapPanel>
 
                 <WrapPanel Name="wpDoor" Orientation="Horizontal">
-
+                    <UniformGrid Name="ugDoor" Columns="7">
+                        
+                    </UniformGrid>
                 </WrapPanel>
 
                 <WrapPanel>
@@ -37,7 +39,9 @@
                 </WrapPanel>
 
                 <WrapPanel Name="wpLight" Orientation="Horizontal">
+                    <UniformGrid Name="ugLight" Columns="7">
 
+                    </UniformGrid>
                 </WrapPanel>
                 <!--<TextBlock Text="Content goes here" />-->
             </StackPanel>

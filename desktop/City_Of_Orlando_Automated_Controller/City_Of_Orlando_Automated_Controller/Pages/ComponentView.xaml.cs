@@ -50,6 +50,9 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
         void initializeComponents()
         {
+            Component[] tempDoor = null;
+            Component[] tempLight = null;
+
             //Get the doors
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/door");
             httpWebRequest.Method = "GET";
@@ -70,6 +73,16 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 {
                     Utility.lrDoors[i] = serializer.Serialize(Utility.lrDoors[i]);
                 }
+
+                tempDoor = new Component[Utility.lrDoors.Length];
+
+                for(int i=0; i<Utility.lrDoors.Length; i++)
+                {
+                    tempDoor[i] = serializer.Deserialize<Component>(Utility.lrDoors[i].ToString());
+                }
+
+                tempDoor = tempDoor.OrderBy(x => x.number).ToArray();
+                
             }
 
             //Get the lights
@@ -91,6 +104,15 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 {
                     Utility.lrLights[i] = serializer.Serialize(Utility.lrLights[i]);
                 }
+
+                tempLight = new Component[Utility.lrLights.Length];
+
+                for (int i = 0; i < Utility.lrLights.Length; i++)
+                {
+                    tempLight[i] = serializer.Deserialize<Component>(Utility.lrLights[i].ToString());
+                }
+
+                tempLight = tempLight.OrderBy(x => x.number).ToArray();
             }
 
             //Put them together
@@ -101,13 +123,13 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             {
                 if(i<Utility.lrDoors.Length)
                 {
-                    Utility.components[i] = serializer.Deserialize<Component>(Utility.lrDoors[i].ToString());
+                    Utility.components[i] = tempDoor[i];
                     Utility.components[i].type = "Door";
                 }
 
                 else
                 {
-                    Utility.components[i] = serializer.Deserialize<Component>(Utility.lrLights[i - Utility.lrDoors.Length].ToString());
+                    Utility.components[i] = tempLight[i - Utility.lrDoors.Length];
                     Utility.components[i].type = "Light";
                 }
  
@@ -158,7 +180,17 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                     }
                     
                     newComponent.Tag = "Light";
-                    resourceUri = new Uri("Images/light.png", UriKind.Relative);
+
+                    if (Utility.components[i].position == "raised")
+                    {
+                        resourceUri = new Uri("Images/light_raised.png", UriKind.Relative);
+                    }
+
+                    else
+                    {
+                        resourceUri = new Uri("Images/light_lowered.png", UriKind.Relative);
+                    }
+
                 }
 
                 var brush = new ImageBrush();
@@ -176,26 +208,14 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 newComponent.AddHandler(Button.ClickEvent, new RoutedEventHandler(button_Click));
                 Utility.componentButtons[i] = newComponent;
 
-                if(Utility.doorBrush == null && Utility.components[i].type.ToLower() == "door")
-                {
-                    Utility.doorBrush = new ImageBrush();
-                    Utility.doorBrush = brush;
-                }
-
-                if(Utility.lightBrush == null && Utility.components[i].type.ToLower() == "light")
-                {
-                    Utility.lightBrush = new ImageBrush();
-                    Utility.lightBrush = brush;
-                }
-
                 if (i < Utility.lrDoors.Length)
                 {
-                    wpDoor.Children.Add(newComponent);
+                    ugDoor.Children.Add(newComponent);
                 }
 
                 else
                 {
-                    wpLight.Children.Add(newComponent);
+                    ugLight.Children.Add(newComponent);
                 }
             }
 
@@ -214,6 +234,8 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
         void button_Click(object sender, EventArgs e)
         {
+
+            refresh.IsEnabled = false;
 
             Button selectedComponent = (Button)sender;
 
@@ -298,16 +320,58 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             //Put them together
             for (int i = 0; i < Utility.lrDoors.Length + Utility.lrLights.Length; i++)
             {
+                Uri resourceUri = null;
+
                 if (i < Utility.lrDoors.Length)
                 {
                     Utility.components[i] = serializer.Deserialize<Component>(Utility.lrDoors[i].ToString());
                     Utility.components[i].type = "Door";
+
+                    if (Utility.components[i].position == "raised")
+                    {
+                        resourceUri = new Uri("Images/garage_raised.png", UriKind.Relative);
+                        var brush = new ImageBrush();
+                        StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                        BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                        brush.ImageSource = temp;
+                        Utility.componentButtons[i].Background = brush;
+                    }
+
+                    else
+                    {
+                        resourceUri = new Uri("Images/garage_lowered.png", UriKind.Relative);
+                        var brush = new ImageBrush();
+                        StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                        BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                        brush.ImageSource = temp;
+                        Utility.componentButtons[i].Background = brush;
+                    }
                 }
 
                 else
                 {
                     Utility.components[i] = serializer.Deserialize<Component>(Utility.lrLights[i - Utility.lrDoors.Length].ToString());
                     Utility.components[i].type = "Light";
+
+                    if (Utility.components[i].position == "raised")
+                    {
+                        resourceUri = new Uri("Images/light_raised.png", UriKind.Relative);
+                        var brush = new ImageBrush();
+                        StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                        BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                        brush.ImageSource = temp;
+                        Utility.componentButtons[i].Background = brush;
+                    }
+
+                    else
+                    {
+                        resourceUri = new Uri("Images/light_lowered.png", UriKind.Relative);
+                        var brush = new ImageBrush();
+                        StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                        BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                        brush.ImageSource = temp;
+                        Utility.componentButtons[i].Background = brush;
+                    }
                 }
             }
 

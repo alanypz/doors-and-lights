@@ -9,6 +9,8 @@ var doorRaiseControl = require('./controllers/doorRaise');
 var doorLowerControl = require('./controllers/doorLower');
 var lightRaiseControl = require('./controllers/lightRaise');
 var lightLowerControl = require('./controllers/lightLower');
+var doorStopControl = require('./controllers/doorStop');
+var doorEStopControl = require('./controllers/doorEStop');
 
 //queue initialization
 var raiseDoorQueue = new Queue();
@@ -22,7 +24,7 @@ var logger = require("logger");
 module.exports = function (app, passport) {
 
 
-    var door1 = new Door({number: 1, state: 'stopped', position: 'lowered', ip: '10.10.10.1' });
+    var door1 = new Door({number: 1, state: 'stopped', position: 'lowered', ip: '192.168.43.77' });
     door1.save(function (err) {
         if (err) {// ...
         } else {
@@ -281,7 +283,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light4 = new Light({number: 4, state: 'stopped', position: 'lowered', ip: '10.10.10.4' });
+    var light4 = new Light({number: 4, state: 'stopped', position: 'raised', ip: '10.10.20.4' });
     light4.save(function (err) {
         if (err) {// ...
         } else {
@@ -289,7 +291,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light5 = new Light({number: 5, state: 'stopped', position: 'lowered', ip: '10.10.10.5'});
+    var light5 = new Light({number: 5, state: 'stopped', position: 'raised', ip: '10.10.20.5'});
     light5.save(function (err) {
         if (err) {
         } else {
@@ -297,7 +299,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light6 = new Light({number: 6, state: 'stopped', position: 'lowered', ip: '10.10.10.6'});
+    var light6 = new Light({number: 6, state: 'stopped', position: 'raised', ip: '10.10.20.6'});
     light6.save(function (err) {
         if (err) {
         } else {
@@ -305,7 +307,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light7 = new Light({number: 7, state: 'stopped', position: 'lowered', ip: '10.10.10.7' });
+    var light7 = new Light({number: 7, state: 'stopped', position: 'raised', ip: '10.10.20.7' });
     light7.save(function (err) {
         if (err) {// ...
         } else {
@@ -313,7 +315,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light8 = new Light({number: 8, state: 'stopped', position: 'lowered', ip: '10.10.10.8'});
+    var light8 = new Light({number: 8, state: 'stopped', position: 'raised', ip: '10.10.20.8'});
     light8.save(function (err) {
         if (err) {
         } else {
@@ -321,14 +323,14 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light9 = new Light({number: 9, state: 'stopped', position: 'lowered', ip: '10.10.10.9'});
+    var light9 = new Light({number: 9, state: 'stopped', position: 'raised', ip: '10.10.20.9'});
     light9.save(function (err) {
         if (err) {
         } else {
             console.log('light 9 created');
         }
     });
-    var light10 = new Light({number: 10, state: 'stopped', position: 'lowered', ip: '10.10.10.10' });
+    var light10 = new Light({number: 10, state: 'stopped', position: 'raised', ip: '10.10.20.10' });
     light10.save(function (err) {
         if (err) {// ...
         } else {
@@ -336,7 +338,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light11 = new Light({number: 11, state: 'stopped', position: 'lowered', ip: '10.10.10.11'});
+    var light11 = new Light({number: 11, state: 'stopped', position: 'raised', ip: '10.10.20.11'});
     light11.save(function (err) {
         if (err) {
         } else {
@@ -344,7 +346,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light12 = new Light({number: 12, state: 'stopped', position: 'lowered', ip: '10.10.10.12'});
+    var light12 = new Light({number: 12, state: 'stopped', position: 'raised', ip: '10.10.20.12'});
     light12.save(function (err) {
         if (err) {
         } else {
@@ -352,7 +354,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light13 = new Light({number: 13, state: 'stopped', position: 'lowered', ip: '10.10.10.13' });
+    var light13 = new Light({number: 13, state: 'stopped', position: 'raised', ip: '10.10.20.13' });
     light13.save(function (err) {
         if (err) {// ...
         } else {
@@ -360,7 +362,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light14 = new Light({number: 14, state: 'stopped', position: 'lowered', ip: '10.10.10.14'});
+    var light14 = new Light({number: 14, state: 'stopped', position: 'raised', ip: '10.10.20.14'});
     light14.save(function (err) {
         if (err) {
         } else {
@@ -368,14 +370,14 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light15 = new Light({number: 15, state: 'stopped', position: 'lowered', ip: '10.10.10.15'});
+    var light15 = new Light({number: 15, state: 'stopped', position: 'raised', ip: '10.10.20.15'});
     light15.save(function (err) {
         if (err) {
         } else {
             console.log('light 15 created');
         }
     });
-    var light16 = new Light({number: 16, state: 'stopped', position: 'lowered', ip: '10.10.10.16' });
+    var light16 = new Light({number: 16, state: 'stopped', position: 'raised', ip: '10.10.20.16' });
     light16.save(function (err) {
         if (err) {// ...
         } else {
@@ -383,7 +385,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light17 = new Light({number: 17, state: 'stopped', position: 'lowered', ip: '10.10.10.17'});
+    var light17 = new Light({number: 17, state: 'stopped', position: 'raised', ip: '10.10.20.17'});
     light17.save(function (err) {
         if (err) {
         } else {
@@ -391,7 +393,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light18 = new Light({number: 18, state: 'stopped', position: 'lowered', ip: '10.10.10.18'});
+    var light18 = new Light({number: 18, state: 'stopped', position: 'raised', ip: '10.10.20.18'});
     light18.save(function (err) {
         if (err) {
         } else {
@@ -399,7 +401,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light19 = new Light({number: 19, state: 'stopped', position: 'lowered', ip: '10.10.10.19' });
+    var light19 = new Light({number: 19, state: 'stopped', position: 'raised', ip: '10.10.20.19' });
     light19.save(function (err) {
         if (err) {// ...
         } else {
@@ -407,7 +409,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light20 = new Light({number: 20, state: 'stopped', position: 'lowered', ip: '10.10.10.20'});
+    var light20 = new Light({number: 20, state: 'stopped', position: 'raised', ip: '10.10.20.20'});
     light20.save(function (err) {
         if (err) {
         } else {
@@ -415,14 +417,14 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light21 = new Light({number: 21, state: 'stopped', position: 'lowered', ip: '10.10.10.21'});
+    var light21 = new Light({number: 21, state: 'stopped', position: 'raised', ip: '10.10.20.21'});
     light21.save(function (err) {
         if (err) {
         } else {
             console.log('light 21 created');
         }
     });
-    var light22 = new Light({number: 22, state: 'stopped', position: 'lowered', ip: '10.10.10.22' });
+    var light22 = new Light({number: 22, state: 'stopped', position: 'raised', ip: '10.10.20.22' });
     light22.save(function (err) {
         if (err) {// ...
         } else {
@@ -430,7 +432,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light23 = new Light({number: 23, state: 'stopped', position: 'lowered', ip: '10.10.10.23'});
+    var light23 = new Light({number: 23, state: 'stopped', position: 'raised', ip: '10.10.20.23'});
     light23.save(function (err) {
         if (err) {
         } else {
@@ -438,7 +440,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light24 = new Light({number: 24, state: 'stopped', position: 'lowered', ip: '10.10.10.24'});
+    var light24 = new Light({number: 24, state: 'stopped', position: 'raised', ip: '10.10.20.24'});
     light24.save(function (err) {
         if (err) {
         } else {
@@ -446,7 +448,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light25 = new Light({number: 25, state: 'stopped', position: 'lowered', ip: '10.10.10.25' });
+    var light25 = new Light({number: 25, state: 'stopped', position: 'raised', ip: '10.10.20.25' });
     light25.save(function (err) {
         if (err) {// ...
         } else {
@@ -454,7 +456,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light26 = new Light({number: 26, state: 'stopped', position: 'lowered', ip: '10.10.10.26'});
+    var light26 = new Light({number: 26, state: 'stopped', position: 'raised', ip: '10.10.20.26'});
     light26.save(function (err) {
         if (err) {
         } else {
@@ -462,14 +464,14 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light27 = new Light({number: 27, state: 'stopped', position: 'lowered', ip: '10.10.10.27'});
+    var light27 = new Light({number: 27, state: 'stopped', position: 'raised', ip: '10.10.20.27'});
     light27.save(function (err) {
         if (err) {
         } else {
             console.log('light 27 created');
         }
     });
-    var light28 = new Light({number: 28, state: 'stopped', position: 'lowered', ip: '10.10.10.28' });
+    var light28 = new Light({number: 28, state: 'stopped', position: 'raised', ip: '10.10.20.28' });
     light28.save(function (err) {
         if (err) {// ...
         } else {
@@ -477,7 +479,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light29 = new Light({number: 29, state: 'stopped', position: 'lowered', ip: '10.10.10.29'});
+    var light29 = new Light({number: 29, state: 'stopped', position: 'raised', ip: '10.10.20.29'});
     light29.save(function (err) {
         if (err) {
         } else {
@@ -485,7 +487,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light30 = new Light({number: 30, state: 'stopped', position: 'lowered', ip: '10.10.10.30'});
+    var light30 = new Light({number: 30, state: 'stopped', position: 'raised', ip: '10.10.20.30'});
     light30.save(function (err) {
         if (err) {
         } else {
@@ -537,6 +539,7 @@ module.exports = function (app, passport) {
                     if (isMatch && !err) {
                         var token = jwt.encode(user, config.secret);
                         res.json({success: true, token: 'JWT ' + token});
+                        console.log('Username : ' + user + ' logged in');
                         logger.info('Username : ' + user + ' logged in');
                     } else {
                         res.send({success: false, msg: 'Authentication failed. Wrong password.'});
@@ -640,10 +643,61 @@ module.exports = function (app, passport) {
     });
 
 
-    app.get('/doors/e-stop', function (req, res) {
+    app.post('/doors/stop', function (req, res) {
+        //stop request from microcontrollers
+        var token = getToken(req.headers);
+        if (token) {
+            var decoded = jwt.decode(token, config.secret);
+            User.findOne({
+                email: decoded.email
+            }, function (err, user) {
+                if (err) throw err;
+
+                if (!user) {
+                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+                } else {
+                    doorStopControl.doorControl(JSON.parse(req.body.door));
+                    logger.info('Door ' + req.body.door + ' requested to be stopped.');
+                    return res.json({success: true, msg: 'POST request to stop the door'});
+                }
+            });
+        } else {
+            logger.info('error on request.');
+            return res.status(403).send({success: false, msg: 'No token provided.'});
+        }
+    });
+
+    app.get('doors/e-stop', function (req, res) {
         //send stop request to all microcontrollers
-        logger.info('Emergency stop requested for doors.');
-        res.send('GET request to stop all the doors');
+        var token = getToken(req.headers);
+        if (token) {
+            var decoded = jwt.decode(token, config.secret);
+            User.findOne({
+                email: decoded.email
+            }, function (err, user) {
+                if (err) throw err;
+
+                if (!user) {
+                    return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+                } else {
+                    doorEStopControl.doorControl();
+                    logger.info('All doors being requested to be stopped.');
+                    return res.json({success: true, msg: 'GET request to stop all door'});
+                }
+            });
+        } else {
+            logger.info('error on request.');
+            return res.status(403).send({success: false, msg: 'No token provided.'});
+        }
+    });
+
+    app.get('doors/update', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = req.query.status;
+        doorEStopControl.doorControl(ip, status);
+        logger.info('door is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
     });
 
     app.post('/lights/raise', function (req, res) {

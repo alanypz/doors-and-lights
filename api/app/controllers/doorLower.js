@@ -1,4 +1,5 @@
 //controllers/doorLower.js
+var http = require('http');
 var Queue = require('../../utils/queue');
 var lowerDoorExecutionQueue = new Queue();
 var lowerDoorWaitingQueue = new Queue();
@@ -54,6 +55,26 @@ function execute(doorNumber) {
             var ip = door.ip;
             //connect to the microcontroller and execute action
             //also listen to sensor information and completion of the job
+            var options = {
+                host: ip,
+                path: '/arduino/lower'
+            };
+            callback = function(response) {
+                var str = '';
+
+                //another chunk of data has been recieved, so append it to `str`
+                response.on('data', function (chunk) {
+                    str += chunk;
+                });
+
+                //the whole response has been recieved, so we just print it out here
+                response.on('end', function () {
+                    console.log(str);
+                });
+            }
+
+            http.request(options, callback).end();
+
             console.log("door ", doorNumber, " being lowered");
             logger.info("door ", doorNumber, " being lowered");
 
@@ -69,48 +90,76 @@ function execute(doorNumber) {
                 }
             );
 
-            waitExecution5Min(doorNumber);
+
         }
     });
 
 };
 
-function consumeDoor(doorNumber) {
+//function consumeDoor(doorNumber) {
+//
+//
+//    lowerDoorExecutionQueue.enqueue(doorNumber);
+//};
+//
+//
+//function waitExecutionQueue(doorNumber) {
+//    lowerDoorWaitingQueue.enqueue(doorNumber);
+//};
+//
+//function waitExecution5Min(doorNumber) {
+//    setTimeout(function () {
+//        doorStop(doorNumber);
+//    }, 3000);
+//};
 
-
-    lowerDoorExecutionQueue.enqueue(doorNumber);
-};
-
-
-function waitExecutionQueue(doorNumber) {
-    lowerDoorWaitingQueue.enqueue(doorNumber);
-};
-
-function waitExecution5Min(doorNumber) {
-    setTimeout(function () {
-        doorStop(doorNumber);
-    }, 3000);
-};
-
-function doorStop(doorNumber) {
-    doorDatabase.findOneAndUpdate(
-        { number : doorNumber },
-        { state : 'stopped', position : 'lowered' },
-        function(err, doorObject) {
-            if (err) throw err;
-
-            // we have the updated user returned to us
-            //console.log(doorObject);
-            //logger.log('info', doorObject);
-        }
-    );
-
-    console.log("door ", doorNumber, " being stopped");
-    logger.info( 'door ' + doorNumber + ' being stopped');
-    //if (lowerDoorWaitingQueue.getLength() > 0) {
-    //    lowerDoorExecutionQueue.enqueue(lowerDoorWaitingQueue.dequeue());
-    //}
-    //execute();
-    //create execution methods for the microcontroller
-};
+//function doorStop(doorNumber) {
+//    doorDatabase.findOneAndUpdate(
+//        { number : doorNumber },
+//        { state : 'stopped', position : 'lowered' },
+//        function(err, doorObject) {
+//            if (err) throw err;
+//
+//            if (!door) {
+//                logger.info('Not able to find door.');
+//                console.log('info', 'Not able to find door.');
+//            } else {
+//                var ip = door.ip;
+//                //connect to the microcontroller and execute action
+//                //also listen to sensor information and completion of the job
+//                var options = {
+//                    host: ip,
+//                    path: '/arduino/stop'
+//                };
+//                callback = function (response) {
+//                    var str = '';
+//
+//                    //another chunk of data has been recieved, so append it to `str`
+//                    response.on('data', function (chunk) {
+//                        str += chunk;
+//                    });
+//
+//                    //the whole response has been recieved, so we just print it out here
+//                    response.on('end', function () {
+//                        console.log(str);
+//                    });
+//                }
+//
+//                http.request(options, callback).end();
+//                console.log("door ", doorNumber, " being stopped");
+//                logger.info("door ", doorNumber, " being stopped");
+//
+//
+//
+//
+//            }
+//        }
+//    );
+//
+//    //if (lowerDoorWaitingQueue.getLength() > 0) {
+//    //    lowerDoorExecutionQueue.enqueue(lowerDoorWaitingQueue.dequeue());
+//    //}
+//    //execute();
+//    //create execution methods for the microcontroller
+//};
 

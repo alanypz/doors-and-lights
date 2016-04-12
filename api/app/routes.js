@@ -858,6 +858,11 @@ module.exports = function (app, passport) {
 
     });
 
+    app.get('/calibrate', function (req, res) {
+        //send stop request to all microcontrollers
+        logger.info(' Crane calibration.');
+        res.status(200).send({success: true, msg: 'GET request to calibrate the crane'});
+    });
 
     getToken = function (headers) {
         if (headers && headers.authorization) {

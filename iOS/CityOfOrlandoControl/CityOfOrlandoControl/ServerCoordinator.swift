@@ -206,7 +206,7 @@ class ServerCoordinator {
         
         var configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         
-        configuration.timeoutIntervalForRequest = 30
+        configuration.timeoutIntervalForRequest = 35
         
         return configuration
         

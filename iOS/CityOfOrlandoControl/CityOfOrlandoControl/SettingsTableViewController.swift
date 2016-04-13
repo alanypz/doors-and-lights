@@ -8,59 +8,96 @@
 
 import UIKit
 
-struct SettingsState {
-    
-    var notifications = true
-    
-}
-
-protocol SettingsTableViewControllerDelegate {
-    
-    var setting: SettingsState { get }
-    
-    func notificationsSetting(value value: Bool)
-    
-}
-
 class SettingsTableViewController: UITableViewController {
     
-    var delegate: SettingsTableViewControllerDelegate?
+    @IBOutlet weak var autoRefreshSwitch: UISwitch!
     
-    @IBOutlet weak var notificationsSwitch: UISwitch!
-
+    @IBOutlet weak var closeDetailedSwitch: UISwitch!
+    
     override func viewDidLoad() {
 
-        notificationsSwitch.on = delegate?.setting.notifications ?? true
-        
         super.viewDidLoad()
 
+        autoRefreshSwitch.on = Defaults.autoRefresh
+        
+        closeDetailedSwitch.on = Defaults.autoClose
+        
     }
     
-    @IBOutlet weak var closeDetailedViewSwitch: UISwitch!
+    // MARK: - Switch
     
-    @IBAction func notificationsToggle(sender: UISwitch) {
-        delegate?.notificationsSetting(value: sender.on)
+    @IBAction func autoRefreshToggle(sender: UISwitch) {
+        
+        Defaults.autoRefresh = sender.on
+
     }
     
-    @IBAction func cancelSettingsPopup(sender: UIBarButtonItem) {
+    @IBAction func closeDetailedToggle(sender: UISwitch) {
+        
+        Defaults.autoClose = sender.on
+        
+    }
+    
+    // MARK: - Action
+  
+    @IBAction func done(sender: UIBarButtonItem) {
+        
         dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    @IBAction func doneSettingsPopup(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+        
     }
     
+    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
     
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        switch (indexPath.section, indexPath.row) {
+        
+        case (0,0):
+            
+            return true
+            
+        default:
+        
+            return false
+        
+        }
+        
     }
-    */
 
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        switch (indexPath.section, indexPath.row) {
+            
+        case (0,0):
+            
+            let alertController = UIAlertController(title: "Verify Crane Position", message: "Confirm crane is located at its origin position.", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            
+            alertController.addAction(UIAlertAction(title: "Calibrate", style: .Default) { (action) in
+                
+                self.confirmCalibrationAlert()
+                
+            })
+            
+            presentViewController(alertController, animated: true, completion: nil)
+            
+        default:
+            
+            break
+            
+        }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+    }
+    
+    func confirmCalibrationAlert() {
+        
+        let calibrateController = UIAlertController(title: "Success", message: "Crane position has been set to origin.", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        calibrateController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
+        
+        self.presentViewController(calibrateController, animated: true, completion: nil)
+        
+    }
+    
 }
-

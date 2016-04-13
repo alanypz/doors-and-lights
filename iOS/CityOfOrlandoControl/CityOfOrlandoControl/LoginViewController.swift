@@ -40,11 +40,11 @@ class LoginViewController: UIViewController {
              
                 controller.dismissViewControllerAnimated(true, completion: nil)
                
-            case let (controller?, error?):
+            case let (controller?, _?):
                 
-             controller.showError(error.localizedDescription)
+                controller.showError("Invalid username and/or password.")
                 
-             sender.enabled = true
+                sender.enabled = true
 
             default:
                 
@@ -58,6 +58,18 @@ class LoginViewController: UIViewController {
 
     }
     
+    @IBAction func info(sender: UIButton) {
+        
+        let alertController = UIAlertController(title: "About", message: "This is Senior Design II.", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
+        
+        presentViewController(alertController, animated: true, completion: nil)
+        
+        
+
+    }
+    
     func showEmailInvalid() {
     
         let alertController = UIAlertController(title: "Error", message: "Invalid email address", preferredStyle: UIAlertControllerStyle.Alert)
@@ -65,6 +77,7 @@ class LoginViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil))
         
         presentViewController(alertController, animated: true, completion: nil)
+        
 
     }
     

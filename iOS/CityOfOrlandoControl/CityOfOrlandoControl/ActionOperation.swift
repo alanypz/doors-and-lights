@@ -18,13 +18,25 @@ class ActionOperation: ServerOperation {
     
     let number: Int
     
-    init(id: String, number: Int, action: Action,  type: ComponentType) {
+    init(id: String, number: Int, action: Action, type: ComponentType) {
         
         self.id = id
         
         self.number = number
         
         self.action = action
+        
+        self.type = type
+        
+    }
+    
+    init(id: String, number: Int, type: ComponentType) {
+        
+        self.id = id
+        
+        self.number = number
+        
+        self.action = .Status
         
         self.type = type
         
@@ -108,6 +120,10 @@ class ActionOperation: ServerOperation {
             
             requestAction(URLRequest: request)
             
+        default:
+            
+            buildStatus()
+            
         }
         
     }
@@ -143,13 +159,13 @@ class ActionOperation: ServerOperation {
         guard let response = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String: AnyObject] else { throw NSError(description: "") }
         
         guard let success = response["success"] as? Bool where success else { throw NSError(description: "") }
-       
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(5 * NSEC_PER_SEC)), dispatch_get_main_queue()) { [weak self] in
-
+            
             self?.buildStatus()
             
         }
-    
+        
     }
     
     // MARK: - Status
@@ -217,12 +233,16 @@ class ActionOperation: ServerOperation {
         guard let response = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String: AnyObject] else { throw NSError(description: "") }
         
         guard let component = Component(data: response) else { throw NSError(description: "") }
-    
+        
         switch (component.state, action, component.position) {
             
         case (_, _, .Error):
-         
-            finishWithError(NSError(description: "An error occured"))
+            
+            finishWithError(NSError(description: "An error occured."))
+            
+        case (.Stopped, .Status, _):
+            
+            complete(component)
             
         case (.Stopped, .Raise, .Raised):
             
@@ -230,7 +250,7 @@ class ActionOperation: ServerOperation {
             
         case (.Stopped, .Raise, .Lowered):
             
-            finishWithError(NSError(description: "An error occured"))
+            finishWithError(NSError(description: "An error occured."))
             
         case (.Stopped, .Lower, .Lowered):
             
@@ -238,7 +258,7 @@ class ActionOperation: ServerOperation {
             
         case (.Stopped, .Lower, .Raised):
             
-            finishWithError(NSError(description: "An error occured"))
+            finishWithError(NSError(description: "An error occured."))
             
         default:
             
@@ -292,7 +312,7 @@ extension ActionOperation {
     
     enum Action {
         
-        case Raise, Lower
+        case Raise, Lower, Status
         
     }
     

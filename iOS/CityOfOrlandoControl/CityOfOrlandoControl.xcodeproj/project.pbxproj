@@ -22,12 +22,14 @@
 		E712FA3E1C95F541001F8A49 /* ServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E712FA3A1C95F541001F8A49 /* ServerOperation.swift */; };
 		E7353FD61C4C69AA00D50E9E /* ComponentCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */; };
 		E7353FD81C4C6B2200D50E9E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */; };
+		E7404AE41CBDBD2D00038BC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7404AE31CBDBD2D00038BC7 /* Assets.xcassets */; };
+		E7404AE61CBDC0E400038BC7 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7404AE51CBDC0E400038BC7 /* Defaults.swift */; };
+		E7404AE91CBDDA2400038BC7 /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7404AE81CBDDA2400038BC7 /* InformationViewController.swift */; };
 		E76891721C4EFF9000A64A93 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */; };
 		E76891741C4EFF9C00A64A93 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */; };
 		E7F0E4181C4C37D8003D4DEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E4171C4C37D8003D4DEA /* AppDelegate.swift */; };
 		E7F0E41D1C4C37D8003D4DEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7F0E41B1C4C37D8003D4DEA /* Main.storyboard */; };
 		E7F0E4201C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E41E1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld */; };
-		E7F0E4221C4C37D8003D4DEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7F0E4211C4C37D8003D4DEA /* Assets.xcassets */; };
 		E7F0E4251C4C37D8003D4DEA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7F0E4231C4C37D8003D4DEA /* LaunchScreen.storyboard */; };
 		E7F0E4301C4C37D8003D4DEA /* CityOfOrlandoControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E42F1C4C37D8003D4DEA /* CityOfOrlandoControlTests.swift */; };
 		E7F0E43B1C4C37D8003D4DEA /* CityOfOrlandoControlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E43A1C4C37D8003D4DEA /* CityOfOrlandoControlUITests.swift */; };
@@ -66,13 +68,15 @@
 		E712FA3A1C95F541001F8A49 /* ServerOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerOperation.swift; sourceTree = "<group>"; };
 		E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ComponentCollectionViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E7404AE31CBDBD2D00038BC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E7404AE51CBDC0E400038BC7 /* Defaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		E7404AE81CBDDA2400038BC7 /* InformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		E7F0E4141C4C37D8003D4DEA /* CityOfOrlandoControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CityOfOrlandoControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7F0E4171C4C37D8003D4DEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7F0E41C1C4C37D8003D4DEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E7F0E41F1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CityOfOrlandoControl.xcdatamodel; sourceTree = "<group>"; };
-		E7F0E4211C4C37D8003D4DEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7F0E4241C4C37D8003D4DEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7F0E4261C4C37D8003D4DEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7F0E42B1C4C37D8003D4DEA /* CityOfOrlandoControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CityOfOrlandoControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */,
+				E7404AE81CBDDA2400038BC7 /* InformationViewController.swift */,
 				AB162D941C69250100D43C75 /* ComponentViewController.swift */,
 				E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */,
 				E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */,
@@ -182,6 +187,14 @@
 			name = Operation;
 			sourceTree = "<group>";
 		};
+		E7404AE71CBDC0EC00038BC7 /* Defaults */ = {
+			isa = PBXGroup;
+			children = (
+				E7404AE51CBDC0E400038BC7 /* Defaults.swift */,
+			);
+			name = Defaults;
+			sourceTree = "<group>";
+		};
 		E7F0E40B1C4C37D8003D4DEA = {
 			isa = PBXGroup;
 			children = (
@@ -206,11 +219,12 @@
 			isa = PBXGroup;
 			children = (
 				E7F0E4171C4C37D8003D4DEA /* AppDelegate.swift */,
-				E7F0E4211C4C37D8003D4DEA /* Assets.xcassets */,
+				E7404AE31CBDBD2D00038BC7 /* Assets.xcassets */,
 				E7F0E41E1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld */,
 				E7F0E4261C4C37D8003D4DEA /* Info.plist */,
 				E7F0E4231C4C37D8003D4DEA /* LaunchScreen.storyboard */,
 				E7F0E41B1C4C37D8003D4DEA /* Main.storyboard */,
+				E7404AE71CBDC0EC00038BC7 /* Defaults */,
 				AB162D961C6927B100D43C75 /* Collection */,
 				E712FA3F1C95F5D6001F8A49 /* Coordinator */,
 				AB119D671C960CA20008BA01 /* Extension */,
@@ -348,7 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7F0E4251C4C37D8003D4DEA /* LaunchScreen.storyboard in Resources */,
-				E7F0E4221C4C37D8003D4DEA /* Assets.xcassets in Resources */,
+				E7404AE41CBDBD2D00038BC7 /* Assets.xcassets in Resources */,
 				E7F0E41D1C4C37D8003D4DEA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -376,6 +390,7 @@
 			files = (
 				E76891741C4EFF9C00A64A93 /* FilterTableViewController.swift in Sources */,
 				AB119D5D1C96098F0008BA01 /* ActionOperation.swift in Sources */,
+				E7404AE91CBDDA2400038BC7 /* InformationViewController.swift in Sources */,
 				E712FA3C1C95F541001F8A49 /* LoginOperation.swift in Sources */,
 				E712FA3D1C95F541001F8A49 /* ServerCoordinator.swift in Sources */,
 				AB162D8F1C691A8C00D43C75 /* GroupCollectionReusableView.swift in Sources */,
@@ -391,6 +406,7 @@
 				AB162D931C691EC200D43C75 /* ComponentCollectionViewCell.swift in Sources */,
 				AB13443B1C9B9497002BC2A6 /* Regex.swift in Sources */,
 				E7F0E4181C4C37D8003D4DEA /* AppDelegate.swift in Sources */,
+				E7404AE61CBDC0E400038BC7 /* Defaults.swift in Sources */,
 				E712FA3B1C95F541001F8A49 /* AsynchronousOperation.swift in Sources */,
 				AB119D661C960C9F0008BA01 /* Error.swift in Sources */,
 			);

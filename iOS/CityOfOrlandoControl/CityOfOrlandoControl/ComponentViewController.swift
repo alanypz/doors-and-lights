@@ -62,10 +62,6 @@ class ComponentViewController: UITableViewController {
             
             return 2
             
-        case .Action:
-            
-            return 3
-            
         case .History:
             
             return 1
@@ -98,44 +94,6 @@ class ComponentViewController: UITableViewController {
             
             return cell
             
-        case (.Action, 0):
-            
-            let cell = tableView.dequeueReusableCellWithIdentifier("Action", forIndexPath: indexPath)
-            
-            cell.textLabel?.text = "Raise"
-            
-            cell.textLabel?.textColor = tableView.tintColor
-            
-            cell.textLabel?.enabled = ServerCoordinator.sharedCoordinator.canAddActionOperation()
-            
-            return cell
-            
-        case (.Action, 1):
-            
-            let cell = tableView.dequeueReusableCellWithIdentifier("Action", forIndexPath: indexPath)
-            
-            cell.textLabel?.text = "Lower"
-            
-            cell.textLabel?.textColor = tableView.tintColor
-            
-            cell.textLabel?.textColor = tableView.tintColor
-            
-            cell.textLabel?.enabled = ServerCoordinator.sharedCoordinator.canAddActionOperation()
-            
-            return cell
-            
-        case (.Action, _):
-            
-            let cell = tableView.dequeueReusableCellWithIdentifier("Action", forIndexPath: indexPath)
-            
-            cell.textLabel?.text = "Stop"
-            
-            cell.textLabel?.textColor = UIColor.redColor()
-            
-            cell.textLabel?.enabled = true
-            
-            return cell
-            
         case (.History, _):
             
             let cell = tableView.dequeueReusableCellWithIdentifier("Title", forIndexPath: indexPath)
@@ -156,73 +114,17 @@ class ComponentViewController: UITableViewController {
             
         case .History:
             
-            return "History"
-            
-        case .Action:
-            
-            return "Actions"
+            return ""
             
         default:
             
-            return nil
+            return "Component Information"
             
         }
         
     }
     
     // MARK: - Table View Delegate
-    
-    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        
-        switch (Section(rawValue: indexPath.section)!, indexPath.row) {
-            
-        case (.Action, 0), (.Action, 1):
-            
-            return ServerCoordinator.sharedCoordinator.canAddActionOperation()
-            
-        default:
-            
-            return false
-            
-        }
-        
-    }
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        switch (Section(rawValue: indexPath.section)!, indexPath.row, component) {
-            
-        case (.Action, 0, let door as Door):
-            
-            let operation = ActionOperation(id: door.id, number: door.number, action: .Raise, type: .Door)
-            
-            performAction(operation)
-            
-        case (.Action, 0, let light as Light):
-            
-            let operation = ActionOperation(id: light.id, number: light.number, action: .Raise, type: .Light)
-            
-            performAction(operation)
-            
-        case (.Action, 1, let door as Door):
-            
-            let operation = ActionOperation(id: door.id, number: door.number, action: .Lower, type: .Door)
-            
-            performAction(operation)
-            
-        case (.Action, 1, let light as Light):
-            
-            let operation = ActionOperation(id: light.id, number: light.number, action: .Lower, type: .Light)
-            
-            performAction(operation)
-            
-        default:
-            
-            break
-            
-        }
-        
-    }
     
     func performAction(operation: ActionOperation) {
         
@@ -235,18 +137,24 @@ class ComponentViewController: UITableViewController {
         ServerCoordinator.sharedCoordinator.addOperation(operation)
         
         actionHandler?()
+    
+        if Defaults.autoClose {
         
-        let indexSet = NSMutableIndexSet()
-
-        indexSet.addIndex(Section.Action.rawValue)
+            presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         
-        indexSet.addIndex(Section.State.rawValue)
+        }
         
-        tableView.beginUpdates()
-        
-        tableView.reloadSections(indexSet, withRowAnimation: .Fade)
-        
-        tableView.endUpdates()
+        else {
+            
+            let indexSet = NSIndexSet(index: Section.State.rawValue)
+            
+            tableView.beginUpdates()
+            
+            tableView.reloadSections(indexSet, withRowAnimation: .Fade)
+            
+            tableView.endUpdates()
+            
+        }
         
     }
     
@@ -256,9 +164,9 @@ extension ComponentViewController {
     
     private enum Section: Int {
         
-        case State, Action, History
+        case State, History
         
-        static let count = 3
+        static let count = 1
         
     }
     
@@ -291,7 +199,6 @@ extension ComponentViewController {
                 let operation = ActionOperation(id: light.id, number: light.number, action: .Raise, type: .Light)
                 
                 performAction(operation)
-                
                 
             default:
                 
@@ -377,11 +284,7 @@ extension ComponentViewController {
             
         }
         
-        let indexSet = NSMutableIndexSet()
-        
-        indexSet.addIndex(Section.Action.rawValue)
-        
-        indexSet.addIndex(Section.State.rawValue)
+        let indexSet = NSIndexSet(index: Section.State.rawValue)
         
         tableView.beginUpdates()
         

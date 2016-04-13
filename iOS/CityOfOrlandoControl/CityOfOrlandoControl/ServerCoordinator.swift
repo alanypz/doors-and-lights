@@ -19,9 +19,11 @@ class ServerCoordinator {
     
     class Routes {
         
-  //      static let host =  "http://localhost:8080"
-      static let host =  "http://10.0.1.5:8080" //  Local IP access
-        
+        static let host =  "http://localhost:8080"
+//      static let host =  "http://10.0.1.5:8080" //  Local IP access
+//        static let host =  "http://10.0.0.2:8080"   // NETGEAR09, dynamicjade566
+//        static let host =  "http://192.168.43.12:8080"   // Marcus Phone
+    
         class func authenticate() -> NSURL {
             
             return NSURL(string: "\(host)/authenticate")!
@@ -64,6 +66,12 @@ class ServerCoordinator {
             
         }
         
+        class func calibrate() -> NSURL {
+            
+            return NSURL(string: "\(host)/calibrate")!
+            
+        }
+        
     }
     
     var token: String? {
@@ -98,10 +106,36 @@ class ServerCoordinator {
     
     var actionOperation: ActionOperation?
     
+    func canAddComponentsOperation() -> Bool {
+    
+        return operationQueue.operations.indexOf({ $0.isMemberOfClass(ComponentsOperation.self) }) == nil
+
+    }
+    
     func canAddActionOperation() -> Bool {
         
         return actionOperation == nil
         
+    }
+    
+    func cancelActionOperation() {
+    
+        if let operation = actionOperation {
+        
+            operation.cancel()
+        
+        }
+        
+        actionOperation = nil
+    
+    }
+
+    func cancelAllOperations() {
+    
+        operationQueue.cancelAllOperations()
+      
+        actionOperation = nil
+
     }
     
     lazy var operationQueue: NSOperationQueue = {

@@ -10,7 +10,7 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class ComponentCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, SettingsTableViewControllerDelegate {
+class ComponentCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var groups: [Group] = []
     
@@ -18,11 +18,15 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
     
     var filter = FilterTableViewController.Filter()
     
+    var timer: NSTimer?
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComponentCollectionViewController.statusChanged(_:)), name: ComponentStatusNotification, object: ServerCoordinator.sharedCoordinator)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComponentCollectionViewController.autoRefreshChanged(_:)), name: DefaultsAutoRefreshNotification, object: nil)
         
     }
     
@@ -61,7 +65,7 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Empty", forIndexPath: indexPath)
             
             cell.layer.borderColor = UIColor.darkGrayColor().CGColor
-
+            
             return cell
             
         default:
@@ -91,7 +95,7 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             cell.positionView.image = findPositionIcon(component.position)
             
             configureActivity(component.state, activity: cell.activityIndicatorView, positionView: cell.positionView)
-
+            
             let enabled = shouldEnableComponent(component)
             
             cell.alpha = enabled ? 1 : 0.35
@@ -111,7 +115,7 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             cell.positionView.image = findPositionIcon(component.position)
             
             configureActivity(component.state, activity: cell.activityIndicatorView, positionView: cell.positionView)
-
+            
             let enabled = shouldEnableComponent(component)
             
             cell.alpha = enabled ? 1 : 0.35
@@ -119,9 +123,9 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             cell.tintAdjustmentMode = enabled ? .Automatic : .Dimmed
             
             cell.layer.borderWidth = 0.5
-
+            
             cell.layer.borderColor = UIColor.darkGrayColor().CGColor
-
+            
         default:
             
             fatalError("Invalid Component Class: \(component.dynamicType)")
@@ -151,7 +155,7 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
     }
     
     func configureActivity(state: Component.State, activity: UIActivityIndicatorView, positionView: UIImageView) {
-    
+        
         switch state {
             
         case .Executing:
@@ -161,17 +165,17 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             activity.startAnimating()
             
         case .Stopped:
-           
+            
             positionView.hidden = false
             
             if activity.isAnimating() {
-            
+                
                 activity.stopAnimating()
-            
+                
             }
             
         }
-    
+        
     }
     
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
@@ -279,7 +283,7 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
         }
         
     }
-        
+    
     // MARK: - Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -296,6 +300,12 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
                     
                     self.fetchComponents()
                     
+                    if Defaults.autoRefresh {
+                        
+                        self.createAutoRefreshTimer()
+                        
+                    }
+                    
                 }
                 
             case "Logout":
@@ -309,6 +319,10 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
                 }
                 
                 ServerCoordinator.sharedCoordinator.token = nil
+                
+                ServerCoordinator.sharedCoordinator.cancelAllOperations()
+                
+                timer?.invalidate()
                 
                 groups.removeAll()
                 
@@ -350,39 +364,13 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
                     
                 }
                 
-            case "SettingsSegue":
-                
-                let navigation = segue.destinationViewController as! UINavigationController
-                
-                let viewController = navigation.topViewController as! SettingsTableViewController
-                
-                viewController.delegate = self
-                
             default:
                 
-                break
+                return
                 
             }
             
         }
-        
-    }
-    
-    // MARK: SettingsTableViewController Delegate
-    
-    var setting = SettingsState() {
-        
-        didSet {
-            
-            //  Apply changes.
-            
-        }
-        
-    }
-    
-    func notificationsSetting(value value: Bool) {
-        
-        setting.notifications = value
         
     }
     
@@ -394,6 +382,8 @@ extension ComponentCollectionViewController {
     
     func fetchComponents() {
         
+        ServerCoordinator.sharedCoordinator.cancelActionOperation()
+        
         let operation = ComponentsOperation()
         
         operation.componentsCompletionBlock = { [weak self] (components, error) in
@@ -402,7 +392,11 @@ extension ComponentCollectionViewController {
                 
             case let (controller?, components?, nil):
                 
+                ServerCoordinator.sharedCoordinator.cancelActionOperation()
+                
                 controller.groupComponents(components)
+                
+                controller.checkComponents(components)
                 
                 controller.showRefreshItems(true)
                 
@@ -425,6 +419,34 @@ extension ComponentCollectionViewController {
         }
         
         ServerCoordinator.sharedCoordinator.addOperation(operation)
+        
+    }
+    
+    func checkComponents(components: [Component]) {
+        
+        if let index = components.indexOf({ $0.state == .Executing }) {
+            
+            switch (components[index]) {
+                
+            case let door as Door:
+                
+                let operation = ActionOperation(id: door.id, number: door.number, type: .Door)
+                
+                ServerCoordinator.sharedCoordinator.addOperation(operation)
+                
+            case let light as Light:
+                
+                let operation = ActionOperation(id: light.id, number: light.number, type: .Light)
+                
+                ServerCoordinator.sharedCoordinator.addOperation(operation)
+                
+            default:
+                
+                break
+                
+            }
+            
+        }
         
     }
     
@@ -490,9 +512,9 @@ extension ComponentCollectionViewController {
     
 }
 
-// MARK: - Filter
-
 extension ComponentCollectionViewController {
+    
+    // MARK: - Filter
     
     func updateFilter(filter: FilterTableViewController.Filter) {
         
@@ -661,9 +683,13 @@ extension ComponentCollectionViewController {
     
     func refresh(sender: UIBarButtonItem) {
         
-        showLoadingItems(true)
-        
-        fetchComponents()
+        if ServerCoordinator.sharedCoordinator.canAddComponentsOperation() {
+            
+            showLoadingItems(true)
+            
+            fetchComponents()
+            
+        }
         
     }
     
@@ -757,9 +783,43 @@ extension ComponentCollectionViewController: UITextFieldDelegate {
     
 }
 
+// MARK: Timer
+
+extension ComponentCollectionViewController {
+    
+    func autoRefresh(timer: NSTimer) {
+        
+        if ServerCoordinator.sharedCoordinator.canAddComponentsOperation() {
+            
+            fetchComponents()
+            
+        }
+        
+    }
+    
+    func createAutoRefreshTimer() {
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(ComponentCollectionViewController.autoRefresh(_:)), userInfo: nil, repeats: true)
+        
+    }
+    
+}
+
 // MARK: Notification
 
 extension ComponentCollectionViewController {
+    
+    func autoRefreshChanged(notification: NSNotification) {
+        
+        timer?.invalidate()
+        
+        if let newValue = notification.userInfo?["newValue"] as? Bool where newValue {
+            
+            createAutoRefreshTimer()
+            
+        }
+        
+    }
     
     func statusChanged(notification: NSNotification) {
         

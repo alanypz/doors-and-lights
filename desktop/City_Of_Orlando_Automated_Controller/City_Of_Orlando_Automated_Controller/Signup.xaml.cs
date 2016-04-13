@@ -28,13 +28,16 @@ namespace City_Of_Orlando_Automated_Controller
         {
             InitializeComponent();
 
+            // define the title
+            Title = "Sign Up";
+
             // define the dialog buttons
             this.Buttons = new Button[] { this.CancelButton };
         }
 
         private void submit_Click(object sender, RoutedEventArgs e)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/signup");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Utility.ip + "/signup");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 

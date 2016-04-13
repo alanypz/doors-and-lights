@@ -11,7 +11,7 @@
     <Grid>
         <Button x:Name="Raise" Content="Raise" Margin="40,128,177,0" VerticalAlignment="Top" Click="Raise_Click"/>
         <Button x:Name="Lower" Content="Lower" Margin="177,128,40,0" VerticalAlignment="Top" Click="Lower_Click"/>
-        <Button x:Name="EStop" Content="E-Stop" Margin="109,159,109,0" VerticalAlignment="Top"/>
+        <Button x:Name="Stop" Content="Stop" Margin="109,159,109,0" VerticalAlignment="Top" Click="Stop_Click"/>
         <TextBlock x:Name="componentStatus" HorizontalAlignment="Left" Margin="40,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" RenderTransformOrigin="0.46,0.865"/>
 
     </Grid>

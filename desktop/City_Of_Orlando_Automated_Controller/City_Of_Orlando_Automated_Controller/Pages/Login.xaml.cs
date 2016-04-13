@@ -31,7 +31,7 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
         public static void login(User user, Login lg)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/authenticate");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Utility.ip + "/authenticate");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 

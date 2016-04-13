@@ -30,8 +30,8 @@ namespace City_Of_Orlando_Automated_Controller.Pages
     {
 
         private bool _panelLoading;
-        private string _panelMainMessage = "Main Loading Message";
-        private string _panelSubMessage = "Sub Loading Message";
+        private string _panelMainMessage = "";
+        private string _panelSubMessage = "";
 
         public ComponentView()
         {
@@ -54,7 +54,7 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             Component[] tempLight = null;
 
             //Get the doors
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/door");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Utility.ip + "/status/door");
             httpWebRequest.Method = "GET";
             httpWebRequest.ContentType = "application/json";
             WebHeaderCollection myWebHeaderCollection = httpWebRequest.Headers;
@@ -86,7 +86,7 @@ namespace City_Of_Orlando_Automated_Controller.Pages
             }
 
             //Get the lights
-            httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/light");
+            httpWebRequest = (HttpWebRequest)WebRequest.Create(Utility.ip + "/status/light");
             httpWebRequest.Method = "GET";
             httpWebRequest.ContentType = "application/json";
             myWebHeaderCollection = httpWebRequest.Headers;
@@ -171,7 +171,7 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 {
                     if (i < 10)
                     {
-                        newComponent.Content = " " + (i + 1 - Utility.lrDoors.Length).ToString();
+                        newComponent.Content = (i + 1 - Utility.lrDoors.Length).ToString();
                     }
 
                     else
@@ -250,32 +250,51 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
             Component component = Utility.components[Utility.componentIndex];
 
-            string data =
-                    "Type:" + component.type + "\n" +
-                    "Number: " + component.number.ToString() + "\n" +
-                    "Position: " + component.position.ToString() + "\n" +
-                    "Status: " + component.state + "\n"
-                ;
-
-            ModernDialog commandView = new CommandView(component, data, this);
-            commandView.Buttons = new Button[] { commandView.CancelButton };
+            ModernDialog commandView = new CommandView(component, this);
+            commandView.Buttons = new Button[] { commandView.CloseButton };
             commandView.ShowDialog();
 
-            if(Utility.cancel == 0)
+            if (PanelLoading)
             {
-                PanelSubMessage = "";
-                ShowPanelCommand.Execute(null);
+                disableButtons();
             }
-            
+
+            else
+            {
+                refresh_Click(null, null);
+            }
+
         }
 
-        private void refresh_Click(object sender, RoutedEventArgs e)
+        public void disableButtons()
+        {
+            for(int i=0; i<Utility.componentButtons.Length; i++)
+            {
+                if (i != Utility.componentIndex)
+                {
+                    Utility.componentButtons[i].IsEnabled = false;
+                }
+            }
+        }
+
+        public void enableButtons()
+        {
+            for (int i = 0; i < Utility.componentButtons.Length; i++)
+            {
+                Utility.componentButtons[i].IsEnabled = true;
+            }
+        }
+
+        public void refresh_Click(object sender, RoutedEventArgs e)
         {
 
             refresh.Cursor = Cursors.Wait;
 
+            Component[] tempDoor = null;
+            Component[] tempLight = null;
+
             //Get the doors
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/door");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Utility.ip + "/status/door");
             httpWebRequest.Method = "GET";
             httpWebRequest.ContentType = "application/json";
             WebHeaderCollection myWebHeaderCollection = httpWebRequest.Headers;
@@ -294,10 +313,20 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 {
                     Utility.lrDoors[i] = serializer.Serialize(Utility.lrDoors[i]);
                 }
+
+                tempDoor = new Component[Utility.lrDoors.Length];
+
+                for (int i = 0; i < Utility.lrDoors.Length; i++)
+                {
+                    tempDoor[i] = serializer.Deserialize<Component>(Utility.lrDoors[i].ToString());
+                }
+
+                tempDoor = tempDoor.OrderBy(x => x.number).ToArray();
+
             }
 
             //Get the lights
-            httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/light");
+            httpWebRequest = (HttpWebRequest)WebRequest.Create(Utility.ip + "/status/light");
             httpWebRequest.Method = "GET";
             httpWebRequest.ContentType = "application/json";
             myWebHeaderCollection = httpWebRequest.Headers;
@@ -315,16 +344,25 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 {
                     Utility.lrLights[i] = serializer.Serialize(Utility.lrLights[i]);
                 }
+
+                tempLight = new Component[Utility.lrLights.Length];
+
+                for (int i = 0; i < Utility.lrLights.Length; i++)
+                {
+                    tempLight[i] = serializer.Deserialize<Component>(Utility.lrLights[i].ToString());
+                }
+
+                tempLight = tempLight.OrderBy(x => x.number).ToArray();
             }
 
             //Put them together
-            for (int i = 0; i < Utility.lrDoors.Length + Utility.lrLights.Length; i++)
+            for (int i = 0; i < tempDoor.Length + tempLight.Length; i++)
             {
                 Uri resourceUri = null;
 
-                if (i < Utility.lrDoors.Length)
+                if (i < tempDoor.Length)
                 {
-                    Utility.components[i] = serializer.Deserialize<Component>(Utility.lrDoors[i].ToString());
+                    Utility.components[i] = tempDoor[i];
                     Utility.components[i].type = "Door";
 
                     if (Utility.components[i].position == "raised")
@@ -350,7 +388,7 @@ namespace City_Of_Orlando_Automated_Controller.Pages
 
                 else
                 {
-                    Utility.components[i] = serializer.Deserialize<Component>(Utility.lrLights[i - Utility.lrDoors.Length].ToString());
+                    Utility.components[i] = tempLight[i-tempDoor.Length];
                     Utility.components[i].type = "Light";
 
                     if (Utility.components[i].position == "raised")
@@ -375,7 +413,11 @@ namespace City_Of_Orlando_Automated_Controller.Pages
                 }
             }
 
-            ModernDialog.ShowMessage("Components Successfully Updated", "Update", MessageBoxButton.OK, null);
+            if (sender != null)
+            {
+                ModernDialog.ShowMessage("Components Successfully Updated", "Update", MessageBoxButton.OK, null);
+            }
+
         }
 
         private void refresh_MouseEnter(object sender, MouseEventArgs e)

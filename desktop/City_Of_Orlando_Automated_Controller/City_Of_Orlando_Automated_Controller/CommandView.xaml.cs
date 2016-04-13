@@ -33,35 +33,64 @@ namespace City_Of_Orlando_Automated_Controller
         //Represents the string data of the referenced component
         private static Component componentData;
         private static ComponentView loadingBar = null;
-       
+        private static CommandView view = null;
+        private static BackgroundWorker bw = null;
 
-        public CommandView(Component componentData, string data, ComponentView componentView)
+        public CommandView(Component componentData, ComponentView componentView)
         {
             InitializeComponent();
-            
-            // define the dialog buttons
-            this.Buttons = new Button[] { this.CancelButton };
 
             // define title
             Title = "Command View";
 
             // define component status
-            componentStatus.Text = data;
+            componentStatus.Text = 
+                    "Type:" + componentData.type + "\n" +
+                    "Number: " + componentData.number.ToString() + "\n" +
+                    "Position: " + componentData.position.ToString() + "\n" +
+                    "Status: " + componentData.state + "\n"
+                ;
             CommandView.componentData = componentData;
-            Utility.cancel = 1;
+            view = this;
 
             loadingBar = componentView;
+
+            if(componentData.state.ToLower() == "executing")
+            {
+                Raise.IsEnabled = false;
+                Lower.IsEnabled = false;
+            }
+
+            if(componentData.position == "raised")
+            {
+                Raise.IsEnabled = false;
+            }
+
+            else if(componentData.position == "lowered")
+            {
+                Lower.IsEnabled = false;
+            }
 
         }
 
         private void Raise_Click(object sender, RoutedEventArgs e)
         {
-            Utility.cancel = 0;
+            bw = new BackgroundWorker();
+            componentData.state = "executing";
+            Raise.IsEnabled = false;
+            Lower.IsEnabled = false;
+            loadingBar.ShowPanelCommand.Execute(null);
+            view.componentStatus.Text =
+                    "Type:" + componentData.type + "\n" +
+                    "Number: " + componentData.number.ToString() + "\n" +
+                    "Position: " + componentData.position.ToString() + "\n" +
+                    "Status: " + componentData.state + "\n"
+                ;
+
             loadingBar.PanelMainMessage = "Raising " + componentData.type + " " + componentData.number;
 
-            BackgroundWorker bw = new BackgroundWorker();
             string type = componentData.type.ToLower();
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/" + type + "s/raise");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Utility.ip + "/" + type + "s/raise");
             WebHeaderCollection myWebHeaderCollection = httpWebRequest.Headers;
 
             httpWebRequest.ContentType = "application/json";
@@ -95,17 +124,27 @@ namespace City_Of_Orlando_Automated_Controller
                 } 
             }
 
-            Close();
         }
 
         private void Lower_Click(object sender, RoutedEventArgs e)
         {
-            Utility.cancel = 0;
-            loadingBar.PanelMainMessage = "Lowering " + componentData.type + " " + componentData.number;
+            bw = new BackgroundWorker();
+            componentData.state = "executing";
+            Raise.IsEnabled = false;
+            Lower.IsEnabled = false;
+            loadingBar.ShowPanelCommand.Execute(null);
+            view.componentStatus.Text =
+                    "Type:" + componentData.type + "\n" +
+                    "Number: " + componentData.number.ToString() + "\n" +
+                    "Position: " + componentData.position.ToString() + "\n" +
+                    "Status: " + componentData.state + "\n"
+                ;
 
-            BackgroundWorker bw = new BackgroundWorker();
+            loadingBar.PanelMainMessage = "Lowering " + componentData.type + " " + componentData.number;
+    
+            
             string type = componentData.type;
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/" + type.ToLower() + "s/lower");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Utility.ip + "/" + type.ToLower() + "s/lower");
             WebHeaderCollection myWebHeaderCollection = httpWebRequest.Headers;
 
             httpWebRequest.ContentType = "application/json";
@@ -139,7 +178,6 @@ namespace City_Of_Orlando_Automated_Controller
 
             }
 
-            Close();
         }
 
         private static void commandResult(object sender, DoWorkEventArgs eventArgs)
@@ -150,7 +188,7 @@ namespace City_Of_Orlando_Automated_Controller
 
             while (counter < 5)
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/status/" + componentData.type.ToLower());
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Utility.ip + "/status/" + componentData.type.ToLower());
                 WebHeaderCollection myWebHeaderCollection = httpWebRequest.Headers;
                 httpWebRequest.ContentType = "application/json";
                 myWebHeaderCollection.Add("Authorization:" + Utility.user.token);
@@ -168,12 +206,55 @@ namespace City_Of_Orlando_Automated_Controller
                 if(((string)lr["position"] != Utility.components[Utility.componentIndex].position))
                 {
                     Utility.components[Utility.componentIndex].position = (string)lr["position"];
+                    Utility.components[Utility.componentIndex].state = (string)lr["state"];
                     break;
                 }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(6000);
                 ++counter;
+
+                if(bw.CancellationPending)
+                {
+                    eventArgs.Cancel = true;
+                    break;
+                }
             }
+
+            if (counter > 5)
+            {
+                
+                Uri resourceUri = null;
+
+                Application.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    if (componentData.type.ToLower() == "door")
+                    {
+                        resourceUri = new Uri("Images/garage_error.png", UriKind.Relative);
+                        ImageBrush brush = new ImageBrush();
+                        StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                        BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                        brush.ImageSource = temp;
+                        Utility.componentButtons[Utility.componentIndex].Background = brush;
+                    }
+
+                    else
+                    {
+                        resourceUri = new Uri("Images/light_error.png", UriKind.Relative);
+                        ImageBrush brush = new ImageBrush();
+                        StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+                        BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                        brush.ImageSource = temp;
+                        Utility.componentButtons[Utility.componentIndex].Background = brush;
+                    }
+
+                    loadingBar.HidePanelCommand.Execute(null);
+                    loadingBar.refresh.IsEnabled = true;
+
+                }));
+
+                bw.RunWorkerCompleted -= complete;
+            }
+
         }
 
         private static void complete(object sender, RunWorkerCompletedEventArgs eventArgs)
@@ -192,6 +273,8 @@ namespace City_Of_Orlando_Automated_Controller
                         BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                         brush.ImageSource = temp;
                         Utility.componentButtons[Utility.componentIndex].Background = brush;
+                        view.Raise.IsEnabled = false;
+                        view.Lower.IsEnabled = true;
                     }
 
                     else
@@ -202,6 +285,8 @@ namespace City_Of_Orlando_Automated_Controller
                         BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                         brush.ImageSource = temp;
                         Utility.componentButtons[Utility.componentIndex].Background = brush;
+                        view.Lower.IsEnabled = false;
+                        view.Raise.IsEnabled = true;
                     }
                 }
 
@@ -215,6 +300,8 @@ namespace City_Of_Orlando_Automated_Controller
                         BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                         brush.ImageSource = temp;
                         Utility.componentButtons[Utility.componentIndex].Background = brush;
+                        view.Raise.IsEnabled = false;
+                        view.Lower.IsEnabled = true;
                     }
 
                     else
@@ -225,13 +312,43 @@ namespace City_Of_Orlando_Automated_Controller
                         BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
                         brush.ImageSource = temp;
                         Utility.componentButtons[Utility.componentIndex].Background = brush;
+                        view.Lower.IsEnabled = false;
+                        view.Raise.IsEnabled = true;
                     }
                 }
 
-                loadingBar.HidePanelCommand.Execute(null);
+                view.componentStatus.Text =
+                    "Type:" + componentData.type + "\n" +
+                    "Number: " + componentData.number.ToString() + "\n" +
+                    "Position: " + componentData.position + "\n" +
+                    "Status: " + componentData.state + "\n"
+                ;
+
                 loadingBar.refresh.IsEnabled = true;
+                loadingBar.PanelSubMessage = componentData.type.ToUpper() + " " + componentData.number.ToString().ToUpper() + " " + componentData.position.ToUpper();
+
+                Timer timer = null;
+                timer = new System.Threading.Timer((obj) =>
+                {
+                    Application.Current.Dispatcher.Invoke((Action)(() =>
+                    {
+                        loadingBar.HidePanelCommand.Execute(null);
+                        loadingBar.PanelSubMessage = "";
+                        loadingBar.PanelMainMessage = "";
+                        loadingBar.enableButtons();
+                    }));
+                    
+                    timer.Dispose();
+                },
+                null, 2000, System.Threading.Timeout.Infinite);
+
             }));
 
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            bw.CancelAsync();
         }
     }
 }

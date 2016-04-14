@@ -11,6 +11,7 @@ var lightRaiseControl = require('./controllers/lightRaise');
 var lightLowerControl = require('./controllers/lightLower');
 var doorStopControl = require('./controllers/doorStop');
 var doorEStopControl = require('./controllers/doorEStop');
+var doorUpdate = require('./controllers/doorUpdate');
 
 //queue initialization
 var raiseDoorQueue = new Queue();
@@ -24,7 +25,7 @@ var logger = require("logger");
 module.exports = function (app, passport) {
 
 
-    var door1 = new Door({number: 1, state: 'stopped', position: 'lowered', ip: '192.168.43.77' });
+    var door1 = new Door({number: 1, state: 'stopped', position: 'lowered', ip: '192.168.0.9' });
     door1.save(function (err) {
         if (err) {// ...
         } else {
@@ -667,7 +668,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.get('doors/e-stop', function (req, res) {
+    app.get('/doors/e-stop', function (req, res) {
         //send stop request to all microcontrollers
         var token = getToken(req.headers);
         if (token) {
@@ -691,11 +692,38 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.get('doors/update', function(req, res) {
+    app.get('/doors/update/raised', function(req, res) {
         //update database after completion of microcontroller action
         var ip = req.ip;
-        var status = req.query.status;
-        doorEStopControl.doorControl(ip, status);
+        var status = "raised";
+        doorUpdate.doorControl(ip, status);
+        logger.info('door is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/doors/update/lowered', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "lowered";
+        doorUpdate.doorControl(ip, status);
+        logger.info('door is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/doors/update/error', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "error";
+        doorUpdate.doorControl(ip, status);
+        logger.info('door is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/doors/update/executing', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "executing";
+        doorUpdate.doorControl(ip, status);
         logger.info('door is being updated stopped.');
         res.json({success: true, msg: 'GET request from microcontroller to update the database'});
     });

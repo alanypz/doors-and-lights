@@ -14,19 +14,48 @@ module.exports = {
         //        waitExecutionQueue(doorQueue.dequeue());
         //    }
         //}
-        doorUpdate(ip, status);
+        doorUpdate(ip.split("f:").pop(), status);
     }
 };
 
 
 function doorUpdate(ip, status) {
-    doorDatabase.findOneAndUpdate(
-        { ip : ip },
-        { state : status },
-        function(err, doorObject) {
-            if (err) throw err;
+    if (status === 'raised'){
+        doorDatabase.findOneAndUpdate(
+            {ip: ip},
+            {state : 'stopped', position : 'raised'},
+            function (err, doorObject) {
+                if (err) throw err;
 
-        }
-    );
+            }
+        );
+    } else if(status === 'lowered'){
+        doorDatabase.findOneAndUpdate(
+            {ip: ip},
+            {state : 'stopped', position : 'lowered'},
+            function (err, doorObject) {
+                if (err) throw err;
+
+            }
+        );
+    } else if( status === 'error') {
+        doorDatabase.findOneAndUpdate(
+            {ip: ip},
+            {state : 'stopped', position : 'error'},
+            function (err, doorObject) {
+                if (err) throw err;
+
+            }
+        );
+    } else if (status === 'executing'){
+        doorDatabase.findOneAndUpdate(
+            {ip: ip},
+            {state: 'executing'},
+            function (err, doorObject) {
+                if (err) throw err;
+
+            }
+        );
+    }
 
 };

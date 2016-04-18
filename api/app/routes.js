@@ -12,6 +12,7 @@ var lightLowerControl = require('./controllers/lightLower');
 var doorStopControl = require('./controllers/doorStop');
 var doorEStopControl = require('./controllers/doorEStop');
 var doorUpdate = require('./controllers/doorUpdate');
+var lightUpdate = require('./controllers/lightUpdate');
 
 //queue initialization
 var raiseDoorQueue = new Queue();
@@ -260,7 +261,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light1 = new Light({ number: 1, state: 'stopped', position: 'raised', ip: '10.10.20.1' });
+    var light1 = new Light({ number: 1, state: 'stopped', position: 'lowered', ip: '192.168.137.68' });
     light1.save(function (err) {
         if (err) {
         } else {
@@ -268,7 +269,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light2 = new Light({number: 2, state: 'stopped', position: 'raised', ip: '10.10.20.2'});
+    var light2 = new Light({number: 2, state: 'stopped', position: 'lowered', ip: '192.168.137.68'});
     light2.save(function (err) {
         if (err) {
         } else {
@@ -276,7 +277,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light3 = new Light({number: 3, state: 'stopped', position: 'raised', ip: '10.10.20.3'});
+    var light3 = new Light({number: 3, state: 'stopped', position: 'lowered', ip: '192.168.137.68'});
     light3.save(function (err) {
         if (err) {
         } else {
@@ -284,7 +285,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light4 = new Light({number: 4, state: 'stopped', position: 'raised', ip: '10.10.20.4' });
+    var light4 = new Light({number: 4, state: 'stopped', position: 'lowered', ip: '10.10.20.4' });
     light4.save(function (err) {
         if (err) {// ...
         } else {
@@ -292,7 +293,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light5 = new Light({number: 5, state: 'stopped', position: 'raised', ip: '10.10.20.5'});
+    var light5 = new Light({number: 5, state: 'stopped', position: 'lowered', ip: '10.10.20.5'});
     light5.save(function (err) {
         if (err) {
         } else {
@@ -300,7 +301,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light6 = new Light({number: 6, state: 'stopped', position: 'raised', ip: '10.10.20.6'});
+    var light6 = new Light({number: 6, state: 'stopped', position: 'lowered', ip: '10.10.20.6'});
     light6.save(function (err) {
         if (err) {
         } else {
@@ -308,7 +309,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light7 = new Light({number: 7, state: 'stopped', position: 'raised', ip: '10.10.20.7' });
+    var light7 = new Light({number: 7, state: 'stopped', position: 'lowered', ip: '10.10.20.7' });
     light7.save(function (err) {
         if (err) {// ...
         } else {
@@ -316,7 +317,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light8 = new Light({number: 8, state: 'stopped', position: 'raised', ip: '10.10.20.8'});
+    var light8 = new Light({number: 8, state: 'stopped', position: 'lowered', ip: '10.10.20.8'});
     light8.save(function (err) {
         if (err) {
         } else {
@@ -324,14 +325,14 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light9 = new Light({number: 9, state: 'stopped', position: 'raised', ip: '10.10.20.9'});
+    var light9 = new Light({number: 9, state: 'stopped', position: 'lowered', ip: '10.10.20.9'});
     light9.save(function (err) {
         if (err) {
         } else {
             console.log('light 9 created');
         }
     });
-    var light10 = new Light({number: 10, state: 'stopped', position: 'raised', ip: '10.10.20.10' });
+    var light10 = new Light({number: 10, state: 'stopped', position: 'lowered', ip: '10.10.20.10' });
     light10.save(function (err) {
         if (err) {// ...
         } else {
@@ -339,7 +340,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light11 = new Light({number: 11, state: 'stopped', position: 'raised', ip: '10.10.20.11'});
+    var light11 = new Light({number: 11, state: 'stopped', position: 'lowered', ip: '10.10.20.11'});
     light11.save(function (err) {
         if (err) {
         } else {
@@ -347,7 +348,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light12 = new Light({number: 12, state: 'stopped', position: 'raised', ip: '10.10.20.12'});
+    var light12 = new Light({number: 12, state: 'stopped', position: 'lowered', ip: '10.10.20.12'});
     light12.save(function (err) {
         if (err) {
         } else {
@@ -355,7 +356,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light13 = new Light({number: 13, state: 'stopped', position: 'raised', ip: '10.10.20.13' });
+    var light13 = new Light({number: 13, state: 'stopped', position: 'lowered', ip: '10.10.20.13' });
     light13.save(function (err) {
         if (err) {// ...
         } else {
@@ -363,7 +364,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light14 = new Light({number: 14, state: 'stopped', position: 'raised', ip: '10.10.20.14'});
+    var light14 = new Light({number: 14, state: 'stopped', position: 'lowered', ip: '10.10.20.14'});
     light14.save(function (err) {
         if (err) {
         } else {
@@ -371,14 +372,14 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light15 = new Light({number: 15, state: 'stopped', position: 'raised', ip: '10.10.20.15'});
+    var light15 = new Light({number: 15, state: 'stopped', position: 'lowered', ip: '10.10.20.15'});
     light15.save(function (err) {
         if (err) {
         } else {
             console.log('light 15 created');
         }
     });
-    var light16 = new Light({number: 16, state: 'stopped', position: 'raised', ip: '10.10.20.16' });
+    var light16 = new Light({number: 16, state: 'stopped', position: 'lowered', ip: '10.10.20.16' });
     light16.save(function (err) {
         if (err) {// ...
         } else {
@@ -386,7 +387,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light17 = new Light({number: 17, state: 'stopped', position: 'raised', ip: '10.10.20.17'});
+    var light17 = new Light({number: 17, state: 'stopped', position: 'lowered', ip: '10.10.20.17'});
     light17.save(function (err) {
         if (err) {
         } else {
@@ -394,7 +395,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light18 = new Light({number: 18, state: 'stopped', position: 'raised', ip: '10.10.20.18'});
+    var light18 = new Light({number: 18, state: 'stopped', position: 'lowered', ip: '10.10.20.18'});
     light18.save(function (err) {
         if (err) {
         } else {
@@ -402,7 +403,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light19 = new Light({number: 19, state: 'stopped', position: 'raised', ip: '10.10.20.19' });
+    var light19 = new Light({number: 19, state: 'stopped', position: 'lowered', ip: '10.10.20.19' });
     light19.save(function (err) {
         if (err) {// ...
         } else {
@@ -410,7 +411,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light20 = new Light({number: 20, state: 'stopped', position: 'raised', ip: '10.10.20.20'});
+    var light20 = new Light({number: 20, state: 'stopped', position: 'lowered', ip: '10.10.20.20'});
     light20.save(function (err) {
         if (err) {
         } else {
@@ -418,14 +419,14 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light21 = new Light({number: 21, state: 'stopped', position: 'raised', ip: '10.10.20.21'});
+    var light21 = new Light({number: 21, state: 'stopped', position: 'lowered', ip: '10.10.20.21'});
     light21.save(function (err) {
         if (err) {
         } else {
             console.log('light 21 created');
         }
     });
-    var light22 = new Light({number: 22, state: 'stopped', position: 'raised', ip: '10.10.20.22' });
+    var light22 = new Light({number: 22, state: 'stopped', position: 'lowered', ip: '10.10.20.22' });
     light22.save(function (err) {
         if (err) {// ...
         } else {
@@ -433,7 +434,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light23 = new Light({number: 23, state: 'stopped', position: 'raised', ip: '10.10.20.23'});
+    var light23 = new Light({number: 23, state: 'stopped', position: 'lowered', ip: '10.10.20.23'});
     light23.save(function (err) {
         if (err) {
         } else {
@@ -441,7 +442,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light24 = new Light({number: 24, state: 'stopped', position: 'raised', ip: '10.10.20.24'});
+    var light24 = new Light({number: 24, state: 'stopped', position: 'lowered', ip: '10.10.20.24'});
     light24.save(function (err) {
         if (err) {
         } else {
@@ -449,7 +450,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light25 = new Light({number: 25, state: 'stopped', position: 'raised', ip: '10.10.20.25' });
+    var light25 = new Light({number: 25, state: 'stopped', position: 'lowered', ip: '10.10.20.25' });
     light25.save(function (err) {
         if (err) {// ...
         } else {
@@ -457,7 +458,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light26 = new Light({number: 26, state: 'stopped', position: 'raised', ip: '10.10.20.26'});
+    var light26 = new Light({number: 26, state: 'stopped', position: 'lowered', ip: '10.10.20.26'});
     light26.save(function (err) {
         if (err) {
         } else {
@@ -465,14 +466,14 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light27 = new Light({number: 27, state: 'stopped', position: 'raised', ip: '10.10.20.27'});
+    var light27 = new Light({number: 27, state: 'stopped', position: 'lowered', ip: '10.10.20.27'});
     light27.save(function (err) {
         if (err) {
         } else {
             console.log('light 27 created');
         }
     });
-    var light28 = new Light({number: 28, state: 'stopped', position: 'raised', ip: '10.10.20.28' });
+    var light28 = new Light({number: 28, state: 'stopped', position: 'lowered', ip: '10.10.20.28' });
     light28.save(function (err) {
         if (err) {// ...
         } else {
@@ -480,7 +481,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light29 = new Light({number: 29, state: 'stopped', position: 'raised', ip: '10.10.20.29'});
+    var light29 = new Light({number: 29, state: 'stopped', position: 'lowered', ip: '10.10.20.29'});
     light29.save(function (err) {
         if (err) {
         } else {
@@ -488,7 +489,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    var light30 = new Light({number: 30, state: 'stopped', position: 'raised', ip: '10.10.20.30'});
+    var light30 = new Light({number: 30, state: 'stopped', position: 'lowered', ip: '10.10.20.30'});
     light30.save(function (err) {
         if (err) {
         } else {
@@ -799,6 +800,115 @@ module.exports = function (app, passport) {
         logger.info(' Emergency stop requested for Lights.');
         res.send('GET request to stop all the lights');
     });
+
+    app.get('/lights/update/raised1', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "raised1";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/lowered1', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "lowered1";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/error1', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "error1";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/executing1', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "executing1";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/raised2', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "raised2";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/lowered2', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "lowered2";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/error2', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "error2";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/executing2', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "executing2";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/raised3', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "raised3";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/lowered3', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "lowered3";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/error3', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "error3";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
+    app.get('/lights/update/executing3', function(req, res) {
+        //update database after completion of microcontroller action
+        var ip = req.ip;
+        var status = "executing3";
+        lightUpdate.lightControl(ip, status);
+        logger.info('light is being updated stopped.');
+        res.json({success: true, msg: 'GET request from microcontroller to update the database'});
+    });
+
 
     app.get('/status/light', function(req, res) {
        //get data from database

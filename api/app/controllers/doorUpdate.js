@@ -1,4 +1,4 @@
-//controllers/doorStop.js
+//controllers/doorUpdate.js
 var http = require('http');
 var Queue = require('../../utils/queue');
 var doorDatabase = require('../models/door');

@@ -24,6 +24,14 @@ class SettingsTableViewController: UITableViewController {
         
     }
     
+    override func viewDidLayoutSubviews() {
+        
+        super.viewDidLayoutSubviews()
+        
+        preferredContentSize = tableView.contentSize
+        
+    }
+    
     // MARK: - Switch
     
     @IBAction func autoRefreshToggle(sender: UISwitch) {

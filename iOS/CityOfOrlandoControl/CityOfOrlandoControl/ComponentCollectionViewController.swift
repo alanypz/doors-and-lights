@@ -98,9 +98,9 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             
             let enabled = shouldEnableComponent(component)
             
-            cell.alpha = enabled ? 1 : 0.35
+            cell.contentView.alpha = enabled ? 1 : 0.35
             
-            cell.tintAdjustmentMode = enabled ? .Automatic : .Dimmed
+            cell.contentView.tintAdjustmentMode = enabled ? .Automatic : .Dimmed
             
             cell.layer.borderWidth = 0.5
             
@@ -118,9 +118,9 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
             
             let enabled = shouldEnableComponent(component)
             
-            cell.alpha = enabled ? 1 : 0.35
+            cell.contentView.alpha = enabled ? 1 : 0.35
             
-            cell.tintAdjustmentMode = enabled ? .Automatic : .Dimmed
+            cell.contentView.tintAdjustmentMode = enabled ? .Automatic : .Dimmed
             
             cell.layer.borderWidth = 0.5
             
@@ -208,7 +208,7 @@ class ComponentCollectionViewController: UICollectionViewController, UICollectio
     
     override func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         
-        return groups[indexPath.section].numberOfComponents() > 0
+        return groups[indexPath.section].numberOfComponents() > 0 && ServerCoordinator.sharedCoordinator.canAddComponentsOperation()
         
     }
     
@@ -788,6 +788,9 @@ extension ComponentCollectionViewController: UITextFieldDelegate {
 extension ComponentCollectionViewController {
     
     func autoRefresh(timer: NSTimer) {
+        
+        
+        guard let gestureRecognizers = collectionView?.gestureRecognizers where gestureRecognizers.indexOf({ $0.state == .Changed || $0.state == .Began }) == nil else { return }
         
         if ServerCoordinator.sharedCoordinator.canAddComponentsOperation() {
             

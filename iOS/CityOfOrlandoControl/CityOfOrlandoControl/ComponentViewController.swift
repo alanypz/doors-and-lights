@@ -15,16 +15,32 @@ class ComponentViewController: UITableViewController {
     @IBOutlet var raiseButtonItem: UIBarButtonItem!
     
     @IBOutlet var lowerButtonItem: UIBarButtonItem!
-    
+        
     var actionHandler: (() -> Void)?
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        raiseButtonItem.enabled = ServerCoordinator.sharedCoordinator.canAddActionOperation()
+        //        raiseButtonItem.enabled = ServerCoordinator.sharedCoordinator.canAddActionOperation()
+        //
+        //        lowerButtonItem.enabled = ServerCoordinator.sharedCoordinator.canAddActionOperation()
         
-        lowerButtonItem.enabled = ServerCoordinator.sharedCoordinator.canAddActionOperation()
+        switch (component.state) {
+            
+        case .Executing:
+            
+            raiseButtonItem.enabled = false
+            
+            lowerButtonItem.enabled = false
+            
+        case .Stopped:
+            
+            raiseButtonItem.enabled = true
+            
+            lowerButtonItem.enabled = true
+            
+        }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComponentViewController.statusChanged(_:)), name: ComponentStatusNotification, object: ServerCoordinator.sharedCoordinator)
         
@@ -37,6 +53,10 @@ class ComponentViewController: UITableViewController {
         case let light as Light:
             
             navigationItem.title = "Light #\(light.number)"
+            
+            toolbarItems?.removeLast()
+            toolbarItems?.removeLast()
+            
             
         default:
             
@@ -137,13 +157,13 @@ class ComponentViewController: UITableViewController {
         ServerCoordinator.sharedCoordinator.addOperation(operation)
         
         actionHandler?()
-    
+        
         if Defaults.autoClose {
-        
+            
             presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-        
+            
         }
-        
+            
         else {
             
             let indexSet = NSIndexSet(index: Section.State.rawValue)
@@ -233,6 +253,26 @@ extension ComponentViewController {
                 fatalError("Invalid Component")
                 
             }
+            
+        }
+        
+    }
+    
+    @IBAction func stop(sender: UIBarButtonItem) {
+        
+        switch component {
+            
+        case let door as Door:
+            
+            ServerCoordinator.sharedCoordinator.cancelActionOperation()
+            
+            let operation = ActionOperation(id: door.id, number: door.number, action: .Stop, type: .Door)
+            
+            performAction(operation)
+            
+        default:
+            
+            fatalError("Invalid Component")
             
         }
         

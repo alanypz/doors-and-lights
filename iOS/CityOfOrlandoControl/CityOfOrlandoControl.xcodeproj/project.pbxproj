@@ -27,6 +27,7 @@
 		E7404AE91CBDDA2400038BC7 /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7404AE81CBDDA2400038BC7 /* InformationViewController.swift */; };
 		E76891721C4EFF9000A64A93 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */; };
 		E76891741C4EFF9C00A64A93 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */; };
+		E7E12E5A1CC00FA700EB0C1A /* CalibrateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E12E591CC00FA700EB0C1A /* CalibrateOperation.swift */; };
 		E7F0E4181C4C37D8003D4DEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E4171C4C37D8003D4DEA /* AppDelegate.swift */; };
 		E7F0E41D1C4C37D8003D4DEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7F0E41B1C4C37D8003D4DEA /* Main.storyboard */; };
 		E7F0E4201C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E7F0E41E1C4C37D8003D4DEA /* CityOfOrlandoControl.xcdatamodeld */; };
@@ -73,6 +74,7 @@
 		E7404AE81CBDDA2400038BC7 /* InformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
+		E7E12E591CC00FA700EB0C1A /* CalibrateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalibrateOperation.swift; sourceTree = "<group>"; };
 		E7F0E4141C4C37D8003D4DEA /* CityOfOrlandoControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CityOfOrlandoControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7F0E4171C4C37D8003D4DEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7F0E41C1C4C37D8003D4DEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -150,9 +152,9 @@
 			isa = PBXGroup;
 			children = (
 				E7353FD51C4C69AA00D50E9E /* ComponentCollectionViewController.swift */,
-				E7404AE81CBDDA2400038BC7 /* InformationViewController.swift */,
 				AB162D941C69250100D43C75 /* ComponentViewController.swift */,
 				E76891731C4EFF9C00A64A93 /* FilterTableViewController.swift */,
+				E7404AE81CBDDA2400038BC7 /* InformationViewController.swift */,
 				E7353FD71C4C6B2200D50E9E /* LoginViewController.swift */,
 				E76891711C4EFF9000A64A93 /* SettingsTableViewController.swift */,
 			);
@@ -182,6 +184,7 @@
 				AB119D5C1C96098F0008BA01 /* ActionOperation.swift */,
 				AB119D621C960A6B0008BA01 /* ComponentsOperation.swift */,
 				E712FA381C95F541001F8A49 /* LoginOperation.swift */,
+				E7E12E591CC00FA700EB0C1A /* CalibrateOperation.swift */,
 				AB119D641C960AC20008BA01 /* Server */,
 			);
 			name = Operation;
@@ -403,6 +406,7 @@
 				E76891721C4EFF9000A64A93 /* SettingsTableViewController.swift in Sources */,
 				AB119D631C960A6B0008BA01 /* ComponentsOperation.swift in Sources */,
 				E712FA3E1C95F541001F8A49 /* ServerOperation.swift in Sources */,
+				E7E12E5A1CC00FA700EB0C1A /* CalibrateOperation.swift in Sources */,
 				AB162D931C691EC200D43C75 /* ComponentCollectionViewCell.swift in Sources */,
 				AB13443B1C9B9497002BC2A6 /* Regex.swift in Sources */,
 				E7F0E4181C4C37D8003D4DEA /* AppDelegate.swift in Sources */,

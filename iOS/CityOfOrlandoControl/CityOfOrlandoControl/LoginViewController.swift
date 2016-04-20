@@ -42,7 +42,7 @@ class LoginViewController: UIViewController {
                
             case let (controller?, _?):
                 
-                controller.showError("Invalid username and/or password.")
+                controller.showError("Unable to login.")
                 
                 sender.enabled = true
 

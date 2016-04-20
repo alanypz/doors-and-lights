@@ -70,7 +70,7 @@ extension Component {
         
         case Lowered = "lowered"
         
-        case Error = "Error"
+        case Error = "error"
         
     }
     

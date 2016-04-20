@@ -22,7 +22,11 @@ class ServerCoordinator {
         static let host =  "http://localhost:8080"
 //      static let host =  "http://10.0.1.5:8080" //  Local IP access
 //        static let host =  "http://10.0.0.2:8080"   // NETGEAR09, dynamicjade566
-//        static let host =  "http://192.168.43.12:8080"   // Marcus Phone
+//        static let host =  "http://192.168.43.12:8080"   // Marcus
+//        static let host =  "http://192.168.1.100:8080"   // Bryers
+//        static let host =  "http://192.168.1.106:8080"   // Justin
+//        static let host =  "http://192.168.1.2:8080"   // NETGEAR09, manictomato309
+
     
         class func authenticate() -> NSURL {
             
@@ -63,6 +67,12 @@ class ServerCoordinator {
         class func doorsRaise() -> NSURL {
             
             return NSURL(string: "\(host)/doors/raise")!
+            
+        }
+        
+        class func doorsStop() -> NSURL {
+            
+            return NSURL(string: "\(host)/doors/stop")!
             
         }
         

@@ -88,6 +88,22 @@ class ActionOperation: ServerOperation {
             
             requestAction(URLRequest: request)
             
+        case (.Stop, .Door):
+            
+            let url = ServerCoordinator.Routes.doorsStop()
+            
+            let request = NSMutableURLRequest(URL: url)
+            
+            request.HTTPMethod = "POST"
+            
+            request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(["door": number], options: [])
+            
+            request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+            
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            
+            requestAction(URLRequest: request)
+            
         case (.Raise, .Light):
             
             let url = ServerCoordinator.Routes.lightsRaise()
@@ -236,9 +252,13 @@ class ActionOperation: ServerOperation {
         
         switch (component.state, action, component.position) {
             
-        case (_, _, .Error):
+        case (.Stopped, .Stop, _):
             
-            finishWithError(NSError(description: "An error occured."))
+            complete(component)
+            
+        case (.Stopped, _, .Error):
+            
+            finishWithError(NSError(description: "Component \(component.id) has stopped at an invalid position."))
             
         case (.Stopped, .Status, _):
             
@@ -250,7 +270,7 @@ class ActionOperation: ServerOperation {
             
         case (.Stopped, .Raise, .Lowered):
             
-            finishWithError(NSError(description: "An error occured."))
+            finishWithError(NSError(description: "Component \(component.id) has stopped at unexpect position."))
             
         case (.Stopped, .Lower, .Lowered):
             
@@ -258,7 +278,7 @@ class ActionOperation: ServerOperation {
             
         case (.Stopped, .Lower, .Raised):
             
-            finishWithError(NSError(description: "An error occured."))
+            finishWithError(NSError(description: "Component \(component.id) has stopped at unexpect position."))
             
         default:
             
@@ -312,7 +332,7 @@ extension ActionOperation {
     
     enum Action {
         
-        case Raise, Lower, Status
+        case Raise, Lower, Stop, Status
         
     }
     

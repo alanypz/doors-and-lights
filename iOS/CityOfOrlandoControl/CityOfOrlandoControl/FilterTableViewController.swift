@@ -40,6 +40,14 @@ class FilterTableViewController: UITableViewController {
         
     }
     
+    override func viewDidLayoutSubviews() {
+        
+        super.viewDidLayoutSubviews()
+        
+        preferredContentSize = tableView.contentSize
+
+    }
+    
     // MARK: - Navigation
     
     @IBAction func cancel(sender: UIBarButtonItem) {

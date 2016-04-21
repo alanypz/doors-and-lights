@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="City_Of_Orlando_Automated_Controller.Pages.ComponentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="690"
+             xmlns:ctr="clr-namespace:City_Of_Orlando_Automated_Controller.Controls">
+
+    <Grid Name="componentGrid" Style="{StaticResource ContentRoot}">
+        <ScrollViewer>
+            <StackPanel Name="sp" MinWidth="200" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Component View" Style="{StaticResource Heading2}" />
+                </StackPanel>
+
+                <WrapPanel>
+                    <TextBlock Text="&#xD;"/>
+                    <!--Space-->
+                </WrapPanel>
+
+                <WrapPanel>
+                    <TextBlock FontWeight="Bold" Text="Doors"/>
+                </WrapPanel>
+
+                <WrapPanel Name="wpDoor" Orientation="Horizontal">
+                    <UniformGrid Name="ugDoor" Columns="7">
+
+                    </UniformGrid>
+                </WrapPanel>
+
+                <WrapPanel>
+                    <TextBlock Text="&#xD;"/>
+                </WrapPanel>
+
+                <WrapPanel>
+                    <TextBlock FontWeight="Bold" Text="Lights"/>
+                </WrapPanel>
+
+                <WrapPanel Name="wpLight" Orientation="Horizontal">
+                    <UniformGrid Name="ugLight" Columns="7">
+
+                    </UniformGrid>
+                </WrapPanel>
+                <!--<TextBlock Text="Content goes here" />-->
+            </StackPanel>
+        </ScrollViewer>
+        <Button x:Name="refresh" Content="" HorizontalAlignment="Left" Margin="625,0,-17,0" VerticalAlignment="Top" Height="50"  Width="50" BorderThickness="0" Click="refresh_Click" MouseEnter="refresh_MouseEnter" MouseLeave="refresh_MouseLeave"/>
+
+        <Grid VerticalAlignment="Bottom">
+            <ctr:LoadingPanel x:Name="loadingPanel"
+                        IsLoading="{Binding PanelLoading}"
+                        Message="{Binding PanelMainMessage}"
+                        SubMessage="{Binding PanelSubMessage}" 
+                        ClosePanelCommand="{Binding PanelCloseCommand}" />
+        </Grid>
+
+    </Grid>
+
+</UserControl>

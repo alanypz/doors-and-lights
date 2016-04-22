@@ -39,6 +39,7 @@ namespace City_Of_Orlando_Automated_Controller
                                              MouseButtonEventArgs e)
         {
             string link = e.OriginalSource.ToString();
+
             if (link != null)
             {
                 if(link.Contains("logout"))

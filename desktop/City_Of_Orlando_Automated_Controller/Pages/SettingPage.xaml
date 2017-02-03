@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="City_Of_Orlando_Automated_Controller.SettingPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="690">
+    <Grid Style="{StaticResource ContentRoot}">
+        <Button x:Name="button1" Content="Calibrate Crane" HorizontalAlignment="Left" Margin="43,122,0,0" VerticalAlignment="Top" Width="148"/>
+        <CheckBox x:Name="autoRefresh" Content="Auto Refresh" HorizontalAlignment="Left" Margin="43,75,0,0" VerticalAlignment="Top" Checked="autoRefresh_Checked" Unchecked="autoRefresh_Unchecked"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="43,10,0,0" TextWrapping="Wrap" Text="SETTINGS:" VerticalAlignment="Top" Width="201" Height="39" FontSize="26.667" TextDecorations="Underline"/>
+
+    </Grid>
+</UserControl>

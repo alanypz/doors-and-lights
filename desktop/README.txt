@@ -1,0 +1,1 @@
+This is the desktop application for the City of Orlando. This application acts as a controller to operate the doors and lights at the City of Orlando's facility.
